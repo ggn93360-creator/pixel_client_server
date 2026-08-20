@@ -3,78 +3,356 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Pixels Client — Script</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Pixels Client — Glass</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* ---------- RESET ---------- */
         * { margin:0; padding:0; box-sizing:border-box; cursor:none; }
-        body { background:#0b0b12; color:#e0e0ff; font-family:'Inter',sans-serif; overflow-x:hidden; min-height:100vh; }
-        /* ---------- КУРСОР ---------- */
-        .cursor-dot { position:fixed; width:14px; height:14px; background:radial-gradient(circle,#a855f7,#7c3aed); border-radius:50%; pointer-events:none; transform:translate(-50%,-50%); z-index:9999; transition:width .15s,height .15s,background .2s; box-shadow:0 0 25px rgba(168,85,247,0.6); mix-blend-mode:screen; }
-        .cursor-dot.hover { width:28px; height:28px; background:radial-gradient(circle,#f472b6,#a855f7); }
-        /* ---------- ЧАСТИНКИ ---------- */
-        #particles-canvas { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none; }
-        /* ---------- КОНТЕЙНЕР ---------- */
-        .container { max-width:1100px; margin:0 auto; padding:30px 20px; position:relative; z-index:1; }
-        /* ---------- ШАПКА ---------- */
-        header { display:flex; justify-content:space-between; align-items:center; padding:20px 0; border-bottom:1px solid rgba(168,85,247,0.2); flex-wrap:wrap; gap:15px; }
-        .logo { font-family:'Orbitron',monospace; font-weight:900; font-size:28px; background:linear-gradient(135deg,#a855f7,#ec4899); -webkit-background-clip:text; -webkit-text-fill-color:transparent; text-shadow:0 0 40px rgba(168,85,247,0.3); }
-        .logo span { font-weight:400; font-size:16px; background:none; -webkit-text-fill-color:#8888bb; margin-left:8px; }
-        .lang-switch { display:flex; gap:8px; }
-        .lang-btn { background:transparent; border:1px solid #444466; color:#b0b0dd; padding:6px 14px; border-radius:30px; font-weight:600; font-size:13px; cursor:none; transition:.3s; font-family:'Inter',sans-serif; }
-        .lang-btn.active { border-color:#a855f7; background:rgba(168,85,247,0.2); color:#fff; box-shadow:0 0 15px rgba(168,85,247,0.3); }
-        .lang-btn:hover { border-color:#a855f7; color:#fff; }
-        /* ---------- ГЕРОЙ ---------- */
-        .hero { display:flex; align-items:center; justify-content:space-between; padding:60px 0 40px; flex-wrap:wrap; gap:30px; }
-        .hero-text { flex:1 1 50%; }
-        .hero-text h1 { font-family:'Orbitron',monospace; font-weight:900; font-size:52px; line-height:1.1; background:linear-gradient(135deg,#c084fc,#f472b6,#a855f7); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:20px; }
-        .hero-text p { font-size:18px; color:#b0b0dd; max-width:500px; line-height:1.6; margin-bottom:30px; }
-        .btn-group { display:flex; gap:20px; flex-wrap:wrap; }
-        .btn { display:inline-block; padding:14px 38px; border-radius:50px; font-weight:600; text-decoration:none; transition:all .3s ease; border:none; font-family:'Inter',sans-serif; font-size:16px; cursor:none; background:#1e1e2e; color:#c0c0ee; box-shadow:0 0 15px rgba(168,85,247,0.1); }
-        .btn-primary { background:linear-gradient(135deg,#a855f7,#7c3aed); color:#fff; box-shadow:0 0 30px rgba(168,85,247,0.3); }
-        .btn-primary:hover { transform:scale(1.05); box-shadow:0 0 50px rgba(168,85,247,0.6); }
-        .btn-secondary { border:1px solid #a855f7; background:transparent; }
-        .btn-secondary:hover { background:rgba(168,85,247,0.15); transform:scale(1.05); }
-        .hero-image { flex:1 1 40%; text-align:center; }
-        .hero-image img { max-width:100%; border-radius:20px; box-shadow:0 0 60px rgba(168,85,247,0.2); }
-        /* ---------- ФУНКЦІЇ ---------- */
-        .features { padding:60px 0; }
-        .section-title { font-family:'Orbitron',monospace; font-size:32px; text-align:center; margin-bottom:50px; background:linear-gradient(135deg,#a855f7,#ec4899); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-        .features-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:30px; }
-        .feature-card { background:rgba(30,30,46,0.6); backdrop-filter:blur(8px); border:1px solid rgba(168,85,247,0.2); padding:30px 20px; border-radius:20px; text-align:center; transition:all .4s; }
-        .feature-card:hover { transform:translateY(-10px); border-color:#a855f7; box-shadow:0 10px 40px rgba(168,85,247,0.2); }
-        .feature-card .icon { font-size:48px; margin-bottom:15px; }
-        .feature-card h3 { font-size:20px; margin-bottom:10px; color:#e0e0ff; }
-        .feature-card p { color:#9999bb; font-size:14px; line-height:1.5; }
-        /* ---------- ПІДТРИМУВАНІ ІГРИ ---------- */
-        .supported-games { padding:60px 0; }
-        .games-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:30px; }
-        .game-card { background:rgba(30,30,46,0.6); backdrop-filter:blur(8px); border:1px solid rgba(168,85,247,0.2); padding:30px; border-radius:20px; text-align:center; transition:all .4s; }
-        .game-card:hover { transform:translateY(-5px); border-color:#a855f7; box-shadow:0 5px 30px rgba(168,85,247,0.15); }
-        .game-card h3 { font-size:24px; margin-bottom:12px; color:#e0e0ff; }
-        .support-status { color:#4ade80; font-weight:600; }
-        /* ---------- ОТРИМАННЯ ---------- */
-        .get-script { padding:40px 0 60px; text-align:center; }
-        .get-script h2 { font-family:'Orbitron',monospace; font-size:36px; margin-bottom:20px; background:linear-gradient(135deg,#a855f7,#f472b6); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-        .get-script p { color:#9999bb; font-size:18px; max-width:700px; margin:0 auto 20px; line-height:1.6; }
-        .steps { display:flex; justify-content:center; gap:30px; flex-wrap:wrap; margin:30px 0; }
-        .step { background:rgba(30,30,46,0.4); border:1px solid rgba(168,85,247,0.15); border-radius:16px; padding:20px 25px; max-width:250px; color:#b0b0dd; }
-        .step .num { font-family:'Orbitron',monospace; font-size:28px; color:#a855f7; margin-bottom:8px; }
-        .step p { font-size:15px; margin:0; }
-        .code-block { background:#1a1a2a; border:1px solid #a855f7; border-radius:16px; padding:20px; margin:30px auto; max-width:800px; text-align:left; position:relative; }
-        .code-block pre { font-family:'Courier New',monospace; font-size:14px; color:#c0c0ee; white-space:pre-wrap; word-break:break-word; margin:0; max-height:300px; overflow-y:auto; }
-        .copy-btn { position:absolute; top:12px; right:12px; background:#a855f7; border:none; border-radius:30px; padding:6px 16px; color:#fff; font-weight:600; font-size:13px; cursor:none; transition:.3s; font-family:'Inter',sans-serif; }
-        .copy-btn:hover { background:#7c3aed; transform:scale(1.05); }
-        .social-links { display:flex; justify-content:center; gap:30px; margin:30px 0; flex-wrap:wrap; }
-        .social-btn { display:inline-flex; align-items:center; gap:10px; padding:12px 28px; border-radius:50px; background:#1e1e2e; color:#c0c0ee; text-decoration:none; font-weight:600; transition:.3s; border:1px solid rgba(168,85,247,0.2); }
-        .social-btn i { font-size:22px; }
-        .social-btn.discord:hover { background:#5865F2; color:#fff; border-color:#5865F2; }
-        .social-btn.telegram:hover { background:#0088cc; color:#fff; border-color:#0088cc; }
-        footer { border-top:1px solid rgba(168,85,247,0.2); padding:30px 0; text-align:center; color:#666688; font-size:14px; }
-        footer a { color:#a855f7; text-decoration:none; }
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #e0e0ff;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        /* Анімований градієнтний фон */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 50%, rgba(168,85,247,0.15), transparent 60%),
+                        radial-gradient(circle at 70% 80%, rgba(236,72,153,0.1), transparent 60%);
+            animation: rotateBg 30s linear infinite;
+            z-index: 0;
+            pointer-events: none;
+        }
+        @keyframes rotateBg {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
 
-        /* ---------- АНІМАЦІЯ ПОЯВИ/ЗНИКНЕННЯ ПРИ СКРОЛІ ---------- */
+        /* Скляний ефект (glassmorphism) */
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+
+        .cursor-dot {
+            position: fixed;
+            width: 12px;
+            height: 12px;
+            background: radial-gradient(circle, #a855f7, #7c3aed);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            transition: width .2s, height .2s;
+            box-shadow: 0 0 20px rgba(168,85,247,0.5);
+            mix-blend-mode: screen;
+        }
+        .cursor-dot.hover { width: 28px; height: 28px; background: radial-gradient(circle, #ec4899, #a855f7); }
+
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+            background: rgba(255,255,255,0.04);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+        }
+        .logo {
+            font-weight: 700;
+            font-size: 28px;
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .logo span {
+            font-weight: 300;
+            font-size: 18px;
+            background: none;
+            -webkit-text-fill-color: rgba(255,255,255,0.4);
+            margin-left: 8px;
+        }
+        .lang-switch { display:flex; gap:8px; }
+        .lang-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #ccc;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: .3s;
+            font-family: 'Inter', sans-serif;
+            cursor: none;
+        }
+        .lang-btn.active {
+            background: rgba(168,85,247,0.25);
+            border-color: #a855f7;
+            color: #fff;
+            box-shadow: 0 0 20px rgba(168,85,247,0.2);
+        }
+        .lang-btn:hover {
+            background: rgba(168,85,247,0.15);
+            color: #fff;
+        }
+
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 60px 0 40px;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        .hero-text { flex:1 1 50%; }
+        .hero-text h1 {
+            font-size: 52px;
+            font-weight: 700;
+            line-height: 1.1;
+            background: linear-gradient(135deg, #c084fc, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+        .hero-text p {
+            font-size: 18px;
+            color: rgba(255,255,255,0.6);
+            max-width: 500px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        .btn-group { display:flex; gap:20px; flex-wrap:wrap; }
+        .btn {
+            display: inline-block;
+            padding: 14px 38px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all .3s;
+            border: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            cursor: none;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #a855f7, #7c3aed);
+            color: #fff;
+            box-shadow: 0 0 30px rgba(168,85,247,0.3);
+        }
+        .btn-primary:hover { transform: scale(1.05); box-shadow: 0 0 50px rgba(168,85,247,0.5); }
+        .btn-secondary {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #ccc;
+        }
+        .btn-secondary:hover { background: rgba(255,255,255,0.1); transform: scale(1.05); }
+        .hero-image { flex:1 1 40%; text-align:center; }
+        .hero-image img {
+            max-width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .features { padding: 60px 0; }
+        .section-title {
+            font-size: 32px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 50px;
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+        .feature-card {
+            padding: 30px 20px;
+            text-align: center;
+            transition: all .4s;
+            background: rgba(255,255,255,0.04);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+        }
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(168,85,247,0.3);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        .feature-card .icon { font-size: 48px; margin-bottom: 15px; }
+        .feature-card h3 { font-size: 20px; margin-bottom: 10px; color: #e0e0ff; }
+        .feature-card p { font-size: 14px; color: rgba(255,255,255,0.5); line-height:1.5; }
+
+        .supported-games { padding: 60px 0; }
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 30px;
+        }
+        .game-card {
+            padding: 30px;
+            text-align: center;
+            background: rgba(255,255,255,0.04);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+            transition: all .4s;
+        }
+        .game-card:hover {
+            border-color: rgba(168,85,247,0.3);
+            box-shadow: 0 5px 30px rgba(0,0,0,0.15);
+        }
+        .game-card h3 { font-size: 24px; margin-bottom: 12px; color: #e0e0ff; }
+        .support-status { color: #4ade80; font-weight: 600; }
+
+        .get-script { padding: 40px 0 60px; text-align: center; }
+        .get-script h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #a855f7, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .get-script p {
+            color: rgba(255,255,255,0.5);
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto 20px;
+            line-height: 1.6;
+        }
+        .steps {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+        .step {
+            padding: 20px 25px;
+            background: rgba(255,255,255,0.04);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+            max-width: 200px;
+            color: rgba(255,255,255,0.6);
+        }
+        .step .num {
+            font-size: 28px;
+            font-weight: 700;
+            color: #a855f7;
+            margin-bottom: 10px;
+        }
+        .step p { font-size: 14px; margin:0; }
+
+        .code-block {
+            padding: 20px;
+            margin: 30px auto;
+            max-width: 800px;
+            text-align: left;
+            position: relative;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+        }
+        .code-block pre {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #c0c0ee;
+            white-space: pre-wrap;
+            word-break: break-word;
+            margin: 0;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(168,85,247,0.2);
+            border: 1px solid rgba(168,85,247,0.3);
+            border-radius: 30px;
+            padding: 6px 16px;
+            color: #fff;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: none;
+            transition: .3s;
+            font-family: 'Inter', sans-serif;
+        }
+        .copy-btn:hover { background: rgba(168,85,247,0.4); transform: scale(1.05); }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        .social-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 28px;
+            border-radius: 50px;
+            background: rgba(255,255,255,0.04);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.06);
+            color: #ccc;
+            text-decoration: none;
+            font-weight: 600;
+            transition: .3s;
+        }
+        .social-btn i { font-size: 22px; }
+        .social-btn.discord:hover { background: #5865F2; color: #fff; border-color: #5865F2; }
+        .social-btn.telegram:hover { background: #0088cc; color: #fff; border-color: #0088cc; }
+
+        footer {
+            padding: 30px 0;
+            text-align: center;
+            color: rgba(255,255,255,0.3);
+            font-size: 14px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            margin-top: 30px;
+        }
+        footer a { color: #a855f7; text-decoration: none; }
+
         .fade-init {
             opacity: 0;
             transform: translateY(30px);
@@ -85,16 +363,15 @@
             transform: translateY(0);
         }
 
-        /* ---------- АДАПТИВ ---------- */
-        @media (max-width:700px) {
-            .hero-text h1 { font-size:32px; }
-            .btn { padding:12px 24px; font-size:14px; }
-            .cursor-dot { display:none; }
-            body { cursor:auto; }
-            a,button { cursor:pointer; }
-            .lang-btn { font-size:11px; padding:4px 10px; }
-            .code-block pre { font-size:12px; }
-            .games-grid { grid-template-columns:1fr; }
+        @media (max-width: 700px) {
+            .hero-text h1 { font-size: 32px; }
+            .btn { padding: 12px 24px; font-size: 14px; }
+            .cursor-dot { display: none; }
+            body { cursor: auto; }
+            a, button { cursor: pointer; }
+            .lang-btn { font-size: 11px; padding: 4px 10px; }
+            .code-block pre { font-size: 12px; }
+            .games-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -121,7 +398,7 @@
             </div>
         </div>
         <div class="hero-image">
-            <img src="https://via.placeholder.com/400x300/1e1e2e/a855f7?text=Pixels+Client" alt="Pixels Client">
+            <img src="https://via.placeholder.com/400x300/2a2a3a/a855f7?text=Pixels+Client" alt="Pixels Client">
         </div>
     </section>
 
@@ -148,7 +425,7 @@
                 <p><span class="support-status">✅ Supported</span></p>
             </div>
         </div>
-        <p style="text-align:center; color:#888; margin-top:20px;" data-i18n="more_games">More games coming soon...</p>
+        <p style="text-align:center; color:rgba(255,255,255,0.4); margin-top:20px;" data-i18n="more_games">More games coming soon...</p>
     </section>
 
     <section class="get-script fade-init" id="get-script">
@@ -168,7 +445,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
             <a href="#" class="social-btn discord" id="discordLink"><i class="fab fa-discord"></i> Discord</a>
             <a href="#" class="social-btn telegram" id="telegramLink"><i class="fab fa-telegram-plane"></i> Telegram</a>
         </div>
-        <p style="font-size:14px; color:#666; margin-top:10px;" data-i18n="get_note">We respond within 5 minutes.</p>
+        <p style="font-size:14px; color:rgba(255,255,255,0.4); margin-top:10px;" data-i18n="get_note">We respond within 5 minutes.</p>
     </section>
 
     <footer><p>© 2026 Pixels Client. Not affiliated with Roblox. <br> Made with ❤️</p></footer>
@@ -272,7 +549,6 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
         btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
     });
 
-    // ---------- КОПІЮВАННЯ ----------
     document.getElementById('copyBtn').addEventListener('click', () => {
         const code = document.getElementById('scriptCode').textContent;
         navigator.clipboard.writeText(code).then(() => {
@@ -283,7 +559,6 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
         }).catch(() => alert('Failed to copy. Select the text manually.'));
     });
 
-    // ---------- СОЦІАЛЬНІ ПОСИЛАННЯ ----------
     document.getElementById('discordLink').addEventListener('click', (e) => {
         e.preventDefault();
         window.open('https://discord.gg/your-invite', '_blank');
@@ -293,7 +568,6 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
         window.open('https://t.me/your_username', '_blank');
     });
 
-    // ---------- ПЛАВНА ПРОКРУТКА ----------
     document.querySelector('a[href="#get-script"]')?.addEventListener('click', (e) => {
         e.preventDefault();
         document.getElementById('get-script').scrollIntoView({ behavior: 'smooth' });
@@ -322,42 +596,62 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
         el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
     });
 
-    // ---------- ЧАСТИНКИ ----------
+    // ---------- ЧАСТИНКИ (круглі, лінії до мишки) ----------
     const canvas = document.getElementById('particles-canvas');
     const ctx = canvas.getContext('2d');
     let w, h;
     function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
     resize();
     window.addEventListener('resize', resize);
+
     const particles = [];
-    for (let i = 0; i < 120; i++) {
+    const NUM_PARTICLES = 70;
+    for (let i = 0; i < NUM_PARTICLES; i++) {
         particles.push({
             x: Math.random() * w,
             y: Math.random() * h,
-            r: Math.random() * 2 + 0.5,
-            dx: (Math.random() - 0.5) * 0.3,
-            dy: (Math.random() - 0.5) * 0.3,
-            color: `rgba(168,85,247,${Math.random() * 0.5 + 0.2})`
+            r: Math.random() * 4 + 2,
+            dx: (Math.random() - 0.5) * 0.2,
+            dy: (Math.random() - 0.5) * 0.2,
+            hue: 240 + Math.random() * 60 // 240-300 (синій-фіолетовий)
         });
     }
+
     function drawParticles() {
         ctx.clearRect(0, 0, w, h);
+
         for (let p of particles) {
-            p.x += p.dx; p.y += p.dy;
+            const dx = mouseX - p.x;
+            const dy = mouseY - p.y;
+            const dist = Math.sqrt(dx*dx + dy*dy);
+            if (dist < 200) {
+                const alpha = 1 - (dist / 200);
+                ctx.beginPath();
+                ctx.moveTo(p.x, p.y);
+                ctx.lineTo(mouseX, mouseY);
+                ctx.strokeStyle = `hsla(${p.hue}, 80%, 70%, ${alpha * 0.2})`;
+                ctx.lineWidth = 1.2;
+                ctx.stroke();
+            }
+        }
+
+        for (let p of particles) {
+            p.x += p.dx;
+            p.y += p.dy;
             if (p.x < 0 || p.x > w) p.dx *= -1;
             if (p.y < 0 || p.y > h) p.dy *= -1;
+
             ctx.beginPath();
             ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-            ctx.fillStyle = p.color;
-            ctx.shadowColor = '#a855f7';
-            ctx.shadowBlur = 10;
+            ctx.fillStyle = `hsla(${p.hue}, 80%, 65%, 0.6)`;
+            ctx.shadowColor = 'rgba(168,85,247,0.2)';
+            ctx.shadowBlur = 15;
             ctx.fill();
         }
         requestAnimationFrame(drawParticles);
     }
     drawParticles();
 
-    // ---------- ОБСЕРВЕР ДЛЯ АНІМАЦІЇ ПРИ СКРОЛІ ----------
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -366,15 +660,12 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
                 entry.target.classList.remove('visible');
             }
         });
-    }, {
-        threshold: 0.15
-    });
+    }, { threshold: 0.15 });
 
     document.querySelectorAll('.fade-init').forEach(el => {
         observer.observe(el);
     });
 
-    // Встановлюємо мову за замовчуванням
     setLanguage('en');
 </script>
 </body>
