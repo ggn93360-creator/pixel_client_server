@@ -217,6 +217,218 @@
         .feature-card h3 { font-size: 20px; margin-bottom: 10px; color: #e0e0ff; }
         .feature-card p { font-size: 14px; color: rgba(255,255,255,0.5); line-height:1.5; }
 
+        /* ---------- GUI ДЕМОНСТРАЦІЯ ---------- */
+        .gui-demo {
+            padding: 60px 0;
+        }
+        .gui-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .gui-dashboard {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .gui-sidebar {
+            flex: 0 0 180px;
+            padding: 16px;
+            background: rgba(255,255,255,0.04);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+        }
+        .gui-sidebar .menu-item {
+            padding: 10px 14px;
+            border-radius: 10px;
+            margin-bottom: 4px;
+            font-weight: 600;
+            font-size: 14px;
+            color: rgba(255,255,255,0.5);
+            transition: .3s;
+            cursor: pointer;
+        }
+        .gui-sidebar .menu-item:hover {
+            background: rgba(168,85,247,0.15);
+            color: #fff;
+        }
+        .gui-sidebar .menu-item.active {
+            background: rgba(168,85,247,0.25);
+            color: #fff;
+            border-left: 3px solid #a855f7;
+        }
+        .gui-content {
+            flex: 1;
+            padding: 20px 24px;
+            background: rgba(255,255,255,0.04);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+            min-height: 400px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        .gui-content::-webkit-scrollbar {
+            width: 4px;
+        }
+        .gui-content::-webkit-scrollbar-thumb {
+            background: #a855f7;
+            border-radius: 10px;
+        }
+        .gui-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .gui-panel { display: none; }
+        .gui-panel.active { display: block; }
+        .gui-panel h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #a855f7, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gui-setting {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .gui-setting:last-child { border-bottom: none; }
+        .gui-setting .label {
+            font-size: 15px;
+            color: rgba(255,255,255,0.7);
+        }
+        .gui-setting .value {
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+            min-width: 40px;
+            text-align: center;
+        }
+        .gui-setting .controls {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .gui-setting .btn-small {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #ccc;
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: .3s;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            user-select: none;
+        }
+        .gui-setting .btn-small:hover {
+            background: rgba(168,85,247,0.3);
+            color: #fff;
+            border-color: #a855f7;
+        }
+        .gui-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            user-select: none;
+        }
+        .gui-toggle .switch {
+            width: 40px;
+            height: 22px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 30px;
+            position: relative;
+            transition: .3s;
+            cursor: pointer;
+        }
+        .gui-toggle .switch.active {
+            background: rgba(168,85,247,0.5);
+        }
+        .gui-toggle .switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 18px;
+            height: 18px;
+            background: #fff;
+            border-radius: 50%;
+            transition: .3s;
+        }
+        .gui-toggle .switch.active::after {
+            left: 20px;
+            background: #a855f7;
+        }
+        .gui-toggle .label {
+            font-size: 14px;
+            color: rgba(255,255,255,0.6);
+        }
+        .gui-x-toggle {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+        .gui-x-toggle .x-btn {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.4);
+            transition: .3s;
+            cursor: pointer;
+            user-select: none;
+        }
+        .gui-x-toggle .x-btn.active {
+            background: rgba(168,85,247,0.2);
+            border-color: #a855f7;
+            color: #fff;
+        }
+        .gui-x-toggle .x-btn:hover {
+            background: rgba(168,85,247,0.1);
+        }
+        .gui-style-selector {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+        .gui-style-selector .style-btn {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.4);
+            transition: .3s;
+            cursor: pointer;
+            user-select: none;
+        }
+        .gui-style-selector .style-btn.active {
+            background: rgba(168,85,247,0.2);
+            border-color: #a855f7;
+            color: #fff;
+        }
+        .gui-style-selector .style-btn:hover {
+            background: rgba(168,85,247,0.1);
+        }
+        @media (max-width: 700px) {
+            .gui-dashboard { flex-direction: column; }
+            .gui-sidebar { flex: 1; display: flex; flex-wrap: wrap; gap: 4px; padding: 12px; }
+            .gui-sidebar .menu-item { flex: 1; min-width: 80px; text-align: center; }
+            .gui-content { padding: 16px; max-height: 400px; }
+        }
+
         .supported-games { padding: 60px 0; }
         .games-grid {
             display: grid;
@@ -411,6 +623,223 @@
         </div>
     </section>
 
+    <!-- ============ GUI ДЕМОНСТРАЦІЯ ============ -->
+    <section class="gui-demo fade-init" id="gui-demo">
+        <h2 class="section-title" data-i18n="gui_title">🎮 Спробуй GUI</h2>
+        <p style="text-align:center; color:rgba(255,255,255,0.5); max-width:600px; margin:0 auto 40px;" data-i18n="gui_desc">Поклацай по налаштуваннях — це демонстрація інтерфейсу Pixel Client</p>
+        <div class="gui-container glass" style="padding:20px;">
+            <div class="gui-dashboard">
+                <!-- Сайдбар -->
+                <div class="gui-sidebar">
+                    <div class="menu-item active" data-tab="combat">Combat</div>
+                    <div class="menu-item" data-tab="movement">Movement</div>
+                    <div class="menu-item" data-tab="visuals">Visuals</div>
+                    <div class="menu-item" data-tab="extra">Extra</div>
+                    <div class="menu-item" data-tab="music">Music</div>
+                    <div class="menu-item" data-tab="killsound">KillSound</div>
+                </div>
+
+                <!-- Контент -->
+                <div class="gui-content" id="guiContent">
+                    <!-- Combat -->
+                    <div class="gui-panel active" id="panel-combat">
+                        <h2>Combat</h2>
+                        <div class="gui-setting">
+                            <span class="label">Auto Parry</span>
+                            <div class="gui-toggle" onclick="toggleSwitch(this)">
+                                <div class="switch active"></div>
+                                <span class="label">ON</span>
+                            </div>
+                        </div>
+                        <div class="gui-setting">
+                            <span class="label">Kill Aura</span>
+                            <div class="gui-toggle" onclick="toggleSwitch(this)">
+                                <div class="switch"></div>
+                                <span class="label">OFF</span>
+                            </div>
+                        </div>
+                        <div class="gui-setting">
+                            <span class="label">Range</span>
+                            <div class="controls">
+                                <span class="btn-small" onclick="changeValue(this, -1, 'rangeVal')">−</span>
+                                <span class="value" id="rangeVal">12</span>
+                                <span class="btn-small" onclick="changeValue(this, 1, 'rangeVal')">+</span>
+                            </div>
+                        </div>
+                        <div class="gui-setting">
+                            <span class="label">Reaction Delay</span>
+                            <div class="controls">
+                                <span class="btn-small" onclick="changeValue(this, -0.05, 'delayVal')">−</span>
+                                <span class="value" id="delayVal">0.00</span>
+                                <span class="btn-small" onclick="changeValue(this, 0.05, 'delayVal')">+</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Movement -->
+                    <div class="gui-panel" id="panel-movement">
+                        <h2>Movement</h2>
+                        <div class="gui-setting">
+                            <span class="label">Walk Speed</span>
+                            <div class="controls">
+                                <span class="btn-small" onclick="changeValue(this, -1, 'walkSpeed')">−</span>
+                                <span class="value" id="walkSpeed">24</span>
+                                <span class="btn-small" onclick="changeValue(this, 1, 'walkSpeed')">+</span>
+                            </div>
+                        </div>
+                        <div class="gui-setting">
+                            <span class="label">Run Accelerator</span>
+                            <div class="gui-toggle" onclick="toggleSwitch(this)">
+                                <div class="switch active"></div>
+                                <span class="label">ON</span>
+                            </div>
+                        </div>
+                        <div class="gui-setting">
+                            <span class="label">Sprint Speed</span>
+                            <div class="controls">
+                                <span class="btn-small" onclick="changeValue(this, -1, 'sprintSpeed')">−</span>
+                                <span class="value" id="sprintSpeed">35</span>
+                                <span class="btn-small" onclick="changeValue(this, 1, 'sprintSpeed')">+</span>
+                            </div>
+                        </div>
+                        <div class="gui-setting">
+                            <span class="label">Fly (No Tilt)</span>
+                            <div class="gui-toggle" onclick="toggleSwitch(this)">
+                                <div class="switch"></div>
+                                <span class="label">OFF</span>
+                            </div>
+                        </div>
+                        <div class="gui-setting">
+                            <span class="label">Fly Speed</span>
+                            <div class="controls">
+                                <span class="btn-small" onclick="changeValue(this, -5, 'flySpeed')">−</span>
+                                <span class="value" id="flySpeed">50</span>
+                                <span class="btn-small" onclick="changeValue(this, 5, 'flySpeed')">+</span>
+                            </div>
+                        </div>
+                        <div class="gui-setting">
+                            <span class="label">X1</span>
+                            <div class="gui-x-toggle" id="xToggle">
+                                <span class="x-btn active" onclick="selectX(this)">OFF</span>
+                                <span class="x-btn" onclick="selectX(this)">X1</span>
+                                <span class="x-btn" onclick="selectX(this)">X2</span>
+                                <span class="x-btn" onclick="selectX(this)">X3</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Visuals -->
+                    <div class="gui-panel" id="panel-visuals">
+                        <h2>Visuals</h2>
+                        <div class="gui-setting">
+                            <span class="label">Target ESP</span>
+                            <div class="gui-toggle" onclick="toggleSwitch(this)">
+                                <div class="switch active"></div>
+                                <span class="label">ON</span>
+                            </div>
+                        </div>
+                        <div class="gui-setting">
+                            <span class="label">ESP Style</span>
+                            <div class="gui-style-selector" id="espStyle">
+                                <span class="style-btn active" onclick="selectStyle(this)">Orbs</span>
+                                <span class="style-btn" onclick="selectStyle(this)">Ring</span>
+                                <span class="style-btn" onclick="selectStyle(this)">Box</span>
+                            </div>
+                        </div>
+                        <div class="gui-setting">
+                            <span class="label">Wings</span>
+                            <div class="gui-toggle" onclick="toggleSwitch(this)">
+                                <div class="switch"></div>
+                                <span class="label">OFF</span>
+                            </div>
+                        </div>
+                        <div class="gui-setting">
+                            <span class="label">Halo</span>
+                            <div class="gui-toggle" onclick="toggleSwitch(this)">
+                                <div class="switch"></div>
+                                <span class="label">OFF</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Extra -->
+                    <div class="gui-panel" id="panel-extra">
+                        <h2>Extra</h2>
+                        <div class="gui-setting">
+                            <span class="label">Fullbright</span>
+                            <div class="gui-toggle" onclick="toggleSwitch(this)">
+                                <div class="switch"></div>
+                                <span class="label">OFF</span>
+                            </div>
+                        </div>
+                        <div class="gui-setting">
+                            <span class="label">Watermark</span>
+                            <div class="gui-toggle" onclick="toggleSwitch(this)">
+                                <div class="switch active"></div>
+                                <span class="label">ON</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Music -->
+                    <div class="gui-panel" id="panel-music">
+                        <h2>Music</h2>
+                        <div class="gui-setting">
+                            <span class="label">Music Player</span>
+                            <div class="gui-toggle" onclick="toggleSwitch(this)">
+                                <div class="switch active"></div>
+                                <span class="label">ON</span>
+                            </div>
+                        </div>
+                        <div class="gui-setting">
+                            <span class="label">Volume</span>
+                            <div class="controls">
+                                <span class="btn-small" onclick="changeValue(this, -10, 'musicVol')">−</span>
+                                <span class="value" id="musicVol">50</span>
+                                <span class="btn-small" onclick="changeValue(this, 10, 'musicVol')">+</span>
+                            </div>
+                        </div>
+                        <div class="gui-setting">
+                            <span class="label">Loop</span>
+                            <div class="gui-toggle" onclick="toggleSwitch(this)">
+                                <div class="switch active"></div>
+                                <span class="label">ON</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- KillSound -->
+                    <div class="gui-panel" id="panel-killsound">
+                        <h2>KillSound</h2>
+                        <div class="gui-setting">
+                            <span class="label">Kill Sound</span>
+                            <div class="gui-toggle" onclick="toggleSwitch(this)">
+                                <div class="switch active"></div>
+                                <span class="label">ON</span>
+                            </div>
+                        </div>
+                        <div class="gui-setting">
+                            <span class="label">Sound</span>
+                            <div class="gui-style-selector" id="ksSound">
+                                <span class="style-btn active" onclick="selectStyle(this)">Neverlose</span>
+                                <span class="style-btn" onclick="selectStyle(this)">Rust</span>
+                                <span class="style-btn" onclick="selectStyle(this)">TF2</span>
+                            </div>
+                        </div>
+                        <div class="gui-setting">
+                            <span class="label">Volume</span>
+                            <div class="controls">
+                                <span class="btn-small" onclick="changeValue(this, -10, 'ksVol')">−</span>
+                                <span class="value" id="ksVol">80</span>
+                                <span class="btn-small" onclick="changeValue(this, 10, 'ksVol')">+</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="supported-games fade-init" id="supported">
         <h2 class="section-title" data-i18n="supported_title">🎮 Supported games</h2>
         <div class="games-grid">
@@ -468,6 +897,8 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
             feat_detect_desc: 'Detects other cheaters and soft‑users, mark them for you.',
             feat_antifling_title: 'Anti‑Fling',
             feat_antifling_desc: 'Prevents you from being flung or launched by other players.',
+            gui_title: '🎮 Try the GUI',
+            gui_desc: 'Click around the settings — this is a demo of the Pixel Client interface.',
             supported_title: '🎮 Supported games',
             more_games: 'More games coming soon...',
             get_title: '📥 Get the script',
@@ -494,6 +925,8 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
             feat_detect_desc: 'Виявляє інших чітерів та користувачів софтів, позначає їх для тебе.',
             feat_antifling_title: 'Анти-флінг',
             feat_antifling_desc: 'Запобігає викиданню або відкиданню тебе іншими гравцями.',
+            gui_title: '🎮 Спробуй GUI',
+            gui_desc: 'Поклацай по налаштуваннях — це демонстрація інтерфейсу Pixel Client',
             supported_title: '🎮 Підтримувані ігри',
             more_games: 'Більше ігор незабаром...',
             get_title: '📥 Отримати скрипт',
@@ -520,6 +953,8 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
             feat_detect_desc: 'Обнаруживает других читеров и пользователей софтов, отмечает их для тебя.',
             feat_antifling_title: 'Анти-флинг',
             feat_antifling_desc: 'Предотвращает выброс или отбрасывание тебя другими игроками.',
+            gui_title: '🎮 Попробуй GUI',
+            gui_desc: 'Покликай по настройкам — это демонстрация интерфейса Pixel Client',
             supported_title: '🎮 Поддерживаемые игры',
             more_games: 'Больше игр скоро...',
             get_title: '📥 Получить скрипт',
@@ -557,7 +992,6 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
         }).catch(() => alert('Failed to copy. Select the text manually.'));
     });
 
-    // ---------- ОНОВЛЕНА ССЫЛКА НА DISCORD ----------
     document.getElementById('discordLink').addEventListener('click', (e) => {
         e.preventDefault();
         window.open('https://discord.gg/5XjGGVbRSd', '_blank');
@@ -590,7 +1024,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
         requestAnimationFrame(animateCursor);
     }
     animateCursor();
-    document.querySelectorAll('a, button, .btn, .feature-card, .game-card, .step').forEach(el => {
+    document.querySelectorAll('a, button, .btn, .feature-card, .game-card, .step, .menu-item, .gui-toggle, .x-btn, .style-btn, .btn-small').forEach(el => {
         el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
         el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
     });
@@ -651,6 +1085,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
     }
     drawParticles();
 
+    // ---------- АНІМАЦІЯ ПОЯВИ ----------
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -664,6 +1099,66 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
     document.querySelectorAll('.fade-init').forEach(el => {
         observer.observe(el);
     });
+
+    // ---------- ЛОГІКА GUI ----------
+    // Вкладки
+    const menuItems = document.querySelectorAll('.menu-item');
+    const panels = {
+        combat: document.getElementById('panel-combat'),
+        movement: document.getElementById('panel-movement'),
+        visuals: document.getElementById('panel-visuals'),
+        extra: document.getElementById('panel-extra'),
+        music: document.getElementById('panel-music'),
+        killsound: document.getElementById('panel-killsound')
+    };
+
+    menuItems.forEach(item => {
+        item.addEventListener('click', function() {
+            menuItems.forEach(i => i.classList.remove('active'));
+            this.classList.add('active');
+            const tab = this.dataset.tab;
+            Object.keys(panels).forEach(key => {
+                panels[key].classList.toggle('active', key === tab);
+            });
+        });
+    });
+
+    // Перемикачі
+    function toggleSwitch(el) {
+        const sw = el.querySelector('.switch');
+        const label = el.querySelector('.label');
+        sw.classList.toggle('active');
+        label.textContent = sw.classList.contains('active') ? 'ON' : 'OFF';
+    }
+
+    // Кнопки +/–
+    function changeValue(btn, delta, id) {
+        const span = document.getElementById(id);
+        let val = parseFloat(span.textContent) || 0;
+        val = Math.round((val + delta) * 100) / 100;
+        if (id === 'rangeVal') val = Math.max(0, Math.min(30, val));
+        else if (id === 'delayVal') val = Math.max(0, Math.min(5, val));
+        else if (id === 'walkSpeed') val = Math.max(1, Math.min(100, val));
+        else if (id === 'sprintSpeed') val = Math.max(1, Math.min(100, val));
+        else if (id === 'flySpeed') val = Math.max(0, Math.min(200, val));
+        else if (id === 'musicVol') val = Math.max(0, Math.min(100, Math.round(val)));
+        else if (id === 'ksVol') val = Math.max(0, Math.min(100, Math.round(val)));
+        span.textContent = val;
+    }
+
+    // Вибір X1/X2/X3
+    function selectX(el) {
+        const parent = el.parentElement;
+        parent.querySelectorAll('.x-btn').forEach(b => b.classList.remove('active'));
+        el.classList.add('active');
+    }
+
+    // Вибір стилю (ESP, KillSound)
+    function selectStyle(el) {
+        const parent = el.parentElement;
+        parent.querySelectorAll('.style-btn').forEach(b => b.classList.remove('active'));
+        el.classList.add('active');
+    }
 
     setLanguage('en');
 </script>
