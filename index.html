@@ -4,304 +4,401 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Pixels Client — Script</title>
+
+    <!-- Підключення зовнішнього CSS -->
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- Шрифти та іконки -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
     <style>
-        /* ---------- RESET ---------- */
-        * { margin:0; padding:0; box-sizing:border-box; cursor:none; }
-        body { background:#0b0b12; color:#e0e0ff; font-family:'Inter',sans-serif; overflow-x:hidden; min-height:100vh; }
-        /* ---------- КУРСОР ---------- */
-        .cursor-dot { position:fixed; width:14px; height:14px; background:radial-gradient(circle,#a855f7,#7c3aed); border-radius:50%; pointer-events:none; transform:translate(-50%,-50%); z-index:9999; transition:width .15s,height .15s,background .2s; box-shadow:0 0 25px rgba(168,85,247,0.6); mix-blend-mode:screen; }
-        .cursor-dot.hover { width:28px; height:28px; background:radial-gradient(circle,#f472b6,#a855f7); }
-        /* ---------- ЧАСТИНКИ ---------- */
-        #particles-canvas { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none; }
-        /* ---------- КОНТЕЙНЕР ---------- */
-        .container { max-width:1100px; margin:0 auto; padding:30px 20px; position:relative; z-index:1; }
-        /* ---------- ШАПКА ---------- */
-        header { display:flex; justify-content:space-between; align-items:center; padding:20px 0; border-bottom:1px solid rgba(168,85,247,0.2); flex-wrap:wrap; gap:15px; }
-        .logo { font-family:'Orbitron',monospace; font-weight:900; font-size:28px; background:linear-gradient(135deg,#a855f7,#ec4899); -webkit-background-clip:text; -webkit-text-fill-color:transparent; text-shadow:0 0 40px rgba(168,85,247,0.3); }
-        .logo span { font-weight:400; font-size:16px; background:none; -webkit-text-fill-color:#8888bb; margin-left:8px; }
-        .lang-switch { display:flex; gap:8px; }
-        .lang-btn { background:transparent; border:1px solid #444466; color:#b0b0dd; padding:6px 14px; border-radius:30px; font-weight:600; font-size:13px; cursor:none; transition:.3s; font-family:'Inter',sans-serif; }
-        .lang-btn.active { border-color:#a855f7; background:rgba(168,85,247,0.2); color:#fff; box-shadow:0 0 15px rgba(168,85,247,0.3); }
-        .lang-btn:hover { border-color:#a855f7; color:#fff; }
-        /* ---------- ГЕРОЙ ---------- */
-        .hero { display:flex; align-items:center; justify-content:space-between; padding:60px 0 40px; flex-wrap:wrap; gap:30px; }
-        .hero-text { flex:1 1 50%; }
-        .hero-text h1 { font-family:'Orbitron',monospace; font-weight:900; font-size:52px; line-height:1.1; background:linear-gradient(135deg,#c084fc,#f472b6,#a855f7); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:20px; }
-        .hero-text p { font-size:18px; color:#b0b0dd; max-width:500px; line-height:1.6; margin-bottom:30px; }
-        .btn-group { display:flex; gap:20px; flex-wrap:wrap; }
-        .btn { display:inline-block; padding:14px 38px; border-radius:50px; font-weight:600; text-decoration:none; transition:all .3s ease; border:none; font-family:'Inter',sans-serif; font-size:16px; cursor:none; background:#1e1e2e; color:#c0c0ee; box-shadow:0 0 15px rgba(168,85,247,0.1); }
-        .btn-primary { background:linear-gradient(135deg,#a855f7,#7c3aed); color:#fff; box-shadow:0 0 30px rgba(168,85,247,0.3); }
-        .btn-primary:hover { transform:scale(1.05); box-shadow:0 0 50px rgba(168,85,247,0.6); }
-        .btn-secondary { border:1px solid #a855f7; background:transparent; }
-        .btn-secondary:hover { background:rgba(168,85,247,0.15); transform:scale(1.05); }
-        .hero-image { flex:1 1 40%; text-align:center; }
-        .hero-image img { max-width:100%; border-radius:20px; box-shadow:0 0 60px rgba(168,85,247,0.2); }
-        /* ---------- ФУНКЦІЇ ---------- */
-        .features { padding:60px 0; }
-        .section-title { font-family:'Orbitron',monospace; font-size:32px; text-align:center; margin-bottom:50px; background:linear-gradient(135deg,#a855f7,#ec4899); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-        .features-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:30px; }
-        .feature-card { background:rgba(30,30,46,0.6); backdrop-filter:blur(8px); border:1px solid rgba(168,85,247,0.2); padding:30px 20px; border-radius:20px; text-align:center; transition:all .4s; }
-        .feature-card:hover { transform:translateY(-10px); border-color:#a855f7; box-shadow:0 10px 40px rgba(168,85,247,0.2); }
-        .feature-card .icon { font-size:48px; margin-bottom:15px; }
-        .feature-card h3 { font-size:20px; margin-bottom:10px; color:#e0e0ff; }
-        .feature-card p { color:#9999bb; font-size:14px; line-height:1.5; }
-        /* ---------- ОТРИМАННЯ ---------- */
-        .get-script { padding:40px 0 60px; text-align:center; }
-        .get-script h2 { font-family:'Orbitron',monospace; font-size:36px; margin-bottom:20px; background:linear-gradient(135deg,#a855f7,#f472b6); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-        .get-script p { color:#9999bb; font-size:18px; max-width:700px; margin:0 auto 20px; line-height:1.6; }
-        .steps { display:flex; justify-content:center; gap:30px; flex-wrap:wrap; margin:30px 0; }
-        .step { background:rgba(30,30,46,0.4); border:1px solid rgba(168,85,247,0.15); border-radius:16px; padding:20px 25px; max-width:250px; color:#b0b0dd; }
-        .step .num { font-family:'Orbitron',monospace; font-size:28px; color:#a855f7; margin-bottom:8px; }
-        .step p { font-size:15px; margin:0; }
-        .code-block { background:#1a1a2a; border:1px solid #a855f7; border-radius:16px; padding:20px; margin:30px auto; max-width:800px; text-align:left; position:relative; }
-        .code-block pre { font-family:'Courier New',monospace; font-size:14px; color:#c0c0ee; white-space:pre-wrap; word-break:break-word; margin:0; max-height:300px; overflow-y:auto; }
-        .copy-btn { position:absolute; top:12px; right:12px; background:#a855f7; border:none; border-radius:30px; padding:6px 16px; color:#fff; font-weight:600; font-size:13px; cursor:none; transition:.3s; font-family:'Inter',sans-serif; }
-        .copy-btn:hover { background:#7c3aed; transform:scale(1.05); }
-        .social-links { display:flex; justify-content:center; gap:30px; margin:30px 0; flex-wrap:wrap; }
-        .social-btn { display:inline-flex; align-items:center; gap:10px; padding:12px 28px; border-radius:50px; background:#1e1e2e; color:#c0c0ee; text-decoration:none; font-weight:600; transition:.3s; border:1px solid rgba(168,85,247,0.2); }
-        .social-btn i { font-size:22px; }
-        .social-btn.discord:hover { background:#5865F2; color:#fff; border-color:#5865F2; }
-        .social-btn.telegram:hover { background:#0088cc; color:#fff; border-color:#0088cc; }
-        footer { border-top:1px solid rgba(168,85,247,0.2); padding:30px 0; text-align:center; color:#666688; font-size:14px; }
-        footer a { color:#a855f7; text-decoration:none; }
-        .fade-in { opacity:0; transform:translateY(30px); animation:fadeInUp .8s ease forwards; }
-        .fade-in:nth-child(2) { animation-delay:.15s; }
-        .fade-in:nth-child(3) { animation-delay:.3s; }
-        .fade-in:nth-child(4) { animation-delay:.45s; }
-        @keyframes fadeInUp { to { opacity:1; transform:translateY(0); } }
-        @media (max-width:700px) {
-            .hero-text h1 { font-size:32px; }
-            .btn { padding:12px 24px; font-size:14px; }
-            .cursor-dot { display:none; }
-            body { cursor:auto; }
-            a,button { cursor:pointer; }
-            .lang-btn { font-size:11px; padding:4px 10px; }
-            .code-block pre { font-size:12px; }
+        /* Стили для формы онлайн-мониторинга */
+        .online-search-form {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+        }
+        .online-input {
+            padding: 12px 18px;
+            border-radius: 8px;
+            border: 1px solid #a855f7;
+            background: #181825;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            min-width: 200px;
+        }
+        .online-input:focus {
+            box-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
         }
     </style>
 </head>
 <body>
-<div class="cursor-dot" id="cursor"></div>
-<canvas id="particles-canvas"></canvas>
-<div class="container">
-    <header>
-        <div class="logo">PIXELS <span>Client</span></div>
-        <div class="lang-switch">
-            <button class="lang-btn active" data-lang="en">EN</button>
-            <button class="lang-btn" data-lang="uk">UA</button>
-            <button class="lang-btn" data-lang="ru">RU</button>
-        </div>
-    </header>
-    <section class="hero">
-        <div class="hero-text fade-in">
-            <h1 data-i18n="hero_title">Play with<br>the advantage</h1>
-            <p data-i18n="hero_desc">Pixels Client — powerful script for Roblox with Auto Block, Auto Aim, Speed Fly, Soft Detector and Anti-Fling.</p>
-            <div class="btn-group">
-                <a href="#get-script" class="btn btn-primary" data-i18n="hero_btn_get">Get script</a>
-                <a href="#features" class="btn btn-secondary" data-i18n="hero_btn_learn">Learn more</a>
+
+    <!-- Кастомний курсор -->
+    <div class="cursor-dot" id="cursor"></div>
+
+    <!-- Фон з частинками -->
+    <canvas id="particles-canvas"></canvas>
+
+    <div class="container">
+
+        <!-- Шапка -->
+        <header>
+            <div class="logo">PIXELS <span>Client</span></div>
+            <div class="lang-switch">
+                <button class="lang-btn active" data-lang="en">EN</button>
+                <button class="lang-btn" data-lang="uk">UA</button>
+                <button class="lang-btn" data-lang="ru">RU</button>
             </div>
-        </div>
-        <div class="hero-image fade-in">
-            <img src="https://via.placeholder.com/400x300/1e1e2e/a855f7?text=Pixels+Client" alt="Pixels Client">
-        </div>
-    </section>
-    <section class="features" id="features">
-        <h2 class="section-title fade-in" data-i18n="features_title">⚡ Key features</h2>
-        <div class="features-grid">
-            <div class="feature-card fade-in"><div class="icon">🛡️</div><h3 data-i18n="feat_block_title">Auto Block</h3><p data-i18n="feat_block_desc">Perfect parry and block any attack with adjustable reaction time.</p></div>
-            <div class="feature-card fade-in"><div class="icon">🎯</div><h3 data-i18n="feat_aim_title">Auto Aim</h3><p data-i18n="feat_aim_desc">Instantly lock onto your target and keep the crosshair on them.</p></div>
-            <div class="feature-card fade-in"><div class="icon">💨</div><h3 data-i18n="feat_speed_title">Speed Fly</h3><p data-i18n="feat_speed_desc">Move faster than anyone else – fly through the map with ease.</p></div>
-            <div class="feature-card fade-in"><div class="icon">🕵️</div><h3 data-i18n="feat_detect_title">Soft Detector</h3><p data-i18n="feat_detect_desc">Detects other cheaters and soft‑users, mark them for you.</p></div>
-            <div class="feature-card fade-in"><div class="icon">🚫</div><h3 data-i18n="feat_antifling_title">Anti‑Fling</h3><p data-i18n="feat_antifling_desc">Prevents you from being flung or launched by other players.</p></div>
-        </div>
-    </section>
-    <section class="get-script" id="get-script">
-        <h2 class="fade-in" data-i18n="get_title">📥 Get the script</h2>
-        <p class="fade-in" data-i18n="get_sub">Copy the script below or contact us via social media.</p>
-        <div class="steps fade-in">
-            <div class="step"><div class="num">1</div><p data-i18n="step1">Copy the script from the box below.</p></div>
-            <div class="step"><div class="num">2</div><p data-i18n="step2">Open your Roblox executor and paste it.</p></div>
-            <div class="step"><div class="num">3</div><p data-i18n="step3">Execute and enjoy the game!</p></div>
-        </div>
-        <div class="code-block fade-in">
-            <button class="copy-btn" id="copyBtn" data-i18n="copy_btn">📋 Copy</button>
-            <pre id="scriptCode">-- Pixels Client Loader
+        </header>
+
+        <!-- Герой -->
+        <section class="hero">
+            <div class="hero-text fade-in">
+                <h1 data-i18n="hero_title">Play with<br>the advantage</h1>
+                <p data-i18n="hero_desc">Pixels Client — powerful script for Roblox with Auto Block, Auto Aim, Speed Fly, Soft Detector and Anti-Fling.</p>
+                <div class="btn-group">
+                    <a href="#get-script" class="btn btn-primary" data-i18n="hero_btn_get">Get script</a>
+                    <a href="#features" class="btn btn-secondary" data-i18n="hero_btn_learn">Learn more</a>
+                </div>
+            </div>
+            <div class="hero-image fade-in">
+                <img src="https://via.placeholder.com/400x300/1e1e2e/a855f7?text=Pixels+Client" alt="Pixels Client">
+            </div>
+        </section>
+
+        <!-- Функції -->
+        <section class="features" id="features">
+            <h2 class="section-title fade-in" data-i18n="features_title">⚡ Key features</h2>
+            <div class="features-grid">
+                <div class="feature-card fade-in">
+                    <div class="icon">🛡️</div>
+                    <h3 data-i18n="feat_block_title">Auto Block</h3>
+                    <p data-i18n="feat_block_desc">Perfect parry and block any attack with adjustable reaction time.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="icon">🎯</div>
+                    <h3 data-i18n="feat_aim_title">Auto Aim</h3>
+                    <p data-i18n="feat_aim_desc">Instantly lock onto your target and keep the crosshair on them.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="icon">💨</div>
+                    <h3 data-i18n="feat_speed_title">Speed Fly</h3>
+                    <p data-i18n="feat_speed_desc">Move faster than anyone else – fly through the map with ease.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="icon">🕵️</div>
+                    <h3 data-i18n="feat_detect_title">Soft Detector</h3>
+                    <p data-i18n="feat_detect_desc">Detects other cheaters and soft‑users, mark them for you.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="icon">🚫</div>
+                    <h3 data-i18n="feat_antifling_title">Anti‑Fling</h3>
+                    <p data-i18n="feat_antifling_desc">Prevents you from being flung or launched by other players.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Моніторинг гравців -->
+        <section class="online-check" id="online-check" style="margin-top: 60px;">
+            <h2 class="section-title fade-in" data-i18n="online_title">🎮 Online Players</h2>
+            <div class="online-search-form fade-in">
+                <input type="text" id="modeInput" class="online-input" placeholder="Mode (e.g. BedWars)" data-i18n-ph="ph_mode">
+                <input type="text" id="userInput" class="online-input" placeholder="Username" data-i18n-ph="ph_user">
+                <button id="searchBtn" class="btn btn-primary" data-i18n="search_btn">Search</button>
+            </div>
+            <div id="playerList" class="features-grid fade-in"></div>
+        </section>
+
+        <!-- Отримати скрипт -->
+        <section class="get-script" id="get-script">
+            <h2 class="fade-in" data-i18n="get_title">📥 Get the script</h2>
+            <p class="fade-in" data-i18n="get_sub">Copy the script below or contact us via social media.</p>
+            <div class="steps fade-in">
+                <div class="step">
+                    <div class="num">1</div>
+                    <p data-i18n="step1">Copy the script from the box below.</p>
+                </div>
+                <div class="step">
+                    <div class="num">2</div>
+                    <p data-i18n="step2">Open your Roblox executor and paste it.</p>
+                </div>
+                <div class="step">
+                    <div class="num">3</div>
+                    <p data-i18n="step3">Execute and enjoy the game!</p>
+                </div>
+            </div>
+
+            <div class="code-block fade-in">
+                <button class="copy-btn" id="copyBtn" data-i18n="copy_btn">📋 Copy</button>
+                <pre id="scriptCode">-- Pixels Client Loader
 loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixel_client/main/v1"))()</pre>
-        </div>
-        <div class="social-links fade-in">
-            <a href="#" class="social-btn discord" id="discordLink"><i class="fab fa-discord"></i> Discord</a>
-            <a href="#" class="social-btn telegram" id="telegramLink"><i class="fab fa-telegram-plane"></i> Telegram</a>
-        </div>
-        <p style="font-size:14px; color:#666; margin-top:10px;" data-i18n="get_note">We respond within 5 minutes.</p>
-    </section>
-    <footer><p>© 2026 Pixels Client. Not affiliated with Roblox. <br> Made with ❤️</p></footer>
-</div>
-<script>
-    const i18n = {
-        en: {
-            hero_title: 'Play with<br>the advantage',
-            hero_desc: 'Pixels Client — powerful script for Roblox with Auto Block, Auto Aim, Speed Fly, Soft Detector and Anti-Fling.',
-            hero_btn_get: 'Get script',
-            hero_btn_learn: 'Learn more',
-            features_title: '⚡ Key features',
-            feat_block_title: 'Auto Block',
-            feat_block_desc: 'Perfect parry and block any attack with adjustable reaction time.',
-            feat_aim_title: 'Auto Aim',
-            feat_aim_desc: 'Instantly lock onto your target and keep the crosshair on them.',
-            feat_speed_title: 'Speed Fly',
-            feat_speed_desc: 'Move faster than anyone else – fly through the map with ease.',
-            feat_detect_title: 'Soft Detector',
-            feat_detect_desc: 'Detects other cheaters and soft‑users, mark them for you.',
-            feat_antifling_title: 'Anti‑Fling',
-            feat_antifling_desc: 'Prevents you from being flung or launched by other players.',
-            get_title: '📥 Get the script',
-            get_sub: 'Copy the script below or contact us via social media.',
-            step1: 'Copy the script from the box below.',
-            step2: 'Open your Roblox executor and paste it.',
-            step3: 'Execute and enjoy the game!',
-            copy_btn: '📋 Copy',
-            get_note: 'We respond within 5 minutes.'
-        },
-        uk: {
-            hero_title: 'Грай з<br>перевагою',
-            hero_desc: 'Pixels Client — потужний скрипт для Roblox з автоматичним блоком, авто-аймом, швидкісним польотом, детектом софтів та анти-флінгом.',
-            hero_btn_get: 'Отримати скрипт',
-            hero_btn_learn: 'Докладніше',
-            features_title: '⚡ Ключові можливості',
-            feat_block_title: 'Авто-блок',
-            feat_block_desc: 'Ідеальне парирування та блок будь-якої атаки з регульованим часом реакції.',
-            feat_aim_title: 'Авто-айм',
-            feat_aim_desc: 'Миттєве наведення на ціль і утримання прицілу на ній.',
-            feat_speed_title: 'Швидкісний політ',
-            feat_speed_desc: 'Рухайся швидше за всіх — літай по карті без зусиль.',
-            feat_detect_title: 'Детект софтів',
-            feat_detect_desc: 'Виявляє інших чітерів та користувачів софтів, позначає їх для тебе.',
-            feat_antifling_title: 'Анти-флінг',
-            feat_antifling_desc: 'Запобігає викиданню або відкиданню тебе іншими гравцями.',
-            get_title: '📥 Отримати скрипт',
-            get_sub: 'Скопіюйте скрипт нижче або зв\'яжіться з нами через соцмережі.',
-            step1: 'Скопіюйте скрипт з поля нижче.',
-            step2: 'Відкрийте свій екзек' + 'утор Roblox і вставте його.',
-            step3: 'Запустіть і насолоджуйтесь грою!',
-            copy_btn: '📋 Копіювати',
-            get_note: 'Відповідаємо протягом 5 хвилин.'
-        },
-        ru: {
-            hero_title: 'Играй с<br>преимуществом',
-            hero_desc: 'Pixels Client — мощный скрипт для Roblox с авто-блоком, авто-аймом, скоростным полётом, детектом софтов и анти-флингом.',
-            hero_btn_get: 'Получить скрипт',
-            hero_btn_learn: 'Подробнее',
-            features_title: '⚡ Ключевые возможности',
-            feat_block_title: 'Авто-блок',
-            feat_block_desc: 'Идеальный парирование и блок любой атаки с регулируемым временем реакции.',
-            feat_aim_title: 'Авто-айм',
-            feat_aim_desc: 'Мгновенное наведение на цель и удержание прицела на ней.',
-            feat_speed_title: 'Скоростной полёт',
-            feat_speed_desc: 'Двигайся быстрее всех — летай по карте без усилий.',
-            feat_detect_title: 'Детект софтов',
-            feat_detect_desc: 'Обнаруживает других читеров и пользователей софтов, отмечает их для тебя.',
-            feat_antifling_title: 'Анти-флинг',
-            feat_antifling_desc: 'Предотвращает выброс или отбрасывание тебя другими игроками.',
-            get_title: '📥 Получить скрипт',
-            get_sub: 'Скопируйте скрипт ниже или свяжитесь с нами через соцсети.',
-            step1: 'Скопируйте скрипт из поля ниже.',
-            step2: 'Откройте свой экзек' + 'утор Roblox и вставьте его.',
-            step3: 'Запустите и наслаждайтесь игрой!',
-            copy_btn: '📋 Копировать',
-            get_note: 'Отвечаем в течение 5 минут.'
+            </div>
+
+            <div class="social-links fade-in">
+                <a href="#" class="social-btn discord" id="discordLink"><i class="fab fa-discord"></i> Discord</a>
+                <a href="#" class="social-btn telegram" id="telegramLink"><i class="fab fa-telegram-plane"></i> Telegram</a>
+            </div>
+            <p style="font-size:14px; color:#666; margin-top:10px;" data-i18n="get_note">We respond within 5 minutes.</p>
+        </section>
+
+        <!-- Футер -->
+        <footer>
+            <p>© 2026 Pixels Client. Not affiliated with Roblox. <br> Made with ❤️</p>
+        </footer>
+    </div>
+
+    <script>
+        // ----- i18n data -----
+        const i18n = {
+            en: {
+                hero_title: 'Play with<br>the advantage',
+                hero_desc: 'Pixels Client — powerful script for Roblox with Auto Block, Auto Aim, Speed Fly, Soft Detector and Anti-Fling.',
+                hero_btn_get: 'Get script',
+                hero_btn_learn: 'Learn more',
+                features_title: '⚡ Key features',
+                feat_block_title: 'Auto Block',
+                feat_block_desc: 'Perfect parry and block any attack with adjustable reaction time.',
+                feat_aim_title: 'Auto Aim',
+                feat_aim_desc: 'Instantly lock onto your target and keep the crosshair on them.',
+                feat_speed_title: 'Speed Fly',
+                feat_speed_desc: 'Move faster than anyone else – fly through the map with ease.',
+                feat_detect_title: 'Soft Detector',
+                feat_detect_desc: 'Detects other cheaters and soft‑users, mark them for you.',
+                feat_antifling_title: 'Anti‑Fling',
+                feat_antifling_desc: 'Prevents you from being flung or launched by other players.',
+                online_title: '🎮 Online Players Check',
+                search_btn: 'Search',
+                ph_mode: 'Mode (e.g. BedWars)',
+                ph_user: 'Username',
+                loading: 'Loading data...',
+                not_found: 'No players found.',
+                error: 'Failed to connect to Python server.',
+                get_title: '📥 Get the script',
+                get_sub: 'Copy the script below or contact us via social media.',
+                step1: 'Copy the script from the box below.',
+                step2: 'Open your Roblox executor and paste it.',
+                step3: 'Execute and enjoy the game!',
+                copy_btn: '📋 Copy',
+                get_note: 'We respond within 5 minutes.'
+            },
+            uk: {
+                hero_title: 'Грай з<br>перевагою',
+                hero_desc: 'Pixels Client — потужний скрипт для Roblox з автоматичним блоком, авто-аймом, швидкісним польотом, детектом софтів та анти-флінгом.',
+                hero_btn_get: 'Отримати скрипт',
+                hero_btn_learn: 'Докладніше',
+                features_title: '⚡ Ключові можливості',
+                feat_block_title: 'Авто-блок',
+                feat_block_desc: 'Ідеальне парирування та блок будь-якої атаки з регульованим часом реакції.',
+                feat_aim_title: 'Авто-айм',
+                feat_aim_desc: 'Миттєве наведення на ціль і утримання прицілу на ній.',
+                feat_speed_title: 'Швидкісний політ',
+                feat_speed_desc: 'Рухайся швидше за всіх — літай по карті без зусиль.',
+                feat_detect_title: 'Детект софтів',
+                feat_detect_desc: 'Виявляє інших чітерів та користувачів софтів, позначає їх для тебе.',
+                feat_antifling_title: 'Анти-флінг',
+                feat_antifling_desc: 'Запобігає викиданню або відкиданню тебе іншими гравцями.',
+                online_title: '🎮 Перевірка гравців онлайн',
+                search_btn: 'Шукати',
+                ph_mode: 'Режим (напр. BedWars)',
+                ph_user: 'Нікнейм',
+                loading: 'Завантаження даних...',
+                not_found: 'Гравців не знайдено.',
+                error: 'Помилка підключення до Python-сервера.',
+                get_title: '📥 Отримати скрипт',
+                get_sub: 'Скопіюйте скрипт нижче або зв\'яжіться з нами через соцмережі.',
+                step1: 'Скопіюйте скрипт з поля нижче.',
+                step2: 'Відкрийте свій екзекутор Roblox і вставте його.',
+                step3: 'Запустіть і насолоджуйтесь грою!',
+                copy_btn: '📋 Копіювати',
+                get_note: 'Відповідаємо протягом 5 хвилин.'
+            },
+            ru: {
+                hero_title: 'Играй с<br>преимуществом',
+                hero_desc: 'Pixels Client — мощный скрипт для Roblox с авто-блоком, авто-аймом, скоростным полётом, детектом софтов и анти-флингом.',
+                hero_btn_get: 'Получить скрипт',
+                hero_btn_learn: 'Подробнее',
+                features_title: '⚡ Ключевые возможности',
+                feat_block_title: 'Авто-блок',
+                feat_block_desc: 'Идеальный парирование и блок любой атаки с регулируемым временем реакции.',
+                feat_aim_title: 'Авто-айм',
+                feat_aim_desc: 'Мгновенное наведение на цель и удержание прицела на ней.',
+                feat_speed_title: 'Скоростной полёт',
+                feat_speed_desc: 'Двигайся быстрее всех — летай по карте без усилий.',
+                feat_detect_title: 'Детект софтов',
+                feat_detect_desc: 'Обнаруживает других читеров и пользователей софтов, отмечает их для тебя.',
+                feat_antifling_title: 'Анти-флинг',
+                feat_antifling_desc: 'Предотвращает выброс или отбрасывание тебя другими игроками.',
+                online_title: '🎮 Проверка игроков онлайн',
+                search_btn: 'Искать',
+                ph_mode: 'Режим (напр. BedWars)',
+                ph_user: 'Никнейм',
+                loading: 'Загрузка данных...',
+                not_found: 'Игроки не найдены.',
+                error: 'Ошибка подключения к Python-серверу.',
+                get_title: '📥 Получить скрипт',
+                get_sub: 'Скопируйте скрипт ниже или свяжитесь с нами через соцсети.',
+                step1: 'Скопируйте скрипт из поля ниже.',
+                step2: 'Откройте свой экзекутор Roblox и вставьте его.',
+                step3: 'Запустите и наслаждайтесь игрой!',
+                copy_btn: '📋 Копировать',
+                get_note: 'Отвечаем в течение 5 минут.'
+            }
+        };
+
+        // ----- apply language -----
+        function setLanguage(lang) {
+            const data = i18n[lang];
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (data[key] !== undefined) el.innerHTML = data[key];
+            });
+            document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+                const key = el.getAttribute('data-i18n-ph');
+                if (data[key] !== undefined) el.placeholder = data[key];
+            });
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === lang);
+            });
         }
-    };
-    function setLanguage(lang) {
-        const data = i18n[lang];
-        document.querySelectorAll('[data-i18n]').forEach(el => {
-            const key = el.getAttribute('data-i18n');
-            if (data[key] !== undefined) el.innerHTML = data[key];
-        });
+
         document.querySelectorAll('.lang-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.lang === lang);
+            btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
         });
-    }
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
-    });
-    document.getElementById('copyBtn').addEventListener('click', () => {
-        const code = document.getElementById('scriptCode').textContent;
-        navigator.clipboard.writeText(code).then(() => {
-            const btn = document.getElementById('copyBtn');
-            const orig = btn.innerHTML;
-            btn.innerHTML = '✅ Copied!';
-            setTimeout(() => btn.innerHTML = orig, 2000);
-        }).catch(() => alert('Failed to copy. Select the text manually.'));
-    });
-    document.getElementById('discordLink').addEventListener('click', (e) => {
-        e.preventDefault();
-        window.open('https://discord.gg/your-invite', '_blank');
-    });
-    document.getElementById('telegramLink').addEventListener('click', (e) => {
-        e.preventDefault();
-        window.open('https://t.me/your_username', '_blank');
-    });
-    document.querySelector('a[href="#get-script"]')?.addEventListener('click', (e) => {
-        e.preventDefault();
-        document.getElementById('get-script').scrollIntoView({ behavior: 'smooth' });
-    });
-    document.querySelectorAll('a[href="#features"]').forEach(link => {
-        link.addEventListener('click', (e) => {
+
+        // ----- API Connection Logic -----
+        // Укажи здесь HTTPS ссылку на твой хостинг (Render, ngrok и т.д.)
+        const API_URL = 'https://your-python-backend.onrender.com/api/players';
+
+        document.getElementById('searchBtn').addEventListener('click', async () => {
+            const mode = document.getElementById('modeInput').value.trim();
+            const user = document.getElementById('userInput').value.trim();
+            const container = document.getElementById('playerList');
+            const activeLang = document.querySelector('.lang-btn.active').dataset.lang;
+            const langData = i18n[activeLang];
+
+            container.innerHTML = `<p style="grid-column: 1/-1; text-align: center;">${langData.loading}</p>`;
+
+            try {
+                const response = await fetch(`${API_URL}?mode=${encodeURIComponent(mode)}&user=${encodeURIComponent(user)}`);
+                const data = await response.json();
+
+                container.innerHTML = '';
+
+                if (!data.players || data.players.length === 0) {
+                    container.innerHTML = `<p style="grid-column: 1/-1; text-align: center;">${langData.not_found}</p>`;
+                    return;
+                }
+
+                data.players.forEach(p => {
+                    const card = document.createElement('div');
+                    card.className = 'feature-card';
+                    card.innerHTML = `
+                        <div class="icon">👤</div>
+                        <h3>${p.username}</h3>
+                        <p><b>Mode:</b> ${p.mode}</p>
+                        <p><b>Team:</b> ${p.team || 'N/A'}</p>
+                        <p><b>Status:</b> ${p.status}</p>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (err) {
+                console.error(err);
+                container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #ff5555;">${langData.error}</p>`;
+            }
+        });
+
+        // ----- copy script -----
+        document.getElementById('copyBtn').addEventListener('click', () => {
+            const code = document.getElementById('scriptCode').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                const btn = document.getElementById('copyBtn');
+                const orig = btn.innerHTML;
+                btn.innerHTML = '✅ Copied!';
+                setTimeout(() => btn.innerHTML = orig, 2000);
+            }).catch(() => alert('Failed to copy. Select the text manually.'));
+        });
+
+        // ----- social links (replace with your actual links) -----
+        document.getElementById('discordLink').addEventListener('click', (e) => {
             e.preventDefault();
-            document.getElementById('features').scrollIntoView({ behavior: 'smooth' });
+            window.open('https://discord.gg/your-invite', '_blank');
         });
-    });
-    const cursor = document.getElementById('cursor');
-    let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0;
-    document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
-    function animateCursor() {
-        cursorX += (mouseX - cursorX) * 0.15;
-        cursorY += (mouseY - cursorY) * 0.15;
-        cursor.style.left = cursorX + 'px';
-        cursor.style.top = cursorY + 'px';
-        requestAnimationFrame(animateCursor);
-    }
-    animateCursor();
-    document.querySelectorAll('a, button, .btn, .feature-card, .step').forEach(el => {
-        el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-        el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
-    });
-    const canvas = document.getElementById('particles-canvas');
-    const ctx = canvas.getContext('2d');
-    let w, h;
-    function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
-    resize();
-    window.addEventListener('resize', resize);
-    const particles = [];
-    for (let i = 0; i < 120; i++) {
-        particles.push({
-            x: Math.random() * w,
-            y: Math.random() * h,
-            r: Math.random() * 2 + 0.5,
-            dx: (Math.random() - 0.5) * 0.3,
-            dy: (Math.random() - 0.5) * 0.3,
-            color: `rgba(168,85,247,${Math.random() * 0.5 + 0.2})`
+        document.getElementById('telegramLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            window.open('https://t.me/your_username', '_blank');
         });
-    }
-    function drawParticles() {
-        ctx.clearRect(0, 0, w, h);
-        for (let p of particles) {
-            p.x += p.dx; p.y += p.dy;
-            if (p.x < 0 || p.x > w) p.dx *= -1;
-            if (p.y < 0 || p.y > h) p.dy *= -1;
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-            ctx.fillStyle = p.color;
-            ctx.shadowColor = '#a855f7';
-            ctx.shadowBlur = 10;
-            ctx.fill();
+
+        // ----- smooth scroll -----
+        document.querySelector('a[href="#get-script"]')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('get-script').scrollIntoView({ behavior: 'smooth' });
+        });
+        document.querySelectorAll('a[href="#features"]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById('features').scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // ----- custom cursor -----
+        const cursor = document.getElementById('cursor');
+        let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0;
+        document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
+        function animateCursor() {
+            cursorX += (mouseX - cursorX) * 0.15;
+            cursorY += (mouseY - cursorY) * 0.15;
+            cursor.style.left = cursorX + 'px';
+            cursor.style.top = cursorY + 'px';
+            requestAnimationFrame(animateCursor);
         }
-        requestAnimationFrame(drawParticles);
-    }
-    drawParticles();
-    setLanguage('en');
-</script>
+        animateCursor();
+        document.querySelectorAll('a, button, .btn, .feature-card, .step').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+        });
+
+        // ----- particles -----
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        let w, h;
+        function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
+        resize();
+        window.addEventListener('resize', resize);
+        const particles = [];
+        for (let i = 0; i < 120; i++) {
+            particles.push({
+                x: Math.random() * w,
+                y: Math.random() * h,
+                r: Math.random() * 2 + 0.5,
+                dx: (Math.random() - 0.5) * 0.3,
+                dy: (Math.random() - 0.5) * 0.3,
+                color: `rgba(168,85,247,${Math.random() * 0.5 + 0.2})`
+            });
+        }
+        function drawParticles() {
+            ctx.clearRect(0, 0, w, h);
+            for (let p of particles) {
+                p.x += p.dx; p.y += p.dy;
+                if (p.x < 0 || p.x > w) p.dx *= -1;
+                if (p.y < 0 || p.y > h) p.dy *= -1;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fillStyle = p.color;
+                ctx.shadowColor = '#a855f7';
+                ctx.shadowBlur = 10;
+                ctx.fill();
+            }
+            requestAnimationFrame(drawParticles);
+        }
+        drawParticles();
+
+        // set default language
+        setLanguage('en');
+    </script>
 </body>
 </html>
