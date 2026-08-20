@@ -16,7 +16,6 @@
             overflow-x: hidden;
             position: relative;
         }
-        /* Анімований градієнтний фон */
         body::before {
             content: '';
             position: fixed;
@@ -35,7 +34,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Скляний ефект (glassmorphism) */
         .glass {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(12px);
@@ -559,9 +557,10 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
         }).catch(() => alert('Failed to copy. Select the text manually.'));
     });
 
+    // ---------- ОНОВЛЕНА ССЫЛКА НА DISCORD ----------
     document.getElementById('discordLink').addEventListener('click', (e) => {
         e.preventDefault();
-        window.open('https://discord.gg/your-invite', '_blank');
+        window.open('https://discord.gg/sE8TGzEGbW', '_blank');
     });
     document.getElementById('telegramLink').addEventListener('click', (e) => {
         e.preventDefault();
@@ -596,7 +595,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
         el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
     });
 
-    // ---------- ЧАСТИНКИ (круглі, лінії до мишки) ----------
+    // ---------- ЧАСТИНКИ ----------
     const canvas = document.getElementById('particles-canvas');
     const ctx = canvas.getContext('2d');
     let w, h;
@@ -613,7 +612,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
             r: Math.random() * 4 + 2,
             dx: (Math.random() - 0.5) * 0.2,
             dy: (Math.random() - 0.5) * 0.2,
-            hue: 240 + Math.random() * 60 // 240-300 (синій-фіолетовий)
+            hue: 240 + Math.random() * 60
         });
     }
 
