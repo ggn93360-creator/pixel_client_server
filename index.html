@@ -47,6 +47,13 @@
         .feature-card .icon { font-size:48px; margin-bottom:15px; }
         .feature-card h3 { font-size:20px; margin-bottom:10px; color:#e0e0ff; }
         .feature-card p { color:#9999bb; font-size:14px; line-height:1.5; }
+        /* ---------- ПІДТРИМУВАНІ ІГРИ ---------- */
+        .supported-games { padding:60px 0; }
+        .games-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:30px; }
+        .game-card { background:rgba(30,30,46,0.6); backdrop-filter:blur(8px); border:1px solid rgba(168,85,247,0.2); padding:30px; border-radius:20px; text-align:center; transition:all .4s; }
+        .game-card:hover { transform:translateY(-5px); border-color:#a855f7; box-shadow:0 5px 30px rgba(168,85,247,0.15); }
+        .game-card h3 { font-size:24px; margin-bottom:12px; color:#e0e0ff; }
+        .support-status { color:#4ade80; font-weight:600; }
         /* ---------- ОТРИМАННЯ ---------- */
         .get-script { padding:40px 0 60px; text-align:center; }
         .get-script h2 { font-family:'Orbitron',monospace; font-size:36px; margin-bottom:20px; background:linear-gradient(135deg,#a855f7,#f472b6); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
@@ -66,11 +73,19 @@
         .social-btn.telegram:hover { background:#0088cc; color:#fff; border-color:#0088cc; }
         footer { border-top:1px solid rgba(168,85,247,0.2); padding:30px 0; text-align:center; color:#666688; font-size:14px; }
         footer a { color:#a855f7; text-decoration:none; }
-        .fade-in { opacity:0; transform:translateY(30px); animation:fadeInUp .8s ease forwards; }
-        .fade-in:nth-child(2) { animation-delay:.15s; }
-        .fade-in:nth-child(3) { animation-delay:.3s; }
-        .fade-in:nth-child(4) { animation-delay:.45s; }
-        @keyframes fadeInUp { to { opacity:1; transform:translateY(0); } }
+
+        /* ---------- АНІМАЦІЯ ПОЯВИ/ЗНИКНЕННЯ ПРИ СКРОЛІ ---------- */
+        .fade-init {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .fade-init.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ---------- АДАПТИВ ---------- */
         @media (max-width:700px) {
             .hero-text h1 { font-size:32px; }
             .btn { padding:12px 24px; font-size:14px; }
@@ -79,6 +94,7 @@
             a,button { cursor:pointer; }
             .lang-btn { font-size:11px; padding:4px 10px; }
             .code-block pre { font-size:12px; }
+            .games-grid { grid-template-columns:1fr; }
         }
     </style>
 </head>
@@ -94,8 +110,9 @@
             <button class="lang-btn" data-lang="ru">RU</button>
         </div>
     </header>
-    <section class="hero">
-        <div class="hero-text fade-in">
+
+    <section class="hero fade-init" id="hero">
+        <div class="hero-text">
             <h1 data-i18n="hero_title">Play with<br>the advantage</h1>
             <p data-i18n="hero_desc">Pixels Client — powerful script for Roblox with Auto Block, Auto Aim, Speed Fly, Soft Detector and Anti-Fling.</p>
             <div class="btn-group">
@@ -103,42 +120,62 @@
                 <a href="#features" class="btn btn-secondary" data-i18n="hero_btn_learn">Learn more</a>
             </div>
         </div>
-        <div class="hero-image fade-in">
+        <div class="hero-image">
             <img src="https://via.placeholder.com/400x300/1e1e2e/a855f7?text=Pixels+Client" alt="Pixels Client">
         </div>
     </section>
-    <section class="features" id="features">
-        <h2 class="section-title fade-in" data-i18n="features_title">⚡ Key features</h2>
+
+    <section class="features fade-init" id="features">
+        <h2 class="section-title" data-i18n="features_title">⚡ Key features</h2>
         <div class="features-grid">
-            <div class="feature-card fade-in"><div class="icon">🛡️</div><h3 data-i18n="feat_block_title">Auto Block</h3><p data-i18n="feat_block_desc">Perfect parry and block any attack with adjustable reaction time.</p></div>
-            <div class="feature-card fade-in"><div class="icon">🎯</div><h3 data-i18n="feat_aim_title">Auto Aim</h3><p data-i18n="feat_aim_desc">Instantly lock onto your target and keep the crosshair on them.</p></div>
-            <div class="feature-card fade-in"><div class="icon">💨</div><h3 data-i18n="feat_speed_title">Speed Fly</h3><p data-i18n="feat_speed_desc">Move faster than anyone else – fly through the map with ease.</p></div>
-            <div class="feature-card fade-in"><div class="icon">🕵️</div><h3 data-i18n="feat_detect_title">Soft Detector</h3><p data-i18n="feat_detect_desc">Detects other cheaters and soft‑users, mark them for you.</p></div>
-            <div class="feature-card fade-in"><div class="icon">🚫</div><h3 data-i18n="feat_antifling_title">Anti‑Fling</h3><p data-i18n="feat_antifling_desc">Prevents you from being flung or launched by other players.</p></div>
+            <div class="feature-card"><div class="icon">🛡️</div><h3 data-i18n="feat_block_title">Auto Block</h3><p data-i18n="feat_block_desc">Perfect parry and block any attack with adjustable reaction time.</p></div>
+            <div class="feature-card"><div class="icon">🎯</div><h3 data-i18n="feat_aim_title">Auto Aim</h3><p data-i18n="feat_aim_desc">Instantly lock onto your target and keep the crosshair on them.</p></div>
+            <div class="feature-card"><div class="icon">💨</div><h3 data-i18n="feat_speed_title">Speed Fly</h3><p data-i18n="feat_speed_desc">Move faster than anyone else – fly through the map with ease.</p></div>
+            <div class="feature-card"><div class="icon">🕵️</div><h3 data-i18n="feat_detect_title">Soft Detector</h3><p data-i18n="feat_detect_desc">Detects other cheaters and soft‑users, mark them for you.</p></div>
+            <div class="feature-card"><div class="icon">🚫</div><h3 data-i18n="feat_antifling_title">Anti‑Fling</h3><p data-i18n="feat_antifling_desc">Prevents you from being flung or launched by other players.</p></div>
         </div>
     </section>
-    <section class="get-script" id="get-script">
-        <h2 class="fade-in" data-i18n="get_title">📥 Get the script</h2>
-        <p class="fade-in" data-i18n="get_sub">Copy the script below or contact us via social media.</p>
-        <div class="steps fade-in">
+
+    <section class="supported-games fade-init" id="supported">
+        <h2 class="section-title" data-i18n="supported_title">🎮 Supported games</h2>
+        <div class="games-grid">
+            <div class="game-card">
+                <h3>Gakuran</h3>
+                <p><span class="support-status">✅ Supported</span></p>
+            </div>
+            <div class="game-card">
+                <h3>The Strongest Battlegrounds</h3>
+                <p><span class="support-status">✅ Supported</span></p>
+            </div>
+        </div>
+        <p style="text-align:center; color:#888; margin-top:20px;" data-i18n="more_games">More games coming soon...</p>
+    </section>
+
+    <section class="get-script fade-init" id="get-script">
+        <h2 data-i18n="get_title">📥 Get the script</h2>
+        <p data-i18n="get_sub">Copy the script below or contact us via social media.</p>
+        <div class="steps">
             <div class="step"><div class="num">1</div><p data-i18n="step1">Copy the script from the box below.</p></div>
             <div class="step"><div class="num">2</div><p data-i18n="step2">Open your Roblox executor and paste it.</p></div>
             <div class="step"><div class="num">3</div><p data-i18n="step3">Execute and enjoy the game!</p></div>
         </div>
-        <div class="code-block fade-in">
+        <div class="code-block">
             <button class="copy-btn" id="copyBtn" data-i18n="copy_btn">📋 Copy</button>
             <pre id="scriptCode">-- Pixels Client Loader
 loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixel_client/main/v1"))()</pre>
         </div>
-        <div class="social-links fade-in">
+        <div class="social-links">
             <a href="#" class="social-btn discord" id="discordLink"><i class="fab fa-discord"></i> Discord</a>
             <a href="#" class="social-btn telegram" id="telegramLink"><i class="fab fa-telegram-plane"></i> Telegram</a>
         </div>
         <p style="font-size:14px; color:#666; margin-top:10px;" data-i18n="get_note">We respond within 5 minutes.</p>
     </section>
+
     <footer><p>© 2026 Pixels Client. Not affiliated with Roblox. <br> Made with ❤️</p></footer>
 </div>
+
 <script>
+    // ---------- МОВИ ----------
     const i18n = {
         en: {
             hero_title: 'Play with<br>the advantage',
@@ -156,6 +193,8 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
             feat_detect_desc: 'Detects other cheaters and soft‑users, mark them for you.',
             feat_antifling_title: 'Anti‑Fling',
             feat_antifling_desc: 'Prevents you from being flung or launched by other players.',
+            supported_title: '🎮 Supported games',
+            more_games: 'More games coming soon...',
             get_title: '📥 Get the script',
             get_sub: 'Copy the script below or contact us via social media.',
             step1: 'Copy the script from the box below.',
@@ -180,6 +219,8 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
             feat_detect_desc: 'Виявляє інших чітерів та користувачів софтів, позначає їх для тебе.',
             feat_antifling_title: 'Анти-флінг',
             feat_antifling_desc: 'Запобігає викиданню або відкиданню тебе іншими гравцями.',
+            supported_title: '🎮 Підтримувані ігри',
+            more_games: 'Більше ігор незабаром...',
             get_title: '📥 Отримати скрипт',
             get_sub: 'Скопіюйте скрипт нижче або зв\'яжіться з нами через соцмережі.',
             step1: 'Скопіюйте скрипт з поля нижче.',
@@ -204,6 +245,8 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
             feat_detect_desc: 'Обнаруживает других читеров и пользователей софтов, отмечает их для тебя.',
             feat_antifling_title: 'Анти-флинг',
             feat_antifling_desc: 'Предотвращает выброс или отбрасывание тебя другими игроками.',
+            supported_title: '🎮 Поддерживаемые игры',
+            more_games: 'Больше игр скоро...',
             get_title: '📥 Получить скрипт',
             get_sub: 'Скопируйте скрипт ниже или свяжитесь с нами через соцсети.',
             step1: 'Скопируйте скрипт из поля ниже.',
@@ -213,6 +256,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
             get_note: 'Отвечаем в течение 5 минут.'
         }
     };
+
     function setLanguage(lang) {
         const data = i18n[lang];
         document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -223,9 +267,12 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
             btn.classList.toggle('active', btn.dataset.lang === lang);
         });
     }
+
     document.querySelectorAll('.lang-btn').forEach(btn => {
         btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
     });
+
+    // ---------- КОПІЮВАННЯ ----------
     document.getElementById('copyBtn').addEventListener('click', () => {
         const code = document.getElementById('scriptCode').textContent;
         navigator.clipboard.writeText(code).then(() => {
@@ -235,6 +282,8 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
             setTimeout(() => btn.innerHTML = orig, 2000);
         }).catch(() => alert('Failed to copy. Select the text manually.'));
     });
+
+    // ---------- СОЦІАЛЬНІ ПОСИЛАННЯ ----------
     document.getElementById('discordLink').addEventListener('click', (e) => {
         e.preventDefault();
         window.open('https://discord.gg/your-invite', '_blank');
@@ -243,6 +292,8 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
         e.preventDefault();
         window.open('https://t.me/your_username', '_blank');
     });
+
+    // ---------- ПЛАВНА ПРОКРУТКА ----------
     document.querySelector('a[href="#get-script"]')?.addEventListener('click', (e) => {
         e.preventDefault();
         document.getElementById('get-script').scrollIntoView({ behavior: 'smooth' });
@@ -253,6 +304,8 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
             document.getElementById('features').scrollIntoView({ behavior: 'smooth' });
         });
     });
+
+    // ---------- КУРСОР ----------
     const cursor = document.getElementById('cursor');
     let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0;
     document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
@@ -264,10 +317,12 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
         requestAnimationFrame(animateCursor);
     }
     animateCursor();
-    document.querySelectorAll('a, button, .btn, .feature-card, .step').forEach(el => {
+    document.querySelectorAll('a, button, .btn, .feature-card, .game-card, .step').forEach(el => {
         el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
         el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
     });
+
+    // ---------- ЧАСТИНКИ ----------
     const canvas = document.getElementById('particles-canvas');
     const ctx = canvas.getContext('2d');
     let w, h;
@@ -301,6 +356,25 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
         requestAnimationFrame(drawParticles);
     }
     drawParticles();
+
+    // ---------- ОБСЕРВЕР ДЛЯ АНІМАЦІЇ ПРИ СКРОЛІ ----------
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            } else {
+                entry.target.classList.remove('visible');
+            }
+        });
+    }, {
+        threshold: 0.15
+    });
+
+    document.querySelectorAll('.fade-init').forEach(el => {
+        observer.observe(el);
+    });
+
+    // Встановлюємо мову за замовчуванням
     setLanguage('en');
 </script>
 </body>
