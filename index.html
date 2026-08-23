@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Pixels Client — Glass</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * { margin:0; padding:0; box-sizing:border-box; cursor:none; }
@@ -15,6 +17,7 @@
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
+            cursor: none;
         }
         body::before {
             content: '';
@@ -43,20 +46,44 @@
             box-shadow: 0 8px 32px rgba(0,0,0,0.3);
         }
 
+        /* ===== КАСТОМНЫЙ КУРСОР ===== */
         .cursor-dot {
             position: fixed;
-            width: 12px;
-            height: 12px;
+            width: 16px;
+            height: 16px;
             background: radial-gradient(circle, #a855f7, #7c3aed);
             border-radius: 50%;
             pointer-events: none;
             transform: translate(-50%, -50%);
             z-index: 9999;
             transition: width .2s, height .2s;
-            box-shadow: 0 0 20px rgba(168,85,247,0.5);
+            box-shadow: 0 0 30px rgba(168,85,247,0.6), 0 0 60px rgba(168,85,247,0.3);
             mix-blend-mode: screen;
         }
-        .cursor-dot.hover { width: 28px; height: 28px; background: radial-gradient(circle, #ec4899, #a855f7); }
+        .cursor-dot.hover {
+            width: 32px;
+            height: 32px;
+            background: radial-gradient(circle, #ec4899, #a855f7);
+            box-shadow: 0 0 50px rgba(168,85,247,0.8), 0 0 80px rgba(168,85,247,0.4);
+        }
+        .cursor-ring {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgba(168,85,247,0.3);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 9998;
+            transition: width .3s, height .3s, border-color .3s;
+            box-shadow: 0 0 20px rgba(168,85,247,0.1);
+        }
+        .cursor-ring.hover {
+            width: 60px;
+            height: 60px;
+            border-color: rgba(168,85,247,0.6);
+            box-shadow: 0 0 40px rgba(168,85,247,0.2);
+        }
 
         #particles-canvas {
             position: fixed;
@@ -89,11 +116,13 @@
             border-radius: 16px;
         }
         .logo {
+            font-family: 'Inter', sans-serif;
             font-weight: 700;
             font-size: 28px;
             background: linear-gradient(135deg, #a855f7, #ec4899);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
         }
         .logo span {
             font-weight: 300;
@@ -134,23 +163,82 @@
             flex-wrap: wrap;
             gap: 30px;
         }
-        .hero-text { flex:1 1 50%; }
+        .hero-text { flex:1 1 100%; }
         .hero-text h1 {
+            font-family: 'Inter', sans-serif;
             font-size: 52px;
-            font-weight: 700;
+            font-weight: 900;
             line-height: 1.1;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            letter-spacing: 1px;
+        }
+        .hero-text h1 .highlight {
             background: linear-gradient(135deg, #c084fc, #f472b6);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 20px;
+        }
+        .hero-text h1 .avatar-wrapper {
+            display: inline-block;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid rgba(168,85,247,0.4);
+            box-shadow: 0 0 30px rgba(168,85,247,0.3);
+            transition: .3s;
+            flex-shrink: 0;
+        }
+        .hero-text h1 .avatar-wrapper:hover {
+            transform: scale(1.1) rotate(-5deg);
+            border-color: #a855f7;
+            box-shadow: 0 0 50px rgba(168,85,247,0.5);
+        }
+        .hero-text h1 .avatar-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
         .hero-text p {
             font-size: 18px;
             color: rgba(255,255,255,0.6);
-            max-width: 500px;
+            max-width: 600px;
             line-height: 1.6;
             margin-bottom: 30px;
         }
+        .dev-links {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+        }
+        .dev-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 18px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 30px;
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: .3s;
+            font-family: 'Inter', sans-serif;
+            cursor: none;
+        }
+        .dev-link:hover {
+            background: rgba(168,85,247,0.15);
+            border-color: rgba(168,85,247,0.3);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+        .dev-link i { font-size: 16px; color: #a855f7; }
         .btn-group { display:flex; gap:20px; flex-wrap:wrap; }
         .btn {
             display: inline-block;
@@ -176,48 +264,49 @@
             color: #ccc;
         }
         .btn-secondary:hover { background: rgba(255,255,255,0.1); transform: scale(1.05); }
-        .hero-image { flex:1 1 40%; text-align:center; }
-        .hero-image img {
-            max-width: 100%;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.05);
-        }
+        .hero-image { display: none; }
 
-        .features { padding: 60px 0; }
-        .section-title {
-            font-size: 32px;
-            font-weight: 600;
-            text-align: center;
-            margin-bottom: 50px;
-            background: linear-gradient(135deg, #a855f7, #ec4899);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        /* ===== ВАЖНЫЕ ФУНКЦИИ ===== */
+        .features-section {
+            padding: 40px 0 60px;
         }
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            max-width: 900px;
+            margin: 0 auto;
         }
         .feature-card {
-            padding: 30px 20px;
+            padding: 25px 15px;
             text-align: center;
-            transition: all .4s;
             background: rgba(255,255,255,0.04);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.06);
             border-radius: 16px;
+            transition: all .4s;
+            cursor: none;
         }
         .feature-card:hover {
-            transform: translateY(-10px);
             border-color: rgba(168,85,247,0.3);
+            transform: translateY(-5px);
             box-shadow: 0 10px 40px rgba(0,0,0,0.2);
         }
-        .feature-card .icon { font-size: 48px; margin-bottom: 15px; }
-        .feature-card h3 { font-size: 20px; margin-bottom: 10px; color: #e0e0ff; }
-        .feature-card p { font-size: 14px; color: rgba(255,255,255,0.5); line-height:1.5; }
+        .feature-card .icon { font-size: 36px; margin-bottom: 10px; }
+        .feature-card h3 {
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            color: #e0e0ff;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+        .feature-card p {
+            font-size: 12px;
+            color: rgba(255,255,255,0.4);
+            line-height: 1.4;
+        }
 
-        /* ---------- GUI ДЕМОНСТРАЦІЯ ---------- */
         .gui-demo {
             padding: 60px 0;
         }
@@ -246,7 +335,8 @@
             font-size: 14px;
             color: rgba(255,255,255,0.5);
             transition: .3s;
-            cursor: pointer;
+            cursor: none;
+            font-family: 'Inter', sans-serif;
         }
         .gui-sidebar .menu-item:hover {
             background: rgba(168,85,247,0.15);
@@ -281,12 +371,14 @@
         .gui-panel { display: none; }
         .gui-panel.active { display: block; }
         .gui-panel h2 {
+            font-family: 'Inter', sans-serif;
             font-size: 20px;
-            font-weight: 600;
+            font-weight: 700;
             margin-bottom: 16px;
             background: linear-gradient(135deg, #a855f7, #f472b6);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
         }
         .gui-setting {
             display: flex;
@@ -297,10 +389,13 @@
         }
         .gui-setting:last-child { border-bottom: none; }
         .gui-setting .label {
-            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
             color: rgba(255,255,255,0.7);
         }
         .gui-setting .value {
+            font-family: 'Inter', sans-serif;
             font-size: 16px;
             font-weight: 600;
             color: #fff;
@@ -325,7 +420,7 @@
             align-items: center;
             justify-content: center;
             transition: .3s;
-            cursor: pointer;
+            cursor: none;
             font-family: 'Inter', sans-serif;
             user-select: none;
         }
@@ -338,7 +433,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            cursor: pointer;
+            cursor: none;
             user-select: none;
         }
         .gui-toggle .switch {
@@ -348,7 +443,7 @@
             border-radius: 30px;
             position: relative;
             transition: .3s;
-            cursor: pointer;
+            cursor: none;
         }
         .gui-toggle .switch.active {
             background: rgba(168,85,247,0.5);
@@ -369,6 +464,7 @@
             background: #a855f7;
         }
         .gui-toggle .label {
+            font-family: 'Inter', sans-serif;
             font-size: 14px;
             color: rgba(255,255,255,0.6);
         }
@@ -386,8 +482,9 @@
             font-weight: 600;
             color: rgba(255,255,255,0.4);
             transition: .3s;
-            cursor: pointer;
+            cursor: none;
             user-select: none;
+            font-family: 'Inter', sans-serif;
         }
         .gui-x-toggle .x-btn.active {
             background: rgba(168,85,247,0.2);
@@ -411,8 +508,9 @@
             font-weight: 600;
             color: rgba(255,255,255,0.4);
             transition: .3s;
-            cursor: pointer;
+            cursor: none;
             user-select: none;
+            font-family: 'Inter', sans-serif;
         }
         .gui-style-selector .style-btn.active {
             background: rgba(168,85,247,0.2);
@@ -443,23 +541,63 @@
             border: 1px solid rgba(255,255,255,0.06);
             border-radius: 16px;
             transition: all .4s;
+            cursor: none;
         }
         .game-card:hover {
             border-color: rgba(168,85,247,0.3);
             box-shadow: 0 5px 30px rgba(0,0,0,0.15);
+            transform: translateY(-5px);
         }
-        .game-card h3 { font-size: 24px; margin-bottom: 12px; color: #e0e0ff; }
-        .support-status { color: #4ade80; font-weight: 600; }
+        .game-card h3 {
+            font-family: 'Inter', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #e0e0ff;
+        }
+        .game-card .game-id {
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            color: rgba(255,255,255,0.3);
+            margin-top: 8px;
+        }
+        .game-card .play-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 30px;
+            background: linear-gradient(135deg, #a855f7, #7c3aed);
+            border-radius: 30px;
+            color: #fff;
+            font-weight: 600;
+            font-size: 14px;
+            transition: .3s;
+            border: none;
+            font-family: 'Inter', sans-serif;
+            cursor: none;
+        }
+        .game-card .play-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(168,85,247,0.4);
+        }
+        .support-status {
+            font-family: 'Inter', sans-serif;
+            color: #4ade80;
+            font-weight: 600;
+            font-size: 14px;
+        }
 
         .get-script { padding: 40px 0 60px; text-align: center; }
         .get-script h2 {
+            font-family: 'Inter', sans-serif;
             font-size: 36px;
+            font-weight: 700;
             margin-bottom: 20px;
             background: linear-gradient(135deg, #a855f7, #f472b6);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         .get-script p {
+            font-family: 'Inter', sans-serif;
             color: rgba(255,255,255,0.5);
             font-size: 18px;
             max-width: 700px;
@@ -483,12 +621,17 @@
             color: rgba(255,255,255,0.6);
         }
         .step .num {
+            font-family: 'Inter', sans-serif;
             font-size: 28px;
             font-weight: 700;
             color: #a855f7;
             margin-bottom: 10px;
         }
-        .step p { font-size: 14px; margin:0; }
+        .step p {
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            margin:0;
+        }
 
         .code-block {
             padding: 20px;
@@ -522,9 +665,9 @@
             color: #fff;
             font-weight: 600;
             font-size: 13px;
-            cursor: none;
             transition: .3s;
             font-family: 'Inter', sans-serif;
+            cursor: none;
         }
         .copy-btn:hover { background: rgba(168,85,247,0.4); transform: scale(1.05); }
 
@@ -548,8 +691,11 @@
             text-decoration: none;
             font-weight: 600;
             transition: .3s;
+            cursor: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
         }
-        .social-btn i { font-size: 22px; }
+        .social-btn i { font-size: 20px; }
         .social-btn.discord:hover { background: #5865F2; color: #fff; border-color: #5865F2; }
         .social-btn.telegram:hover { background: #0088cc; color: #fff; border-color: #0088cc; }
 
@@ -560,6 +706,7 @@
             font-size: 14px;
             border-top: 1px solid rgba(255,255,255,0.05);
             margin-top: 30px;
+            font-family: 'Inter', sans-serif;
         }
         footer a { color: #a855f7; text-decoration: none; }
 
@@ -573,20 +720,42 @@
             transform: translateY(0);
         }
 
+        .section-title {
+            font-family: 'Inter', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 40px;
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+
         @media (max-width: 700px) {
             .hero-text h1 { font-size: 32px; }
+            .hero-text h1 .avatar-wrapper { width: 55px; height: 55px; }
+            .hero-text p { font-size: 15px; }
             .btn { padding: 12px 24px; font-size: 14px; }
-            .cursor-dot { display: none; }
-            body { cursor: auto; }
-            a, button { cursor: pointer; }
+            body { cursor: none; }
+            a, button { cursor: none; }
             .lang-btn { font-size: 11px; padding: 4px 10px; }
             .code-block pre { font-size: 12px; }
             .games-grid { grid-template-columns: 1fr; }
+            .features-grid { grid-template-columns: 1fr 1fr; }
+            .dev-links { gap: 10px; }
+            .dev-link { font-size: 12px; padding: 6px 14px; }
+            .section-title { font-size: 22px; }
+            .logo { font-size: 22px; }
+            .get-script h2 { font-size: 26px; }
+            .cursor-dot { width: 12px; height: 12px; }
+            .cursor-ring { width: 30px; height: 30px; }
         }
     </style>
 </head>
 <body>
 <div class="cursor-dot" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
 <canvas id="particles-canvas"></canvas>
 <div class="container">
     <header>
@@ -600,74 +769,109 @@
 
     <section class="hero fade-init" id="hero">
         <div class="hero-text">
-            <h1 data-i18n="hero_title">Play with<br>the advantage</h1>
-            <p data-i18n="hero_desc">Pixels Client — powerful script for Roblox with Auto Block, Auto Aim, Speed Fly, Soft Detector and Anti-Fling.</p>
+            <h1>
+                <span class="avatar-wrapper">
+                    <img src="https://raw.githubusercontent.com/ggn93360-creator/pixel_client_server/main/avatarka.png" alt="Pixels Client Avatar">
+                </span>
+                <span class="highlight">𝐏𝐥𝐚𝐲 𝐰𝐢𝐭𝐡<br>𝐭𝐡𝐞 𝐚𝐝𝐯𝐚𝐧𝐭𝐚𝐠𝐞</span>
+            </h1>
+            <p data-i18n="hero_desc">Pixels Client — powerful script for Roblox with Auto Aim, Speed Fly, Soft Detector and Anti-Fling.</p>
+            
+            <div class="dev-links">
+                <a href="https://www.roblox.com/users/5145874925/profile" target="_blank" class="dev-link" title="Основной аккаунт">
+                    <i class="fas fa-user-circle"></i> Barbarasocks0
+                </a>
+                <a href="https://www.roblox.com/users/7250264573/profile" target="_blank" class="dev-link" title="Твинк">
+                    <i class="fas fa-user-circle"></i> Hack666777gor
+                </a>
+            </div>
+            
             <div class="btn-group">
-                <a href="#get-script" class="btn btn-primary" data-i18n="hero_btn_get">Get script</a>
-                <a href="#features" class="btn btn-secondary" data-i18n="hero_btn_learn">Learn more</a>
+                <a href="#get-script" class="btn btn-primary" data-i18n="hero_btn_get">𝐆𝐞𝐭 𝐬𝐜𝐫𝐢𝐩𝐭</a>
+                <a href="#gui-demo" class="btn btn-secondary" data-i18n="hero_btn_learn">𝐓𝐫𝐲 𝐆𝐔𝐈</a>
             </div>
         </div>
-        <div class="hero-image">
-            <img src="https://via.placeholder.com/400x300/2a2a3a/a855f7?text=Pixels+Client" alt="Pixels Client">
-        </div>
     </section>
 
-    <section class="features fade-init" id="features">
-        <h2 class="section-title" data-i18n="features_title">⚡ Key features</h2>
+    <!-- ===== ВАЖНЫЕ ФУНКЦИИ ===== -->
+    <section class="features-section fade-init">
+        <h2 class="section-title" data-i18n="features_title">⚡ 𝐊𝐞𝐲 𝐅𝐞𝐚𝐭𝐮𝐫𝐞𝐬</h2>
         <div class="features-grid">
-            <div class="feature-card"><div class="icon">🛡️</div><h3 data-i18n="feat_block_title">Auto Block</h3><p data-i18n="feat_block_desc">Perfect parry and block any attack with adjustable reaction time.</p></div>
-            <div class="feature-card"><div class="icon">🎯</div><h3 data-i18n="feat_aim_title">Auto Aim</h3><p data-i18n="feat_aim_desc">Instantly lock onto your target and keep the crosshair on them.</p></div>
-            <div class="feature-card"><div class="icon">💨</div><h3 data-i18n="feat_speed_title">Speed Fly</h3><p data-i18n="feat_speed_desc">Move faster than anyone else – fly through the map with ease.</p></div>
-            <div class="feature-card"><div class="icon">🕵️</div><h3 data-i18n="feat_detect_title">Soft Detector</h3><p data-i18n="feat_detect_desc">Detects other cheaters and soft‑users, mark them for you.</p></div>
-            <div class="feature-card"><div class="icon">🚫</div><h3 data-i18n="feat_antifling_title">Anti‑Fling</h3><p data-i18n="feat_antifling_desc">Prevents you from being flung or launched by other players.</p></div>
+            <div class="feature-card">
+                <div class="icon">🎯</div>
+                <h3 data-i18n="feat_aim">𝐀𝐮𝐭𝐨 𝐀𝐢𝐦</h3>
+                <p data-i18n="feat_aim_desc">Instant lock-on target</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🧱</div>
+                <h3 data-i18n="feat_wall">𝐖𝐚𝐥𝐥 𝐁𝐚𝐧𝐠</h3>
+                <p data-i18n="feat_wall_desc">Shoot through walls</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">💨</div>
+                <h3 data-i18n="feat_speed">𝐒𝐩𝐞𝐞𝐝 𝐅𝐥𝐲</h3>
+                <p data-i18n="feat_speed_desc">Super fast movement</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🕵️</div>
+                <h3 data-i18n="feat_detect">𝐒𝐨𝐟𝐭 𝐃𝐞𝐭𝐞𝐜𝐭𝐨𝐫</h3>
+                <p data-i18n="feat_detect_desc">Find other cheaters</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🚫</div>
+                <h3 data-i18n="feat_antifling">𝐀𝐧𝐭𝐢-𝐅𝐥𝐢𝐧𝐠</h3>
+                <p data-i18n="feat_antifling_desc">Protection from fling</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">👁️</div>
+                <h3 data-i18n="feat_esp">𝐄𝐒𝐏</h3>
+                <p data-i18n="feat_esp_desc">Visual player tags</p>
+            </div>
         </div>
     </section>
 
-    <!-- ============ GUI ДЕМОНСТРАЦІЯ ============ -->
+    <!-- GUI ДЕМОНСТРАЦИЯ -->
     <section class="gui-demo fade-init" id="gui-demo">
-        <h2 class="section-title" data-i18n="gui_title">🎮 Спробуй GUI</h2>
-        <p style="text-align:center; color:rgba(255,255,255,0.5); max-width:600px; margin:0 auto 40px;" data-i18n="gui_desc">Поклацай по налаштуваннях — це демонстрація інтерфейсу Pixel Client</p>
+        <h2 class="section-title" data-i18n="gui_title">🎮 𝐓𝐫𝐲 𝐭𝐡𝐞 𝐆𝐔𝐈</h2>
+        <p style="text-align:center; color:rgba(255,255,255,0.5); max-width:600px; margin:0 auto 40px; font-family: 'Inter', sans-serif; font-size: 16px;" data-i18n="gui_desc">Click around the settings — this is a demo of the Pixel Client interface.</p>
         <div class="gui-container glass" style="padding:20px;">
             <div class="gui-dashboard">
-                <!-- Сайдбар -->
                 <div class="gui-sidebar">
-                    <div class="menu-item active" data-tab="combat">Combat</div>
-                    <div class="menu-item" data-tab="movement">Movement</div>
-                    <div class="menu-item" data-tab="visuals">Visuals</div>
-                    <div class="menu-item" data-tab="extra">Extra</div>
-                    <div class="menu-item" data-tab="music">Music</div>
-                    <div class="menu-item" data-tab="killsound">KillSound</div>
+                    <div class="menu-item active" data-tab="combat">𝐂𝐎𝐌𝐁𝐀𝐓</div>
+                    <div class="menu-item" data-tab="movement">𝐌𝐎𝐕𝐄𝐌𝐄𝐍𝐓</div>
+                    <div class="menu-item" data-tab="visuals">𝐕𝐈𝐒𝐔𝐀𝐋𝐒</div>
+                    <div class="menu-item" data-tab="extra">𝐄𝐗𝐓𝐑𝐀</div>
+                    <div class="menu-item" data-tab="music">𝐌𝐔𝐒𝐈𝐂</div>
+                    <div class="menu-item" data-tab="killsound">𝐊𝐈𝐋𝐋𝐒𝐎𝐔𝐍𝐃</div>
                 </div>
 
-                <!-- Контент -->
                 <div class="gui-content" id="guiContent">
-                    <!-- Combat -->
                     <div class="gui-panel active" id="panel-combat">
-                        <h2>Combat</h2>
+                        <h2>𝐂𝐎𝐌𝐁𝐀𝐓</h2>
                         <div class="gui-setting">
-                            <span class="label">Auto Parry</span>
+                            <span class="label">𝐀𝐮𝐭𝐨 𝐀𝐢𝐦</span>
                             <div class="gui-toggle" onclick="toggleSwitch(this)">
                                 <div class="switch active"></div>
                                 <span class="label">ON</span>
                             </div>
                         </div>
                         <div class="gui-setting">
-                            <span class="label">Kill Aura</span>
+                            <span class="label">𝐖𝐚𝐥𝐥 𝐁𝐚𝐧𝐠</span>
                             <div class="gui-toggle" onclick="toggleSwitch(this)">
-                                <div class="switch"></div>
-                                <span class="label">OFF</span>
+                                <div class="switch active"></div>
+                                <span class="label">ON</span>
                             </div>
                         </div>
                         <div class="gui-setting">
-                            <span class="label">Range</span>
+                            <span class="label">𝐀𝐢𝐦 𝐑𝐚𝐧𝐠𝐞</span>
                             <div class="controls">
-                                <span class="btn-small" onclick="changeValue(this, -1, 'rangeVal')">−</span>
-                                <span class="value" id="rangeVal">12</span>
-                                <span class="btn-small" onclick="changeValue(this, 1, 'rangeVal')">+</span>
+                                <span class="btn-small" onclick="changeValue(this, -5, 'rangeVal')">−</span>
+                                <span class="value" id="rangeVal">50</span>
+                                <span class="btn-small" onclick="changeValue(this, 5, 'rangeVal')">+</span>
                             </div>
                         </div>
                         <div class="gui-setting">
-                            <span class="label">Reaction Delay</span>
+                            <span class="label">𝐑𝐞𝐚𝐜𝐭𝐢𝐨𝐧 𝐃𝐞𝐥𝐚𝐲</span>
                             <div class="controls">
                                 <span class="btn-small" onclick="changeValue(this, -0.05, 'delayVal')">−</span>
                                 <span class="value" id="delayVal">0.00</span>
@@ -676,11 +880,25 @@
                         </div>
                     </div>
 
-                    <!-- Movement -->
                     <div class="gui-panel" id="panel-movement">
-                        <h2>Movement</h2>
+                        <h2>𝐌𝐎𝐕𝐄𝐌𝐄𝐍𝐓</h2>
                         <div class="gui-setting">
-                            <span class="label">Walk Speed</span>
+                            <span class="label">𝐒𝐩𝐞𝐞𝐝 𝐅𝐥𝐲</span>
+                            <div class="gui-toggle" onclick="toggleSwitch(this)">
+                                <div class="switch active"></div>
+                                <span class="label">ON</span>
+                            </div>
+                        </div>
+                        <div class="gui-setting">
+                            <span class="label">𝐅𝐥𝐲 𝐒𝐩𝐞𝐞𝐝</span>
+                            <div class="controls">
+                                <span class="btn-small" onclick="changeValue(this, -10, 'flySpeed')">−</span>
+                                <span class="value" id="flySpeed">80</span>
+                                <span class="btn-small" onclick="changeValue(this, 10, 'flySpeed')">+</span>
+                            </div>
+                        </div>
+                        <div class="gui-setting">
+                            <span class="label">𝐖𝐚𝐥𝐤 𝐒𝐩𝐞𝐞𝐝</span>
                             <div class="controls">
                                 <span class="btn-small" onclick="changeValue(this, -1, 'walkSpeed')">−</span>
                                 <span class="value" id="walkSpeed">24</span>
@@ -688,37 +906,7 @@
                             </div>
                         </div>
                         <div class="gui-setting">
-                            <span class="label">Run Accelerator</span>
-                            <div class="gui-toggle" onclick="toggleSwitch(this)">
-                                <div class="switch active"></div>
-                                <span class="label">ON</span>
-                            </div>
-                        </div>
-                        <div class="gui-setting">
-                            <span class="label">Sprint Speed</span>
-                            <div class="controls">
-                                <span class="btn-small" onclick="changeValue(this, -1, 'sprintSpeed')">−</span>
-                                <span class="value" id="sprintSpeed">35</span>
-                                <span class="btn-small" onclick="changeValue(this, 1, 'sprintSpeed')">+</span>
-                            </div>
-                        </div>
-                        <div class="gui-setting">
-                            <span class="label">Fly (No Tilt)</span>
-                            <div class="gui-toggle" onclick="toggleSwitch(this)">
-                                <div class="switch"></div>
-                                <span class="label">OFF</span>
-                            </div>
-                        </div>
-                        <div class="gui-setting">
-                            <span class="label">Fly Speed</span>
-                            <div class="controls">
-                                <span class="btn-small" onclick="changeValue(this, -5, 'flySpeed')">−</span>
-                                <span class="value" id="flySpeed">50</span>
-                                <span class="btn-small" onclick="changeValue(this, 5, 'flySpeed')">+</span>
-                            </div>
-                        </div>
-                        <div class="gui-setting">
-                            <span class="label">X1</span>
+                            <span class="label">𝐗𝟏</span>
                             <div class="gui-x-toggle" id="xToggle">
                                 <span class="x-btn active" onclick="selectX(this)">OFF</span>
                                 <span class="x-btn" onclick="selectX(this)">X1</span>
@@ -728,33 +916,32 @@
                         </div>
                     </div>
 
-                    <!-- Visuals -->
                     <div class="gui-panel" id="panel-visuals">
-                        <h2>Visuals</h2>
+                        <h2>𝐕𝐈𝐒𝐔𝐀𝐋𝐒</h2>
                         <div class="gui-setting">
-                            <span class="label">Target ESP</span>
+                            <span class="label">𝐄𝐒𝐏</span>
                             <div class="gui-toggle" onclick="toggleSwitch(this)">
                                 <div class="switch active"></div>
                                 <span class="label">ON</span>
                             </div>
                         </div>
                         <div class="gui-setting">
-                            <span class="label">ESP Style</span>
+                            <span class="label">𝐄𝐒𝐏 𝐒𝐭𝐲𝐥𝐞</span>
                             <div class="gui-style-selector" id="espStyle">
-                                <span class="style-btn active" onclick="selectStyle(this)">Orbs</span>
-                                <span class="style-btn" onclick="selectStyle(this)">Ring</span>
-                                <span class="style-btn" onclick="selectStyle(this)">Box</span>
+                                <span class="style-btn active" onclick="selectStyle(this)">ORBS</span>
+                                <span class="style-btn" onclick="selectStyle(this)">RING</span>
+                                <span class="style-btn" onclick="selectStyle(this)">BOX</span>
                             </div>
                         </div>
                         <div class="gui-setting">
-                            <span class="label">Wings</span>
+                            <span class="label">𝐖𝐢𝐧𝐠𝐬</span>
                             <div class="gui-toggle" onclick="toggleSwitch(this)">
                                 <div class="switch"></div>
                                 <span class="label">OFF</span>
                             </div>
                         </div>
                         <div class="gui-setting">
-                            <span class="label">Halo</span>
+                            <span class="label">𝐇𝐚𝐥𝐨</span>
                             <div class="gui-toggle" onclick="toggleSwitch(this)">
                                 <div class="switch"></div>
                                 <span class="label">OFF</span>
@@ -762,18 +949,24 @@
                         </div>
                     </div>
 
-                    <!-- Extra -->
                     <div class="gui-panel" id="panel-extra">
-                        <h2>Extra</h2>
+                        <h2>𝐄𝐗𝐓𝐑𝐀</h2>
                         <div class="gui-setting">
-                            <span class="label">Fullbright</span>
+                            <span class="label">𝐅𝐮𝐥𝐥𝐛𝐫𝐢𝐠𝐡𝐭</span>
                             <div class="gui-toggle" onclick="toggleSwitch(this)">
                                 <div class="switch"></div>
                                 <span class="label">OFF</span>
                             </div>
                         </div>
                         <div class="gui-setting">
-                            <span class="label">Watermark</span>
+                            <span class="label">𝐖𝐚𝐭𝐞𝐫𝐦𝐚𝐫𝐤</span>
+                            <div class="gui-toggle" onclick="toggleSwitch(this)">
+                                <div class="switch active"></div>
+                                <span class="label">ON</span>
+                            </div>
+                        </div>
+                        <div class="gui-setting">
+                            <span class="label">𝐒𝐨𝐟𝐭 𝐃𝐞𝐭𝐞𝐜𝐭𝐨𝐫</span>
                             <div class="gui-toggle" onclick="toggleSwitch(this)">
                                 <div class="switch active"></div>
                                 <span class="label">ON</span>
@@ -781,18 +974,17 @@
                         </div>
                     </div>
 
-                    <!-- Music -->
                     <div class="gui-panel" id="panel-music">
-                        <h2>Music</h2>
+                        <h2>𝐌𝐔𝐒𝐈𝐂</h2>
                         <div class="gui-setting">
-                            <span class="label">Music Player</span>
+                            <span class="label">𝐌𝐮𝐬𝐢𝐜 𝐏𝐥𝐚𝐲𝐞𝐫</span>
                             <div class="gui-toggle" onclick="toggleSwitch(this)">
                                 <div class="switch active"></div>
                                 <span class="label">ON</span>
                             </div>
                         </div>
                         <div class="gui-setting">
-                            <span class="label">Volume</span>
+                            <span class="label">𝐕𝐨𝐥𝐮𝐦𝐞</span>
                             <div class="controls">
                                 <span class="btn-small" onclick="changeValue(this, -10, 'musicVol')">−</span>
                                 <span class="value" id="musicVol">50</span>
@@ -800,7 +992,7 @@
                             </div>
                         </div>
                         <div class="gui-setting">
-                            <span class="label">Loop</span>
+                            <span class="label">𝐋𝐨𝐨𝐩</span>
                             <div class="gui-toggle" onclick="toggleSwitch(this)">
                                 <div class="switch active"></div>
                                 <span class="label">ON</span>
@@ -808,26 +1000,25 @@
                         </div>
                     </div>
 
-                    <!-- KillSound -->
                     <div class="gui-panel" id="panel-killsound">
-                        <h2>KillSound</h2>
+                        <h2>𝐊𝐈𝐋𝐋𝐒𝐎𝐔𝐍𝐃</h2>
                         <div class="gui-setting">
-                            <span class="label">Kill Sound</span>
+                            <span class="label">𝐊𝐢𝐥𝐥 𝐒𝐨𝐮𝐧𝐝</span>
                             <div class="gui-toggle" onclick="toggleSwitch(this)">
                                 <div class="switch active"></div>
                                 <span class="label">ON</span>
                             </div>
                         </div>
                         <div class="gui-setting">
-                            <span class="label">Sound</span>
+                            <span class="label">𝐒𝐨𝐮𝐧𝐝</span>
                             <div class="gui-style-selector" id="ksSound">
-                                <span class="style-btn active" onclick="selectStyle(this)">Neverlose</span>
-                                <span class="style-btn" onclick="selectStyle(this)">Rust</span>
+                                <span class="style-btn active" onclick="selectStyle(this)">NEVERLOSE</span>
+                                <span class="style-btn" onclick="selectStyle(this)">RUST</span>
                                 <span class="style-btn" onclick="selectStyle(this)">TF2</span>
                             </div>
                         </div>
                         <div class="gui-setting">
-                            <span class="label">Volume</span>
+                            <span class="label">𝐕𝐨𝐥𝐮𝐦𝐞</span>
                             <div class="controls">
                                 <span class="btn-small" onclick="changeValue(this, -10, 'ksVol')">−</span>
                                 <span class="value" id="ksVol">80</span>
@@ -841,22 +1032,30 @@
     </section>
 
     <section class="supported-games fade-init" id="supported">
-        <h2 class="section-title" data-i18n="supported_title">🎮 Supported games</h2>
+        <h2 class="section-title" data-i18n="supported_title">🎮 𝐒𝐮𝐩𝐩𝐨𝐫𝐭𝐞𝐝 𝐆𝐚𝐦𝐞𝐬</h2>
         <div class="games-grid">
-            <div class="game-card">
-                <h3>Gakuran</h3>
-                <p><span class="support-status">✅ Supported</span></p>
+            <div class="game-card" onclick="window.open('https://www.roblox.com/games/31490825/Warfare-Tycoon', '_blank')">
+                <h3>⚔️ 𝐖𝐚𝐫𝐟𝐚𝐫𝐞 𝐓𝐲𝐜𝐨𝐨𝐧</h3>
+                <p><span class="support-status">✅ SUPPORTED</span></p>
+                <p class="game-id">ID: 31490825</p>
+                <button class="play-btn" onclick="event.stopPropagation(); window.open('https://www.roblox.com/games/31490825/Warfare-Tycoon', '_blank')">
+                    <i class="fas fa-play"></i> PLAY
+                </button>
             </div>
-            <div class="game-card">
-                <h3>The Strongest Battlegrounds</h3>
-                <p><span class="support-status">✅ Supported</span></p>
+            <div class="game-card" onclick="window.open('https://www.roblox.com/games/10449761463/The-Strongest-Battlegrounds', '_blank')">
+                <h3>💪 𝐓𝐡𝐞 𝐒𝐭𝐫𝐨𝐧𝐠𝐞𝐬𝐭 𝐁𝐚𝐭𝐭𝐥𝐞𝐠𝐫𝐨𝐮𝐧𝐝𝐬</h3>
+                <p><span class="support-status">✅ SUPPORTED</span></p>
+                <p class="game-id">ID: 10449761463</p>
+                <button class="play-btn" onclick="event.stopPropagation(); window.open('https://www.roblox.com/games/10449761463/The-Strongest-Battlegrounds', '_blank')">
+                    <i class="fas fa-play"></i> PLAY
+                </button>
             </div>
         </div>
-        <p style="text-align:center; color:rgba(255,255,255,0.4); margin-top:20px;" data-i18n="more_games">More games coming soon...</p>
+        <p style="text-align:center; color:rgba(255,255,255,0.4); margin-top:20px; font-family: 'Inter', sans-serif; font-size: 14px;" data-i18n="more_games">𝐌𝐨𝐫𝐞 𝐠𝐚𝐦𝐞𝐬 𝐜𝐨𝐦𝐢𝐧𝐠 𝐬𝐨𝐨𝐧...</p>
     </section>
 
     <section class="get-script fade-init" id="get-script">
-        <h2 data-i18n="get_title">📥 Get the script</h2>
+        <h2 data-i18n="get_title">📥 𝐆𝐞𝐭 𝐭𝐡𝐞 𝐒𝐜𝐫𝐢𝐩𝐭</h2>
         <p data-i18n="get_sub">Copy the script below or contact us via social media.</p>
         <div class="steps">
             <div class="step"><div class="num">1</div><p data-i18n="step1">Copy the script from the box below.</p></div>
@@ -864,106 +1063,141 @@
             <div class="step"><div class="num">3</div><p data-i18n="step3">Execute and enjoy the game!</p></div>
         </div>
         <div class="code-block">
-            <button class="copy-btn" id="copyBtn" data-i18n="copy_btn">📋 Copy</button>
+            <button class="copy-btn" id="copyBtn" data-i18n="copy_btn">📋 COPY</button>
             <pre id="scriptCode">-- Pixels Client Loader
 loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixel_client/main/v1"))()</pre>
         </div>
         <div class="social-links">
-            <a href="#" class="social-btn discord" id="discordLink"><i class="fab fa-discord"></i> Discord</a>
-            <a href="#" class="social-btn telegram" id="telegramLink"><i class="fab fa-telegram-plane"></i> Telegram</a>
+            <a href="#" class="social-btn discord" id="discordLink"><i class="fab fa-discord"></i> DISCORD</a>
+            <a href="#" class="social-btn telegram" id="telegramLink"><i class="fab fa-telegram-plane"></i> TELEGRAM</a>
         </div>
-        <p style="font-size:14px; color:rgba(255,255,255,0.4); margin-top:10px;" data-i18n="get_note">We respond within 5 minutes.</p>
+        <p style="font-size:14px; color:rgba(255,255,255,0.4); margin-top:10px; font-family: 'Inter', sans-serif;" data-i18n="get_note">We respond within 5 minutes.</p>
     </section>
 
-    <footer><p>© 2026 Pixels Client. Not affiliated with Roblox. <br> Made with ❤️</p></footer>
+    <footer><p>© 2026 PIXELS CLIENT. NOT AFFILIATED WITH ROBLOX. <br> MADE WITH ❤️</p></footer>
 </div>
 
 <script>
+    // ---------- КАСТОМНЫЙ КУРСОР ----------
+    const cursor = document.getElementById('cursor');
+    const cursorRing = document.getElementById('cursorRing');
+    let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+    });
+
+    function animateCursor() {
+        cursorX += (mouseX - cursorX) * 0.15;
+        cursorY += (mouseY - cursorY) * 0.15;
+        cursor.style.left = cursorX + 'px';
+        cursor.style.top = cursorY + 'px';
+        cursorRing.style.left = cursorX + 'px';
+        cursorRing.style.top = cursorY + 'px';
+        requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    document.querySelectorAll('a, button, .btn, .feature-card, .game-card, .step, .menu-item, .gui-toggle, .x-btn, .style-btn, .btn-small, .dev-link, .copy-btn, .social-btn, .lang-btn').forEach(el => {
+        el.addEventListener('mouseenter', () => {
+            cursor.classList.add('hover');
+            cursorRing.classList.add('hover');
+        });
+        el.addEventListener('mouseleave', () => {
+            cursor.classList.remove('hover');
+            cursorRing.classList.remove('hover');
+        });
+    });
+
     // ---------- МОВИ ----------
     const i18n = {
         en: {
-            hero_title: 'Play with<br>the advantage',
-            hero_desc: 'Pixels Client — powerful script for Roblox with Auto Block, Auto Aim, Speed Fly, Soft Detector and Anti-Fling.',
-            hero_btn_get: 'Get script',
-            hero_btn_learn: 'Learn more',
-            features_title: '⚡ Key features',
-            feat_block_title: 'Auto Block',
-            feat_block_desc: 'Perfect parry and block any attack with adjustable reaction time.',
-            feat_aim_title: 'Auto Aim',
-            feat_aim_desc: 'Instantly lock onto your target and keep the crosshair on them.',
-            feat_speed_title: 'Speed Fly',
-            feat_speed_desc: 'Move faster than anyone else – fly through the map with ease.',
-            feat_detect_title: 'Soft Detector',
-            feat_detect_desc: 'Detects other cheaters and soft‑users, mark them for you.',
-            feat_antifling_title: 'Anti‑Fling',
-            feat_antifling_desc: 'Prevents you from being flung or launched by other players.',
-            gui_title: '🎮 Try the GUI',
+            hero_desc: 'Pixels Client — powerful script for Roblox with Auto Aim, Speed Fly, Soft Detector and Anti-Fling.',
+            hero_btn_get: '𝐆𝐞𝐭 𝐬𝐜𝐫𝐢𝐩𝐭',
+            hero_btn_learn: '𝐓𝐫𝐲 𝐆𝐔𝐈',
+            features_title: '⚡ 𝐊𝐞𝐲 𝐅𝐞𝐚𝐭𝐮𝐫𝐞𝐬',
+            feat_aim: '𝐀𝐮𝐭𝐨 𝐀𝐢𝐦',
+            feat_aim_desc: 'Instant lock-on target',
+            feat_wall: '𝐖𝐚𝐥𝐥 𝐁𝐚𝐧𝐠',
+            feat_wall_desc: 'Shoot through walls',
+            feat_speed: '𝐒𝐩𝐞𝐞𝐝 𝐅𝐥𝐲',
+            feat_speed_desc: 'Super fast movement',
+            feat_detect: '𝐒𝐨𝐟𝐭 𝐃𝐞𝐭𝐞𝐜𝐭𝐨𝐫',
+            feat_detect_desc: 'Find other cheaters',
+            feat_antifling: '𝐀𝐧𝐭𝐢-𝐅𝐥𝐢𝐧𝐠',
+            feat_antifling_desc: 'Protection from fling',
+            feat_esp: '𝐄𝐒𝐏',
+            feat_esp_desc: 'Visual player tags',
+            gui_title: '🎮 𝐓𝐫𝐲 𝐭𝐡𝐞 𝐆𝐔𝐈',
             gui_desc: 'Click around the settings — this is a demo of the Pixel Client interface.',
-            supported_title: '🎮 Supported games',
-            more_games: 'More games coming soon...',
-            get_title: '📥 Get the script',
+            supported_title: '🎮 𝐒𝐮𝐩𝐩𝐨𝐫𝐭𝐞𝐝 𝐆𝐚𝐦𝐞𝐬',
+            more_games: '𝐌𝐨𝐫𝐞 𝐠𝐚𝐦𝐞𝐬 𝐜𝐨𝐦𝐢𝐧𝐠 𝐬𝐨𝐨𝐧...',
+            get_title: '📥 𝐆𝐞𝐭 𝐭𝐡𝐞 𝐒𝐜𝐫𝐢𝐩𝐭',
             get_sub: 'Copy the script below or contact us via social media.',
             step1: 'Copy the script from the box below.',
             step2: 'Open your Roblox executor and paste it.',
             step3: 'Execute and enjoy the game!',
-            copy_btn: '📋 Copy',
+            copy_btn: '📋 COPY',
             get_note: 'We respond within 5 minutes.'
         },
         uk: {
-            hero_title: 'Грай з<br>перевагою',
-            hero_desc: 'Pixels Client — потужний скрипт для Roblox з автоматичним блоком, авто-аймом, швидкісним польотом, детектом софтів та анти-флінгом.',
-            hero_btn_get: 'Отримати скрипт',
-            hero_btn_learn: 'Докладніше',
-            features_title: '⚡ Ключові можливості',
-            feat_block_title: 'Авто-блок',
-            feat_block_desc: 'Ідеальне парирування та блок будь-якої атаки з регульованим часом реакції.',
-            feat_aim_title: 'Авто-айм',
-            feat_aim_desc: 'Миттєве наведення на ціль і утримання прицілу на ній.',
-            feat_speed_title: 'Швидкісний політ',
-            feat_speed_desc: 'Рухайся швидше за всіх — літай по карті без зусиль.',
-            feat_detect_title: 'Детект софтів',
-            feat_detect_desc: 'Виявляє інших чітерів та користувачів софтів, позначає їх для тебе.',
-            feat_antifling_title: 'Анти-флінг',
-            feat_antifling_desc: 'Запобігає викиданню або відкиданню тебе іншими гравцями.',
-            gui_title: '🎮 Спробуй GUI',
-            gui_desc: 'Поклацай по налаштуваннях — це демонстрація інтерфейсу Pixel Client',
-            supported_title: '🎮 Підтримувані ігри',
-            more_games: 'Більше ігор незабаром...',
-            get_title: '📥 Отримати скрипт',
-            get_sub: 'Скопіюйте скрипт нижче або зв\'яжіться з нами через соцмережі.',
-            step1: 'Скопіюйте скрипт з поля нижче.',
-            step2: 'Відкрийте свій екзек' + 'утор Roblox і вставте його.',
-            step3: 'Запустіть і насолоджуйтесь грою!',
-            copy_btn: '📋 Копіювати',
-            get_note: 'Відповідаємо протягом 5 хвилин.'
+            hero_desc: 'Pixels Client — потужний скрипт для Roblox з авто-аймом, швидкісним польотом, детектом софтів та анти-флінгом.',
+            hero_btn_get: '𝐎𝐭𝐫𝐲𝐦𝐚𝐭𝐲 𝐬𝐜𝐫𝐲𝐩𝐭',
+            hero_btn_learn: '𝐒𝐩𝐫𝐨𝐛𝐮𝐲 𝐆𝐔𝐈',
+            features_title: '⚡ 𝐊𝐥𝐲𝐮𝐜𝐡𝐨𝐯𝐢 𝐦𝐨𝐳𝐡𝐥𝐲𝐯𝐨𝐬𝐭𝐢',
+            feat_aim: '𝐀𝐯𝐭𝐨-𝐀𝐲𝐦',
+            feat_aim_desc: 'Myttyeve navedennya',
+            feat_wall: '𝐏𝐫𝐨𝐬𝐭𝐫𝐢𝐥 𝐤𝐫𝐢𝐳𝐬 𝐬𝐭𝐢𝐧𝐲',
+            feat_wall_desc: 'Strilyay kriz stiny',
+            feat_speed: '𝐒𝐡𝐯𝐢𝐝𝐤𝐢𝐬𝐧𝐢𝐲 𝐩𝐨𝐥𝐢𝐭',
+            feat_speed_desc: 'Duzhe shvydkyy rukh',
+            feat_detect: '𝐃𝐞𝐭𝐞𝐤𝐭 𝐬𝐨𝐟𝐭𝐢𝐯',
+            feat_detect_desc: 'Znaydy inshykh chiteriv',
+            feat_antifling: '𝐀𝐧𝐭𝐲-𝐅𝐥𝐢𝐧𝐠',
+            feat_antifling_desc: 'Zakhyst vid flinha',
+            feat_esp: '𝐄𝐒𝐏',
+            feat_esp_desc: 'Vizualni mitky',
+            gui_title: '🎮 𝐒𝐩𝐫𝐨𝐛𝐮𝐲 𝐆𝐔𝐈',
+            gui_desc: 'Poklatsay po nalashtuvannyakh — tse demonstratsiya interfeysu Pixel Client',
+            supported_title: '🎮 𝐏𝐢𝐝𝐭𝐫𝐲𝐦𝐮𝐯𝐚𝐧𝐢 𝐢𝐠𝐫𝐲',
+            more_games: '𝐁𝐢𝐥𝐬𝐡𝐞 𝐢𝐠𝐨𝐫 𝐧𝐞𝐳𝐚𝐛𝐚𝐫𝐨𝐦...',
+            get_title: '📥 𝐎𝐭𝐫𝐲𝐦𝐚𝐭𝐲 𝐬𝐜𝐫𝐲𝐩𝐭',
+            get_sub: 'Skopiyuyte skrypt nyzhche abo zvyazhitsya z namy cherez sotsmerezhi.',
+            step1: 'Skopiyuyte skrypt z polya nyzhche.',
+            step2: 'Vidkryyte sviy ekzekutor Roblox i vstavte yoho.',
+            step3: 'Zapustit i nasolodzhuytes hroyu!',
+            copy_btn: '📋 𝐊𝐨𝐩𝐢𝐲𝐮𝐯𝐚𝐭𝐲',
+            get_note: 'Vidpovidayemo protyahom 5 khvylyn.'
         },
         ru: {
-            hero_title: 'Играй с<br>преимуществом',
-            hero_desc: 'Pixels Client — мощный скрипт для Roblox с авто-блоком, авто-аймом, скоростным полётом, детектом софтов и анти-флингом.',
-            hero_btn_get: 'Получить скрипт',
-            hero_btn_learn: 'Подробнее',
-            features_title: '⚡ Ключевые возможности',
-            feat_block_title: 'Авто-блок',
-            feat_block_desc: 'Идеальный парирование и блок любой атаки с регулируемым временем реакции.',
-            feat_aim_title: 'Авто-айм',
-            feat_aim_desc: 'Мгновенное наведение на цель и удержание прицела на ней.',
-            feat_speed_title: 'Скоростной полёт',
-            feat_speed_desc: 'Двигайся быстрее всех — летай по карте без усилий.',
-            feat_detect_title: 'Детект софтов',
-            feat_detect_desc: 'Обнаруживает других читеров и пользователей софтов, отмечает их для тебя.',
-            feat_antifling_title: 'Анти-флинг',
-            feat_antifling_desc: 'Предотвращает выброс или отбрасывание тебя другими игроками.',
-            gui_title: '🎮 Попробуй GUI',
-            gui_desc: 'Покликай по настройкам — это демонстрация интерфейса Pixel Client',
-            supported_title: '🎮 Поддерживаемые игры',
-            more_games: 'Больше игр скоро...',
-            get_title: '📥 Получить скрипт',
-            get_sub: 'Скопируйте скрипт ниже или свяжитесь с нами через соцсети.',
-            step1: 'Скопируйте скрипт из поля ниже.',
-            step2: 'Откройте свой экзек' + 'утор Roblox и вставьте его.',
-            step3: 'Запустите и наслаждайтесь игрой!',
-            copy_btn: '📋 Копировать',
-            get_note: 'Отвечаем в течение 5 минут.'
+            hero_desc: 'Pixels Client — мощный скрипт для Roblox с авто-аймом, скоростным полётом, детектом софтов и анти-флингом.',
+            hero_btn_get: '𝐏𝐨𝐥𝐮𝐜𝐡𝐢𝐭𝐲 𝐬𝐜𝐫𝐢𝐩𝐭',
+            hero_btn_learn: '𝐏𝐨𝐩𝐫𝐨𝐛𝐮𝐲 𝐆𝐔𝐈',
+            features_title: '⚡ 𝐊𝐥𝐲𝐮𝐜𝐡𝐞𝐯𝐲𝐞 𝐯𝐨𝐳𝐦𝐨𝐳𝐡𝐧𝐨𝐬𝐭𝐢',
+            feat_aim: '𝐀𝐯𝐭𝐨-𝐀𝐲𝐦',
+            feat_aim_desc: 'Mgnovennoye navedeniye',
+            feat_wall: '𝐏𝐫𝐨𝐬𝐭𝐫𝐞𝐥 𝐬𝐤𝐯𝐨𝐳𝐬 𝐬𝐭𝐞𝐧𝐲',
+            feat_wall_desc: 'Strelyay skvoz steny',
+            feat_speed: '𝐒𝐤𝐨𝐫𝐨𝐬𝐭𝐧𝐨𝐲 𝐩𝐨𝐥𝐲𝐨𝐭',
+            feat_speed_desc: 'Ochen bystroye dvizheniye',
+            feat_detect: '𝐃𝐞𝐭𝐞𝐤𝐭 𝐬𝐨𝐟𝐭𝐨𝐯',
+            feat_detect_desc: 'Naydi drugikh chiterov',
+            feat_antifling: '𝐀𝐧𝐭𝐢-𝐅𝐥𝐢𝐧𝐠',
+            feat_antifling_desc: 'Zashchita ot flinga',
+            feat_esp: '𝐄𝐒𝐏',
+            feat_esp_desc: 'Vizualnyye metki',
+            gui_title: '🎮 𝐏𝐨𝐩𝐫𝐨𝐛𝐮𝐲 𝐆𝐔𝐈',
+            gui_desc: 'Poklikay po nastroykam — eto demonstratsiya interfeysa Pixel Client',
+            supported_title: '🎮 𝐏𝐨𝐝𝐝𝐞𝐫𝐳𝐡𝐢𝐯𝐚𝐞𝐦𝐲𝐞 𝐢𝐠𝐫𝐲',
+            more_games: '𝐁𝐨𝐥𝐬𝐡𝐞 𝐢𝐠𝐫 𝐬𝐤𝐨𝐫𝐨...',
+            get_title: '📥 𝐏𝐨𝐥𝐮𝐜𝐡𝐢𝐭𝐲 𝐬𝐜𝐫𝐢𝐩𝐭',
+            get_sub: 'Skopiruyte skript nizhe ili svyazhites s nami cherez sotseti.',
+            step1: 'Skopiruyte skript iz polya nizhe.',
+            step2: 'Otkroyte svoy ekzekutor Roblox i vstavte yego.',
+            step3: 'Zapustite i naslazhdaytes igroy!',
+            copy_btn: '📋 𝐊𝐨𝐩𝐢𝐫𝐨𝐯𝐚𝐭𝐲',
+            get_note: 'Otvechayem v techeniye 5 minut.'
         }
     };
 
@@ -987,7 +1221,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
         navigator.clipboard.writeText(code).then(() => {
             const btn = document.getElementById('copyBtn');
             const orig = btn.innerHTML;
-            btn.innerHTML = '✅ Copied!';
+            btn.innerHTML = '✅ COPIED!';
             setTimeout(() => btn.innerHTML = orig, 2000);
         }).catch(() => alert('Failed to copy. Select the text manually.'));
     });
@@ -1005,31 +1239,14 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
         e.preventDefault();
         document.getElementById('get-script').scrollIntoView({ behavior: 'smooth' });
     });
-    document.querySelectorAll('a[href="#features"]').forEach(link => {
+    document.querySelectorAll('a[href="#gui-demo"]').forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
-            document.getElementById('features').scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('gui-demo').scrollIntoView({ behavior: 'smooth' });
         });
     });
 
-    // ---------- КУРСОР ----------
-    const cursor = document.getElementById('cursor');
-    let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0;
-    document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
-    function animateCursor() {
-        cursorX += (mouseX - cursorX) * 0.15;
-        cursorY += (mouseY - cursorY) * 0.15;
-        cursor.style.left = cursorX + 'px';
-        cursor.style.top = cursorY + 'px';
-        requestAnimationFrame(animateCursor);
-    }
-    animateCursor();
-    document.querySelectorAll('a, button, .btn, .feature-card, .game-card, .step, .menu-item, .gui-toggle, .x-btn, .style-btn, .btn-small').forEach(el => {
-        el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-        el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
-    });
-
-    // ---------- ЧАСТИНКИ ----------
+    // ---------- ЧАСТИНКИ С ЛИНИЯМИ В ЦЕНТР МЫШКИ ----------
     const canvas = document.getElementById('particles-canvas');
     const ctx = canvas.getContext('2d');
     let w, h;
@@ -1038,54 +1255,67 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
     window.addEventListener('resize', resize);
 
     const particles = [];
-    const NUM_PARTICLES = 70;
+    const NUM_PARTICLES = 80;
     for (let i = 0; i < NUM_PARTICLES; i++) {
         particles.push({
             x: Math.random() * w,
             y: Math.random() * h,
             r: Math.random() * 4 + 2,
-            dx: (Math.random() - 0.5) * 0.2,
-            dy: (Math.random() - 0.5) * 0.2,
-            hue: 240 + Math.random() * 60
+            dx: (Math.random() - 0.5) * 0.3,
+            dy: (Math.random() - 0.5) * 0.3,
+            hue: 240 + Math.random() * 60,
+            speed: 0.2 + Math.random() * 0.3
         });
     }
 
     function drawParticles() {
         ctx.clearRect(0, 0, w, h);
 
+        // Рисуем линии от каждой частицы к центру мышки
         for (let p of particles) {
             const dx = mouseX - p.x;
             const dy = mouseY - p.y;
             const dist = Math.sqrt(dx*dx + dy*dy);
-            if (dist < 200) {
-                const alpha = 1 - (dist / 200);
+            if (dist < 300) {
+                const alpha = 1 - (dist / 300);
                 ctx.beginPath();
                 ctx.moveTo(p.x, p.y);
                 ctx.lineTo(mouseX, mouseY);
-                ctx.strokeStyle = `hsla(${p.hue}, 80%, 70%, ${alpha * 0.2})`;
-                ctx.lineWidth = 1.2;
+                ctx.strokeStyle = `hsla(${p.hue}, 80%, 70%, ${alpha * 0.25})`;
+                ctx.lineWidth = 1.5;
                 ctx.stroke();
             }
         }
 
+        // Рисуем сами частицы
         for (let p of particles) {
-            p.x += p.dx;
-            p.y += p.dy;
+            p.x += p.dx * p.speed;
+            p.y += p.dy * p.speed;
             if (p.x < 0 || p.x > w) p.dx *= -1;
             if (p.y < 0 || p.y > h) p.dy *= -1;
 
+            // Частицы притягиваются к мышке
+            const dx = mouseX - p.x;
+            const dy = mouseY - p.y;
+            const dist = Math.sqrt(dx*dx + dy*dy);
+            if (dist < 200) {
+                p.x += dx * 0.008;
+                p.y += dy * 0.008;
+            }
+
             ctx.beginPath();
             ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-            ctx.fillStyle = `hsla(${p.hue}, 80%, 65%, 0.6)`;
-            ctx.shadowColor = 'rgba(168,85,247,0.2)';
-            ctx.shadowBlur = 15;
+            ctx.fillStyle = `hsla(${p.hue}, 80%, 65%, 0.7)`;
+            ctx.shadowColor = `hsla(${p.hue}, 80%, 65%, 0.3)`;
+            ctx.shadowBlur = 20;
             ctx.fill();
+            ctx.shadowBlur = 0;
         }
         requestAnimationFrame(drawParticles);
     }
     drawParticles();
 
-    // ---------- АНІМАЦІЯ ПОЯВИ ----------
+    // ---------- АНИМАЦИЯ ПОЯВЛЕНИЯ ----------
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -1100,8 +1330,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
         observer.observe(el);
     });
 
-    // ---------- ЛОГІКА GUI ----------
-    // Вкладки
+    // ---------- ЛОГИКА GUI ----------
     const menuItems = document.querySelectorAll('.menu-item');
     const panels = {
         combat: document.getElementById('panel-combat'),
@@ -1123,7 +1352,6 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
         });
     });
 
-    // Перемикачі
     function toggleSwitch(el) {
         const sw = el.querySelector('.switch');
         const label = el.querySelector('.label');
@@ -1131,29 +1359,25 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
         label.textContent = sw.classList.contains('active') ? 'ON' : 'OFF';
     }
 
-    // Кнопки +/–
     function changeValue(btn, delta, id) {
         const span = document.getElementById(id);
         let val = parseFloat(span.textContent) || 0;
         val = Math.round((val + delta) * 100) / 100;
-        if (id === 'rangeVal') val = Math.max(0, Math.min(30, val));
+        if (id === 'rangeVal') val = Math.max(0, Math.min(200, val));
         else if (id === 'delayVal') val = Math.max(0, Math.min(5, val));
         else if (id === 'walkSpeed') val = Math.max(1, Math.min(100, val));
-        else if (id === 'sprintSpeed') val = Math.max(1, Math.min(100, val));
-        else if (id === 'flySpeed') val = Math.max(0, Math.min(200, val));
+        else if (id === 'flySpeed') val = Math.max(0, Math.min(500, val));
         else if (id === 'musicVol') val = Math.max(0, Math.min(100, Math.round(val)));
         else if (id === 'ksVol') val = Math.max(0, Math.min(100, Math.round(val)));
         span.textContent = val;
     }
 
-    // Вибір X1/X2/X3
     function selectX(el) {
         const parent = el.parentElement;
         parent.querySelectorAll('.x-btn').forEach(b => b.classList.remove('active'));
         el.classList.add('active');
     }
 
-    // Вибір стилю (ESP, KillSound)
     function selectStyle(el) {
         const parent = el.parentElement;
         parent.querySelectorAll('.style-btn').forEach(b => b.classList.remove('active'));
