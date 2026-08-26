@@ -46,7 +46,6 @@
             box-shadow: 0 8px 32px rgba(0,0,0,0.3);
         }
 
-        /* ===== КАСТОМНЫЙ КУРСОР ===== */
         .cursor-dot {
             position: fixed;
             width: 16px;
@@ -266,7 +265,6 @@
         .btn-secondary:hover { background: rgba(255,255,255,0.1); transform: scale(1.05); }
         .hero-image { display: none; }
 
-        /* ===== ВАЖНЫЕ ФУНКЦИИ ===== */
         .features-section {
             padding: 40px 0 60px;
         }
@@ -530,11 +528,13 @@
         .supported-games { padding: 60px 0; }
         .games-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            max-width: 1000px;
+            margin: 0 auto;
         }
         .game-card {
-            padding: 30px;
+            padding: 25px 20px;
             text-align: center;
             background: rgba(255,255,255,0.04);
             backdrop-filter: blur(10px);
@@ -550,26 +550,26 @@
         }
         .game-card h3 {
             font-family: 'Inter', sans-serif;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             color: #e0e0ff;
         }
         .game-card .game-id {
             font-family: 'Inter', sans-serif;
-            font-size: 12px;
+            font-size: 11px;
             color: rgba(255,255,255,0.3);
-            margin-top: 8px;
+            margin-top: 6px;
         }
         .game-card .play-btn {
             display: inline-block;
-            margin-top: 15px;
-            padding: 10px 30px;
+            margin-top: 12px;
+            padding: 10px 28px;
             background: linear-gradient(135deg, #a855f7, #7c3aed);
             border-radius: 30px;
             color: #fff;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
             transition: .3s;
             border: none;
             font-family: 'Inter', sans-serif;
@@ -583,7 +583,7 @@
             font-family: 'Inter', sans-serif;
             color: #4ade80;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .get-script { padding: 40px 0 60px; text-align: center; }
@@ -778,10 +778,10 @@
             <p data-i18n="hero_desc">Pixels Client — powerful script for Roblox with Auto Aim, Speed Fly, Soft Detector and Anti-Fling.</p>
             
             <div class="dev-links">
-                <a href="https://www.roblox.com/users/5145874925/profile" target="_blank" class="dev-link" title="Основной аккаунт">
+                <a href="https://www.roblox.com/users/5145874925/profile" target="_blank" class="dev-link" title="Main account">
                     <i class="fas fa-user-circle"></i> Barbarasocks0
                 </a>
-                <a href="https://www.roblox.com/users/7250264573/profile" target="_blank" class="dev-link" title="Твинк">
+                <a href="https://www.roblox.com/users/7250264573/profile" target="_blank" class="dev-link" title="Alt account">
                     <i class="fas fa-user-circle"></i> Hack666777gor
                 </a>
             </div>
@@ -793,7 +793,7 @@
         </div>
     </section>
 
-    <!-- ===== ВАЖНЫЕ ФУНКЦИИ ===== -->
+    <!-- ===== KEY FEATURES ===== -->
     <section class="features-section fade-init">
         <h2 class="section-title" data-i18n="features_title">⚡ 𝐊𝐞𝐲 𝐅𝐞𝐚𝐭𝐮𝐫𝐞𝐬</h2>
         <div class="features-grid">
@@ -830,7 +830,7 @@
         </div>
     </section>
 
-    <!-- GUI ДЕМОНСТРАЦИЯ -->
+    <!-- GUI DEMO -->
     <section class="gui-demo fade-init" id="gui-demo">
         <h2 class="section-title" data-i18n="gui_title">🎮 𝐓𝐫𝐲 𝐭𝐡𝐞 𝐆𝐔𝐈</h2>
         <p style="text-align:center; color:rgba(255,255,255,0.5); max-width:600px; margin:0 auto 40px; font-family: 'Inter', sans-serif; font-size: 16px;" data-i18n="gui_desc">Click around the settings — this is a demo of the Pixel Client interface.</p>
@@ -1050,6 +1050,14 @@
                     <i class="fas fa-play"></i> PLAY
                 </button>
             </div>
+            <div class="game-card" onclick="window.open('https://www.roblox.com/games/93978595733734/Violence-District', '_blank')">
+                <h3>🔫 𝐕𝐢𝐨𝐥𝐞𝐧𝐜𝐞 𝐃𝐢𝐬𝐭𝐫𝐢𝐜𝐭</h3>
+                <p><span class="support-status">✅ SUPPORTED</span></p>
+                <p class="game-id">ID: 93978595733734</p>
+                <button class="play-btn" onclick="event.stopPropagation(); window.open('https://www.roblox.com/games/93978595733734/Violence-District', '_blank')">
+                    <i class="fas fa-play"></i> PLAY
+                </button>
+            </div>
         </div>
         <p style="text-align:center; color:rgba(255,255,255,0.4); margin-top:20px; font-family: 'Inter', sans-serif; font-size: 14px;" data-i18n="more_games">𝐌𝐨𝐫𝐞 𝐠𝐚𝐦𝐞𝐬 𝐜𝐨𝐦𝐢𝐧𝐠 𝐬𝐨𝐨𝐧...</p>
     </section>
@@ -1078,7 +1086,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
 </div>
 
 <script>
-    // ---------- КАСТОМНЫЙ КУРСОР ----------
+    // ---------- CUSTOM CURSOR ----------
     const cursor = document.getElementById('cursor');
     const cursorRing = document.getElementById('cursorRing');
     let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0;
@@ -1110,7 +1118,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
         });
     });
 
-    // ---------- МОВИ ----------
+    // ---------- LANGUAGES ----------
     const i18n = {
         en: {
             hero_desc: 'Pixels Client — powerful script for Roblox with Auto Aim, Speed Fly, Soft Detector and Anti-Fling.',
@@ -1246,7 +1254,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
         });
     });
 
-    // ---------- ЧАСТИНКИ С ЛИНИЯМИ В ЦЕНТР МЫШКИ ----------
+    // ---------- PARTICLES WITH LINES TO CURSOR ----------
     const canvas = document.getElementById('particles-canvas');
     const ctx = canvas.getContext('2d');
     let w, h;
@@ -1271,7 +1279,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
     function drawParticles() {
         ctx.clearRect(0, 0, w, h);
 
-        // Рисуем линии от каждой частицы к центру мышки
+        // Draw lines from particles to cursor
         for (let p of particles) {
             const dx = mouseX - p.x;
             const dy = mouseY - p.y;
@@ -1287,14 +1295,14 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
             }
         }
 
-        // Рисуем сами частицы
+        // Draw particles
         for (let p of particles) {
             p.x += p.dx * p.speed;
             p.y += p.dy * p.speed;
             if (p.x < 0 || p.x > w) p.dx *= -1;
             if (p.y < 0 || p.y > h) p.dy *= -1;
 
-            // Частицы притягиваются к мышке
+            // Particles attract to cursor
             const dx = mouseX - p.x;
             const dy = mouseY - p.y;
             const dist = Math.sqrt(dx*dx + dy*dy);
@@ -1315,7 +1323,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
     }
     drawParticles();
 
-    // ---------- АНИМАЦИЯ ПОЯВЛЕНИЯ ----------
+    // ---------- FADE IN ANIMATION ----------
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -1330,7 +1338,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
         observer.observe(el);
     });
 
-    // ---------- ЛОГИКА GUI ----------
+    // ---------- GUI LOGIC ----------
     const menuItems = document.querySelectorAll('.menu-item');
     const panels = {
         combat: document.getElementById('panel-combat'),
