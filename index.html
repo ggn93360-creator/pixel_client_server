@@ -9,7 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Все стили такие же, как в предыдущей версии, с добавлением стилей для чата */
         * { margin:0; padding:0; box-sizing:border-box; cursor:none; }
         body {
             background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
@@ -587,7 +586,6 @@
             font-size: 13px;
         }
 
-        /* ===== CHAT SECTION ===== */
         .chat-section {
             padding: 40px 0 60px;
         }
@@ -1081,15 +1079,22 @@
         <p style="text-align:center; color:rgba(255,255,255,0.4); margin-top:20px; font-family: 'Inter', sans-serif; font-size: 14px;" data-i18n="more_games">𝐌𝐨𝐫𝐞 𝐠𝐚𝐦𝐞𝐬 𝐜𝐨𝐦𝐢𝐧𝐠 𝐬𝐨𝐨𝐧...</p>
     </section>
 
-    <!-- ===== LIVE CHAT ===== -->
+    <!-- ===== LIVE CHAT (исправлено) ===== -->
     <section class="chat-section fade-init" id="chat">
         <h2 class="section-title">💬 𝐋𝐢𝐯𝐞 𝐂𝐡𝐚𝐭</h2>
         <p style="text-align:center; color:rgba(255,255,255,0.5); max-width:600px; margin:0 auto 20px; font-family: 'Inter', sans-serif; font-size:16px;">
             Chat with other players and the community!
         </p>
         <div class="chat-container glass">
-            <iframe src="https://tlk.io/embed/pixelsclientchat" allowfullscreen></iframe>
+            <iframe src="https://tlk.io/embed/pixelsclientchat" style="width:100%; height:450px; border:none; border-radius:12px; background:rgba(0,0,0,0.2);"></iframe>
         </div>
+        <p style="text-align:center; color:rgba(255,255,255,0.3); font-size:12px; margin-top:10px;">
+            If chat doesn't load, 
+            <a href="https://tlk.io/pixelsclientchat" target="_blank" style="color:#a855f7; text-decoration:underline;">
+                click here to create and open the room
+            </a>
+            (then refresh this page).
+        </p>
     </section>
 
     <section class="get-script fade-init" id="get-script">
