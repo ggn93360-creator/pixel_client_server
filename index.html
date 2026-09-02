@@ -587,8 +587,6 @@
             font-size: 13px;
         }
 
-        /* чат удалён */
-
         .get-script { padding: 40px 0 60px; text-align: center; }
         .get-script h2 {
             font-family: 'Inter', sans-serif;
@@ -735,6 +733,39 @@
             letter-spacing: 1px;
         }
 
+        /* ——— Новый блок обновления ——— */
+        .update-notice {
+            background: rgba(255, 200, 0, 0.12);
+            border: 2px solid #fbbf24;
+            border-radius: 20px;
+            padding: 30px 20px;
+            margin: 20px auto 30px;
+            max-width: 800px;
+            text-align: center;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 0 40px rgba(251, 191, 36, 0.15);
+        }
+        .update-notice h3 {
+            font-family: 'Inter', sans-serif;
+            font-size: 28px;
+            font-weight: 900;
+            color: #fbbf24;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+        .update-notice p {
+            font-family: 'Inter', sans-serif;
+            font-size: 18px;
+            color: rgba(255,255,255,0.85);
+            line-height: 1.5;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .update-notice .highlight-text {
+            color: #fbbf24;
+            font-weight: 700;
+        }
+
         @media (max-width: 700px) {
             .hero-text h1 { font-size: 32px; }
             .hero-text h1 .avatar-wrapper { width: 55px; height: 55px; }
@@ -753,6 +784,8 @@
             .get-script h2 { font-size: 26px; }
             .cursor-dot { width: 12px; height: 12px; }
             .cursor-ring { width: 30px; height: 30px; }
+            .update-notice h3 { font-size: 22px; }
+            .update-notice p { font-size: 16px; }
         }
     </style>
 </head>
@@ -769,6 +802,17 @@
             <button class="lang-btn" data-lang="ru">RU</button>
         </div>
     </header>
+
+    <!-- ===== НОВЫЙ БЛОК ОБНОВЛЕНИЯ (ПЕРЕМЕЩЁН НАВЕРХ) ===== -->
+    <div class="update-notice fade-init visible">
+        <h3 data-i18n="update_title">⚠️ БОЛЬШОЕ ОБНОВЛЕНИЕ</h3>
+        <p>
+            <span class="highlight-text" data-i18n="update_text1">Все скрипты полностью работают</span>
+            <span data-i18n="update_text2">и будут функционировать в текущей версии.</span><br>
+            <span data-i18n="update_text3">Однако обновления больше не выходят — клиент остаётся в стабильном состоянии.</span><br>
+            <span data-i18n="update_text4">Мы рекомендуем использовать его как есть.</span>
+        </p>
+    </div>
 
     <section class="hero fade-init" id="hero">
         <div class="hero-text">
@@ -1149,7 +1193,13 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
             step2: 'Open your Roblox executor and paste it.',
             step3: 'Execute and enjoy the game!',
             copy_btn: '📋 COPY',
-            get_note: 'We respond within 5 minutes.'
+            get_note: 'We respond within 5 minutes.',
+            // Update translations
+            update_title: '⚠️ BIG UPDATE',
+            update_text1: 'All scripts are fully functional',
+            update_text2: 'and will work in the current version.',
+            update_text3: 'However, updates are no longer released — the client remains stable.',
+            update_text4: 'We recommend using it as is.'
         },
         uk: {
             hero_desc: 'Pixels Client — потужний скрипт для Roblox з авто-аймом, швидкісним польотом, детектом софтів та анти-флінгом.',
@@ -1178,7 +1228,12 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
             step2: 'Vidkryyte sviy ekzekutor Roblox i vstavte yoho.',
             step3: 'Zapustit i nasolodzhuytes hroyu!',
             copy_btn: '📋 𝐊𝐨𝐩𝐢𝐲𝐮𝐯𝐚𝐭𝐲',
-            get_note: 'Vidpovidayemo protyahom 5 khvylyn.'
+            get_note: 'Vidpovidayemo protyahom 5 khvylyn.',
+            update_title: '⚠️ ВЕЛИКЕ ОНОВЛЕННЯ',
+            update_text1: 'Всі скрипти повністю працюють',
+            update_text2: 'і будуть функціонувати в поточній версії.',
+            update_text3: 'Однак оновлення більше не виходять — клієнт залишається стабільним.',
+            update_text4: 'Ми рекомендуємо використовувати його як є.'
         },
         ru: {
             hero_desc: 'Pixels Client — мощный скрипт для Roblox с авто-аймом, скоростным полётом, детектом софтов и анти-флингом.',
@@ -1207,7 +1262,12 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
             step2: 'Otkroyte svoy ekzekutor Roblox i vstavte yego.',
             step3: 'Zapustite i naslazhdaytes igroy!',
             copy_btn: '📋 𝐊𝐨𝐩𝐢𝐫𝐨𝐯𝐚𝐭𝐲',
-            get_note: 'Otvechayem v techeniye 5 minut.'
+            get_note: 'Otvechayem v techeniye 5 minut.',
+            update_title: '⚠️ БОЛЬШОЕ ОБНОВЛЕНИЕ',
+            update_text1: 'Все скрипты полностью работают',
+            update_text2: 'и будут функционировать в текущей версии.',
+            update_text3: 'Однако обновления больше не выходят — клиент остаётся в стабильном состоянии.',
+            update_text4: 'Мы рекомендуем использовать его как есть.'
         }
     };
 
@@ -1215,7 +1275,13 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
         const data = i18n[lang];
         document.querySelectorAll('[data-i18n]').forEach(el => {
             const key = el.getAttribute('data-i18n');
-            if (data[key] !== undefined) el.innerHTML = data[key];
+            if (data[key] !== undefined) {
+                // Для элементов с несколькими span внутри (update-text) мы используем отдельные ключи.
+                // Но здесь мы заменяем весь innerHTML, поэтому лучше разбить на отдельные элементы.
+                // Однако мы можем просто заменить текст внутри тегов, но учтём что в блоке update-notice
+                // используется несколько span с data-i18n, поэтому они обновятся автоматически.
+                el.innerHTML = data[key];
+            }
         });
         document.querySelectorAll('.lang-btn').forEach(btn => {
             btn.classList.toggle('active', btn.dataset.lang === lang);
