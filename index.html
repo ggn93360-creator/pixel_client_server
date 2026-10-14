@@ -1,139 +1,884 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Pixels Client — Glass</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        /* Все стили сохранены */
-        * { margin:0; padding:0; box-sizing:border-box; cursor:none; }
-        body { background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); color: #e0e0ff; font-family: 'Inter', sans-serif; min-height: 100vh; overflow-x: hidden; position: relative; cursor: none; }
-        body::before { content:''; position: fixed; top:-50%; left:-50%; width:200%; height:200%; background: radial-gradient(circle at 30% 50%, rgba(168,85,247,0.15), transparent 60%), radial-gradient(circle at 70% 80%, rgba(236,72,153,0.1), transparent 60%); animation: rotateBg 30s linear infinite; z-index:0; pointer-events:none; }
-        @keyframes rotateBg { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
-        .cursor-dot { position: fixed; width:16px; height:16px; background: radial-gradient(circle, #a855f7, #7c3aed); border-radius:50%; pointer-events:none; transform: translate(-50%,-50%); z-index:9999; transition: width .2s, height .2s; box-shadow: 0 0 30px rgba(168,85,247,0.6), 0 0 60px rgba(168,85,247,0.3); mix-blend-mode: screen; }
-        .cursor-dot.hover { width:32px; height:32px; background: radial-gradient(circle, #ec4899, #a855f7); box-shadow: 0 0 50px rgba(168,85,247,0.8), 0 0 80px rgba(168,85,247,0.4); }
-        .cursor-ring { position: fixed; width:40px; height:40px; border:2px solid rgba(168,85,247,0.3); border-radius:50%; pointer-events:none; transform: translate(-50%,-50%); z-index:9998; transition: width .3s, height .3s, border-color .3s; box-shadow: 0 0 20px rgba(168,85,247,0.1); }
-        .cursor-ring.hover { width:60px; height:60px; border-color: rgba(168,85,247,0.6); box-shadow: 0 0 40px rgba(168,85,247,0.2); }
-        #particles-canvas { position: fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none; }
-        .container { max-width:1100px; margin:0 auto; padding:30px 20px; position:relative; z-index:1; }
-        header { display:flex; justify-content:space-between; align-items:center; padding:20px 25px; flex-wrap:wrap; gap:15px; background: rgba(255,255,255,0.04); backdrop-filter: blur(10px); border:1px solid rgba(255,255,255,0.06); border-radius:16px; }
-        .logo { font-family:'Inter', sans-serif; font-weight:700; font-size:28px; background: linear-gradient(135deg, #a855f7, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing:1px; }
-        .logo span { font-weight:300; font-size:18px; background:none; -webkit-text-fill-color: rgba(255,255,255,0.4); margin-left:8px; }
-        .lang-switch { display:flex; gap:8px; }
-        .lang-btn { background: rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#ccc; padding:6px 14px; border-radius:30px; font-size:13px; font-weight:600; transition:.3s; font-family:'Inter', sans-serif; cursor:none; }
-        .lang-btn.active { background: rgba(168,85,247,0.25); border-color:#a855f7; color:#fff; box-shadow:0 0 20px rgba(168,85,247,0.2); }
-        .lang-btn:hover { background: rgba(168,85,247,0.15); color:#fff; }
-        /* Новый блок обновления */
-        .update-notice { background: rgba(255, 200, 0, 0.12); border: 2px solid #fbbf24; border-radius:20px; padding:30px 20px; margin:20px auto 30px; max-width:800px; text-align:center; backdrop-filter: blur(12px); box-shadow:0 0 40px rgba(251,191,36,0.15); }
-        .update-notice h3 { font-family:'Inter', sans-serif; font-size:28px; font-weight:900; color:#fbbf24; letter-spacing:1px; margin-bottom:12px; }
-        .update-notice p { font-family:'Inter', sans-serif; font-size:18px; color:rgba(255,255,255,0.85); line-height:1.5; max-width:600px; margin:0 auto; }
-        .update-notice .highlight-text { color:#fbbf24; font-weight:700; }
-        .hero { display:flex; align-items:center; justify-content:space-between; padding:60px 0 40px; flex-wrap:wrap; gap:30px; }
-        .hero-text { flex:1 1 100%; }
-        .hero-text h1 { font-family:'Inter', sans-serif; font-size:52px; font-weight:900; line-height:1.1; margin-bottom:20px; display:flex; align-items:center; flex-wrap:wrap; gap:15px; letter-spacing:1px; }
-        .hero-text h1 .highlight { background: linear-gradient(135deg, #c084fc, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .hero-text h1 .avatar-wrapper { display:inline-block; width:80px; height:80px; border-radius:50%; overflow:hidden; border:2px solid rgba(168,85,247,0.4); box-shadow:0 0 30px rgba(168,85,247,0.3); transition:.3s; flex-shrink:0; }
-        .hero-text h1 .avatar-wrapper:hover { transform:scale(1.1) rotate(-5deg); border-color:#a855f7; box-shadow:0 0 50px rgba(168,85,247,0.5); }
-        .hero-text h1 .avatar-wrapper img { width:100%; height:100%; object-fit:cover; display:block; }
-        .hero-text p { font-size:18px; color:rgba(255,255,255,0.6); max-width:600px; line-height:1.6; margin-bottom:30px; }
-        .dev-links { display:flex; gap:15px; flex-wrap:wrap; margin-bottom:25px; }
-        .dev-link { display:inline-flex; align-items:center; gap:8px; padding:8px 18px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); border-radius:30px; color:rgba(255,255,255,0.6); text-decoration:none; font-size:14px; font-weight:500; transition:.3s; font-family:'Inter', sans-serif; cursor:none; }
-        .dev-link:hover { background: rgba(168,85,247,0.15); border-color:rgba(168,85,247,0.3); color:#fff; transform:translateY(-2px); }
-        .dev-link i { font-size:16px; color:#a855f7; }
-        .btn-group { display:flex; gap:20px; flex-wrap:wrap; }
-        .btn { display:inline-block; padding:14px 38px; border-radius:50px; font-weight:600; text-decoration:none; transition:all .3s; border:none; font-family:'Inter', sans-serif; font-size:16px; cursor:none; }
-        .btn-primary { background: linear-gradient(135deg, #a855f7, #7c3aed); color:#fff; box-shadow:0 0 30px rgba(168,85,247,0.3); }
-        .btn-primary:hover { transform:scale(1.05); box-shadow:0 0 50px rgba(168,85,247,0.5); }
-        .btn-secondary { background: rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.15); color:#ccc; }
-        .btn-secondary:hover { background: rgba(255,255,255,0.1); transform:scale(1.05); }
-        .hero-image { display:none; }
-        .features-section { padding:40px 0 60px; }
-        .features-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(180px,1fr)); gap:20px; max-width:900px; margin:0 auto; }
-        .feature-card { padding:25px 15px; text-align:center; background:rgba(255,255,255,0.04); backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,0.06); border-radius:16px; transition:all .4s; cursor:none; }
-        .feature-card:hover { border-color:rgba(168,85,247,0.3); transform:translateY(-5px); box-shadow:0 10px 40px rgba(0,0,0,0.2); }
-        .feature-card .icon { font-size:36px; margin-bottom:10px; }
-        .feature-card h3 { font-family:'Inter', sans-serif; font-size:14px; font-weight:700; color:#e0e0ff; letter-spacing:0.5px; margin-bottom:5px; }
-        .feature-card p { font-size:12px; color:rgba(255,255,255,0.4); line-height:1.4; }
-        .gui-demo { padding:60px 0; }
-        .gui-container { max-width:900px; margin:0 auto; }
-        .gui-dashboard { display:flex; gap:20px; flex-wrap:wrap; }
-        .gui-sidebar { flex:0 0 180px; padding:16px; background:rgba(255,255,255,0.04); backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,0.06); border-radius:16px; }
-        .gui-sidebar .menu-item { padding:10px 14px; border-radius:10px; margin-bottom:4px; font-weight:600; font-size:14px; color:rgba(255,255,255,0.5); transition:.3s; cursor:none; font-family:'Inter', sans-serif; }
-        .gui-sidebar .menu-item:hover { background:rgba(168,85,247,0.15); color:#fff; }
-        .gui-sidebar .menu-item.active { background:rgba(168,85,247,0.25); color:#fff; border-left:3px solid #a855f7; }
-        .gui-content { flex:1; padding:20px 24px; background:rgba(255,255,255,0.04); backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,0.06); border-radius:16px; min-height:400px; max-height:500px; overflow-y:auto; }
-        .gui-content::-webkit-scrollbar { width:4px; }
-        .gui-content::-webkit-scrollbar-thumb { background:#a855f7; border-radius:10px; }
-        .gui-content::-webkit-scrollbar-track { background:transparent; }
-        .gui-panel { display:none; }
-        .gui-panel.active { display:block; }
-        .gui-panel h2 { font-family:'Inter', sans-serif; font-size:20px; font-weight:700; margin-bottom:16px; background:linear-gradient(135deg, #a855f7, #f472b6); -webkit-background-clip:text; -webkit-text-fill-color:transparent; letter-spacing:1px; }
-        .gui-setting { display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.05); }
-        .gui-setting:last-child { border-bottom:none; }
-        .gui-setting .label { font-family:'Inter', sans-serif; font-size:14px; font-weight:500; color:rgba(255,255,255,0.7); }
-        .gui-setting .value { font-family:'Inter', sans-serif; font-size:16px; font-weight:600; color:#fff; min-width:40px; text-align:center; }
-        .gui-setting .controls { display:flex; gap:8px; align-items:center; }
-        .gui-setting .btn-small { background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.1); color:#ccc; width:30px; height:30px; border-radius:8px; font-size:16px; font-weight:600; display:flex; align-items:center; justify-content:center; transition:.3s; cursor:none; font-family:'Inter', sans-serif; user-select:none; }
-        .gui-setting .btn-small:hover { background:rgba(168,85,247,0.3); color:#fff; border-color:#a855f7; }
-        .gui-toggle { display:flex; align-items:center; gap:10px; cursor:none; user-select:none; }
-        .gui-toggle .switch { width:40px; height:22px; background:rgba(255,255,255,0.1); border-radius:30px; position:relative; transition:.3s; cursor:none; }
-        .gui-toggle .switch.active { background:rgba(168,85,247,0.5); }
-        .gui-toggle .switch::after { content:''; position:absolute; top:2px; left:2px; width:18px; height:18px; background:#fff; border-radius:50%; transition:.3s; }
-        .gui-toggle .switch.active::after { left:20px; background:#a855f7; }
-        .gui-toggle .label { font-family:'Inter', sans-serif; font-size:14px; color:rgba(255,255,255,0.6); }
-        .gui-x-toggle { display:flex; gap:6px; align-items:center; }
-        .gui-x-toggle .x-btn { background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.08); padding:4px 12px; border-radius:30px; font-size:12px; font-weight:600; color:rgba(255,255,255,0.4); transition:.3s; cursor:none; user-select:none; font-family:'Inter', sans-serif; }
-        .gui-x-toggle .x-btn.active { background:rgba(168,85,247,0.2); border-color:#a855f7; color:#fff; }
-        .gui-x-toggle .x-btn:hover { background:rgba(168,85,247,0.1); }
-        .gui-style-selector { display:flex; gap:6px; align-items:center; }
-        .gui-style-selector .style-btn { background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.08); padding:4px 12px; border-radius:30px; font-size:12px; font-weight:600; color:rgba(255,255,255,0.4); transition:.3s; cursor:none; user-select:none; font-family:'Inter', sans-serif; }
-        .gui-style-selector .style-btn.active { background:rgba(168,85,247,0.2); border-color:#a855f7; color:#fff; }
-        .gui-style-selector .style-btn:hover { background:rgba(168,85,247,0.1); }
-        .supported-games { padding:60px 0; }
-        .games-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:25px; max-width:1000px; margin:0 auto; }
-        .game-card { padding:25px 20px; text-align:center; background:rgba(255,255,255,0.04); backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,0.06); border-radius:16px; transition:all .4s; cursor:none; }
-        .game-card:hover { border-color:rgba(168,85,247,0.3); box-shadow:0 5px 30px rgba(0,0,0,0.15); transform:translateY(-5px); }
-        .game-card h3 { font-family:'Inter', sans-serif; font-size:18px; font-weight:700; margin-bottom:10px; color:#e0e0ff; }
-        .game-card .game-id { font-family:'Inter', sans-serif; font-size:11px; color:rgba(255,255,255,0.3); margin-top:6px; }
-        .game-card .play-btn { display:inline-block; margin-top:12px; padding:10px 28px; background:linear-gradient(135deg, #a855f7, #7c3aed); border-radius:30px; color:#fff; font-weight:600; font-size:13px; transition:.3s; border:none; font-family:'Inter', sans-serif; cursor:none; }
-        .game-card .play-btn:hover { transform:scale(1.05); box-shadow:0 0 30px rgba(168,85,247,0.4); }
-        .support-status { font-family:'Inter', sans-serif; color:#4ade80; font-weight:600; font-size:13px; }
-        .get-script { padding:40px 0 60px; text-align:center; }
-        .get-script h2 { font-family:'Inter', sans-serif; font-size:36px; font-weight:700; margin-bottom:20px; background:linear-gradient(135deg, #a855f7, #f472b6); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-        .get-script p { font-family:'Inter', sans-serif; color:rgba(255,255,255,0.5); font-size:18px; max-width:700px; margin:0 auto 20px; line-height:1.6; }
-        .steps { display:flex; justify-content:center; gap:30px; flex-wrap:wrap; margin:30px 0; }
-        .step { padding:20px 25px; background:rgba(255,255,255,0.04); backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,0.06); border-radius:16px; max-width:200px; color:rgba(255,255,255,0.6); }
-        .step .num { font-family:'Inter', sans-serif; font-size:28px; font-weight:700; color:#a855f7; margin-bottom:10px; }
-        .step p { font-family:'Inter', sans-serif; font-size:14px; margin:0; }
-        .code-block { padding:20px; margin:30px auto; max-width:800px; text-align:left; position:relative; background:rgba(0,0,0,0.3); backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,0.06); border-radius:16px; }
-        .code-block pre { font-family:'Courier New', monospace; font-size:14px; color:#c0c0ee; white-space:pre-wrap; word-break:break-word; margin:0; max-height:300px; overflow-y:auto; }
-        .copy-btn { position:absolute; top:12px; right:12px; background:rgba(168,85,247,0.2); border:1px solid rgba(168,85,247,0.3); border-radius:30px; padding:6px 16px; color:#fff; font-weight:600; font-size:13px; transition:.3s; font-family:'Inter', sans-serif; cursor:none; }
-        .copy-btn:hover { background:rgba(168,85,247,0.4); transform:scale(1.05); }
-        .social-links { display:flex; justify-content:center; gap:30px; margin:30px 0; flex-wrap:wrap; }
-        .social-btn { display:inline-flex; align-items:center; gap:10px; padding:12px 28px; border-radius:50px; background:rgba(255,255,255,0.04); backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,0.06); color:#ccc; text-decoration:none; font-weight:600; transition:.3s; cursor:none; font-family:'Inter', sans-serif; font-size:14px; }
-        .social-btn i { font-size:20px; }
-        .social-btn.discord:hover { background:#5865F2; color:#fff; border-color:#5865F2; }
-        .social-btn.telegram:hover { background:#0088cc; color:#fff; border-color:#0088cc; }
-        footer { padding:30px 0; text-align:center; color:rgba(255,255,255,0.3); font-size:14px; border-top:1px solid rgba(255,255,255,0.05); margin-top:30px; font-family:'Inter', sans-serif; }
-        footer a { color:#a855f7; text-decoration:none; }
-        .fade-init { opacity:0; transform:translateY(30px); transition:opacity 0.8s ease, transform 0.8s ease; }
-        .fade-init.visible { opacity:1; transform:translateY(0); }
-        .section-title { font-family:'Inter', sans-serif; font-size:28px; font-weight:700; text-align:center; margin-bottom:40px; background:linear-gradient(135deg, #a855f7, #ec4899); -webkit-background-clip:text; -webkit-text-fill-color:transparent; letter-spacing:1px; }
-        @media (max-width:700px) { .hero-text h1 { font-size:32px; } .hero-text h1 .avatar-wrapper { width:55px; height:55px; } .hero-text p { font-size:15px; } .btn { padding:12px 24px; font-size:14px; } body { cursor:none; } a, button { cursor:none; } .lang-btn { font-size:11px; padding:4px 10px; } .code-block pre { font-size:12px; } .games-grid { grid-template-columns:1fr; } .features-grid { grid-template-columns:1fr 1fr; } .dev-links { gap:10px; } .dev-link { font-size:12px; padding:6px 14px; } .section-title { font-size:22px; } .logo { font-size:22px; } .get-script h2 { font-size:26px; } .cursor-dot { width:12px; height:12px; } .cursor-ring { width:30px; height:30px; } .update-notice h3 { font-size:22px; } .update-notice p { font-size:16px; } }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>桜 · PIXELS CLIENT</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;900&family=Ma+Shan+Zheng&family=Long+Cang&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+    * { margin:0; padding:0; box-sizing:border-box; cursor:none; }
+
+    :root {
+        --ink: #2b1f26;
+        --ink-soft: #4a3540;
+        --paper: #fdf3f1;
+        --paper-2: #f8e5e5;
+        --paper-3: #f2d4d6;
+        --sakura: #e88aa0;
+        --sakura-deep: #c25e78;
+        --sakura-soft: #f7b8c5;
+        --bark: #5a3a3f;
+        --gold-mute: #b8956a;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+        background-color: var(--paper);
+        background-image:
+            radial-gradient(circle at 12% 20%, rgba(232,138,160,0.10) 0 1px, transparent 2px),
+            radial-gradient(circle at 78% 63%, rgba(232,138,160,0.08) 0 1px, transparent 2px),
+            radial-gradient(circle at 44% 88%, rgba(90,58,63,0.05) 0 1px, transparent 2px),
+            linear-gradient(180deg, #fef6f4 0%, #f8e5e5 45%, #f0d2d6 100%);
+        background-size: 180px 180px, 240px 240px, 300px 300px, 100% 100%;
+        color: var(--ink);
+        font-family: 'Noto Serif SC', 'Inter', serif;
+        min-height: 100vh;
+        overflow-x: hidden;
+        position: relative;
+        cursor: none;
+        line-height: 1.65;
+    }
+
+    body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 1;
+        background:
+            radial-gradient(ellipse at 0% 0%, rgba(232,138,160,0.10), transparent 32%),
+            radial-gradient(ellipse at 100% 100%, rgba(194,94,120,0.08), transparent 34%),
+            radial-gradient(ellipse at 100% 0%, rgba(247,184,197,0.10), transparent 30%),
+            radial-gradient(ellipse at 0% 100%, rgba(90,58,63,0.05), transparent 28%);
+    }
+
+    /* ===== КУРСОР — ЛЕПЕСТОК САКУРЫ ===== */
+    .cursor-petal {
+        position: fixed;
+        top: 0; left: 0;
+        width: 32px;
+        height: 32px;
+        pointer-events: none;
+        z-index: 9999;
+        transform-origin: 2px 30px;
+        will-change: transform;
+        opacity: 0.95;
+        transition: opacity .25s;
+    }
+    .cursor-petal svg {
+        width: 100%; height: 100%;
+        display: block;
+        filter: drop-shadow(1px 2px 2px rgba(90,58,63,0.28));
+        transition: transform .2s ease;
+        transform-origin: 2px 30px;
+    }
+    .cursor-petal.hover svg { transform: scale(1.28) rotate(8deg); }
+    .cursor-petal.hover svg path.petal  { fill: var(--sakura-deep); }
+    .cursor-petal.hover svg path.vein   { stroke: var(--paper); opacity: 0.55; }
+    .cursor-petal.hover svg path.stem   { stroke: var(--paper); }
+    .cursor-petal.hover svg circle.pistil { fill: #fff2b0; }
+    .cursor-petal svg path,
+    .cursor-petal svg circle { transition: fill .2s ease, stroke .2s ease; }
+
+    /* ===== ВЕТКА САКУРЫ по левому краю ===== */
+    .sakura-branch {
+        position: fixed;
+        left: 0; top: 0; bottom: 0;
+        width: 150px;
+        z-index: 0;
+        pointer-events: none;
+        opacity: 0.9;
+    }
+    .sakura-branch svg { width: 100%; height: 100%; }
+
+    /* падающие лепестки */
+    .petal-fall {
+        position: fixed;
+        top: -20px;
+        width: 14px;
+        height: 14px;
+        pointer-events: none;
+        z-index: 1;
+        opacity: 0.75;
+        animation: petalFall linear infinite;
+    }
+    .petal-fall svg { width: 100%; height: 100%; }
+    @keyframes petalFall {
+        0% {
+            transform: translateY(-20px) rotate(0deg) translateX(0);
+            opacity: 0;
+        }
+        10% { opacity: 0.75; }
+        90% { opacity: 0.75; }
+        100% {
+            transform: translateY(105vh) rotate(540deg) translateX(60px);
+            opacity: 0;
+        }
+    }
+
+    .vertical-seal {
+        position: fixed;
+        right: 22px; top: 50%;
+        transform: translateY(-50%);
+        writing-mode: vertical-rl;
+        font-family: 'Ma Shan Zheng', serif;
+        font-size: 22px;
+        letter-spacing: 12px;
+        color: var(--sakura-deep);
+        z-index: 2;
+        padding: 14px 6px;
+        border-top: 2px solid var(--sakura-deep);
+        border-bottom: 2px solid var(--sakura-deep);
+        background: rgba(253,243,241,0.6);
+        backdrop-filter: blur(3px);
+        user-select: none;
+    }
+
+    .container {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 60px 50px 40px;
+        position: relative;
+        z-index: 2;
+    }
+
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 4px 22px;
+        flex-wrap: wrap;
+        gap: 15px;
+        border-bottom: 1px solid rgba(90,58,63,0.15);
+        margin-bottom: 34px;
+        position: relative;
+    }
+    header::after {
+        content: '';
+        position: absolute;
+        bottom: -5px; left: 0;
+        width: 100%; height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(194,94,120,0.35) 20%, rgba(194,94,120,0.35) 80%, transparent);
+    }
+
+    .logo {
+        font-family: 'Ma Shan Zheng', serif;
+        font-weight: 400;
+        font-size: 34px;
+        color: var(--ink);
+        letter-spacing: 6px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+    .logo .chop {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 46px; height: 46px;
+        background: var(--sakura-deep);
+        color: var(--paper);
+        font-family: 'Ma Shan Zheng', serif;
+        font-size: 24px;
+        border-radius: 3px;
+        transform: rotate(-4deg);
+        box-shadow: 0 2px 8px rgba(194,94,120,0.4);
+        letter-spacing: 0;
+        line-height: 1;
+    }
+    .logo span.sub {
+        font-family: 'Long Cang', 'Noto Serif SC', serif;
+        font-weight: 400;
+        font-size: 20px;
+        color: var(--ink-soft);
+        letter-spacing: 4px;
+        margin-left: -4px;
+    }
+
+    .lang-switch { display: flex; gap: 0; }
+    .lang-btn {
+        background: transparent;
+        border: none;
+        color: rgba(43,31,38,0.5);
+        padding: 6px 16px;
+        font-family: 'Noto Serif SC', serif;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        transition: .3s;
+        cursor: none;
+        position: relative;
+    }
+    .lang-btn:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        right: 0; top: 25%;
+        height: 50%;
+        width: 1px;
+        background: rgba(90,58,63,0.2);
+    }
+    .lang-btn.active {
+        color: var(--sakura-deep);
+        font-weight: 900;
+    }
+    .lang-btn.active::before {
+        content: '';
+        position: absolute;
+        bottom: -2px; left: 20%; right: 20%;
+        height: 2px;
+        background: var(--sakura-deep);
+    }
+    .lang-btn:hover { color: var(--ink); }
+
+    .update-notice {
+        background: var(--paper-2);
+        border: 1px solid rgba(194,94,120,0.25);
+        padding: 34px 40px 30px;
+        margin: 26px auto 40px;
+        max-width: 820px;
+        text-align: center;
+        position: relative;
+        box-shadow:
+            0 1px 0 rgba(194,94,120,0.15),
+            inset 0 0 60px rgba(232,138,160,0.06);
+    }
+    .update-notice::before, .update-notice::after {
+        content: '';
+        position: absolute;
+        left: 0; right: 0;
+        height: 8px;
+        background:
+            repeating-linear-gradient(90deg,
+                rgba(194,94,120,0.25) 0 2px,
+                transparent 2px 8px);
+    }
+    .update-notice::before { top: -4px; }
+    .update-notice::after  { bottom: -4px; }
+
+    .update-notice .stamp {
+        position: absolute;
+        top: -16px;
+        left: 50%;
+        transform: translateX(-50%) rotate(-3deg);
+        background: var(--sakura-deep);
+        color: var(--paper);
+        font-family: 'Ma Shan Zheng', serif;
+        font-size: 18px;
+        padding: 4px 16px;
+        letter-spacing: 4px;
+        box-shadow: 0 2px 10px rgba(194,94,120,0.35);
+    }
+
+    .update-notice h3 {
+        font-family: 'Ma Shan Zheng', serif;
+        font-size: 30px;
+        font-weight: 400;
+        color: var(--ink);
+        letter-spacing: 6px;
+        margin: 8px 0 16px;
+    }
+    .update-notice p {
+        font-family: 'Noto Serif SC', serif;
+        font-size: 16px;
+        color: var(--ink-soft);
+        line-height: 1.9;
+        max-width: 640px;
+        margin: 0 auto;
+        letter-spacing: 0.4px;
+    }
+    .update-notice .highlight-text {
+        color: var(--sakura-deep);
+        font-weight: 600;
+    }
+
+    .hero {
+        display: flex;
+        align-items: center;
+        padding: 40px 0 50px;
+        flex-wrap: wrap;
+        gap: 30px;
+        position: relative;
+    }
+    .hero-text { flex: 1 1 100%; }
+    .hero-text h1 {
+        font-family: 'Ma Shan Zheng', 'Noto Serif SC', serif;
+        font-size: 62px;
+        font-weight: 400;
+        line-height: 1.05;
+        margin-bottom: 26px;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 22px;
+        letter-spacing: 4px;
+        color: var(--ink);
+    }
+    .hero-text h1 .highlight {
+        background: linear-gradient(180deg, var(--ink), var(--sakura-deep));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    .hero-text h1 .avatar-wrapper {
+        display: inline-block;
+        width: 96px; height: 96px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 2px solid var(--sakura-deep);
+        box-shadow:
+            0 0 0 6px var(--paper),
+            0 0 0 7px rgba(194,94,120,0.25),
+            6px 8px 20px rgba(90,58,63,0.15);
+        transition: .4s;
+        flex-shrink: 0;
+        position: relative;
+    }
+    .hero-text h1 .avatar-wrapper::after {
+        content: '桜';
+        position: absolute;
+        bottom: -4px; right: -4px;
+        width: 30px; height: 30px;
+        background: var(--sakura-deep);
+        color: var(--paper);
+        font-family: 'Ma Shan Zheng', serif;
+        font-size: 18px;
+        line-height: 30px;
+        text-align: center;
+        border-radius: 50%;
+        box-shadow: 0 2px 6px rgba(194,94,120,0.45);
+        transform: rotate(6deg);
+    }
+    .hero-text h1 .avatar-wrapper:hover {
+        transform: scale(1.06) rotate(-3deg);
+        border-color: var(--sakura);
+    }
+    .hero-text h1 .avatar-wrapper img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .hero-text p {
+        font-family: 'Noto Serif SC', serif;
+        font-size: 18px;
+        color: var(--ink-soft);
+        max-width: 620px;
+        line-height: 1.85;
+        margin-bottom: 32px;
+        letter-spacing: 0.6px;
+        position: relative;
+        padding-left: 18px;
+    }
+    .hero-text p::before {
+        content: '';
+        position: absolute;
+        left: 0; top: 6px; bottom: 6px;
+        width: 3px;
+        background: var(--sakura-deep);
+    }
+
+    .dev-links { display: flex; gap: 26px; flex-wrap: wrap; margin-bottom: 30px; }
+    .dev-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px 0;
+        color: var(--ink-soft);
+        text-decoration: none;
+        font-family: 'Noto Serif SC', serif;
+        font-size: 14px;
+        letter-spacing: 1px;
+        transition: .3s;
+        cursor: none;
+        border-bottom: 1px dashed rgba(194,94,120,0.4);
+    }
+    .dev-link i { color: var(--sakura-deep); font-size: 15px; }
+    .dev-link:hover {
+        color: var(--sakura-deep);
+        border-bottom-color: var(--sakura-deep);
+    }
+
+    .btn-group { display: flex; gap: 18px; flex-wrap: wrap; }
+    .btn {
+        display: inline-block;
+        padding: 14px 40px;
+        font-family: 'Noto Serif SC', serif;
+        font-weight: 700;
+        font-size: 15px;
+        letter-spacing: 4px;
+        text-decoration: none;
+        transition: all .35s;
+        cursor: none;
+        position: relative;
+        border-radius: 2px;
+    }
+    .btn-primary {
+        background: var(--sakura-deep);
+        color: var(--paper);
+        box-shadow: 4px 4px 0 #8f3f56;
+    }
+    .btn-primary:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 6px 6px 0 #8f3f56;
+    }
+
+    .section-title {
+        font-family: 'Ma Shan Zheng', serif;
+        font-size: 38px;
+        font-weight: 400;
+        color: var(--ink);
+        letter-spacing: 8px;
+        text-align: center;
+        margin-bottom: 50px;
+        position: relative;
+        display: block;
+    }
+    .section-title::before,
+    .section-title::after {
+        content: '❀';
+        display: inline-block;
+        vertical-align: middle;
+        color: var(--sakura);
+        font-size: 20px;
+        margin: 0 24px;
+        opacity: 0.7;
+    }
+
+    .features-section { padding: 50px 0 70px; }
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+        gap: 1px;
+        max-width: 980px;
+        margin: 0 auto;
+        background: rgba(194,94,120,0.15);
+        border: 1px solid rgba(194,94,120,0.15);
+    }
+    .feature-card {
+        padding: 32px 18px;
+        text-align: center;
+        background: var(--paper-2);
+        transition: all .4s;
+        cursor: none;
+        position: relative;
+    }
+    .feature-card:hover { background: var(--paper); }
+    .feature-card .icon {
+        font-size: 32px;
+        margin-bottom: 14px;
+        display: block;
+        filter: grayscale(0.4) sepia(0.2) hue-rotate(-10deg);
+        opacity: 0.9;
+        transition: .4s;
+    }
+    .feature-card:hover .icon {
+        filter: none;
+        opacity: 1;
+        transform: scale(1.1);
+    }
+    .feature-card h3 {
+        font-family: 'Noto Serif SC', serif;
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--ink);
+        letter-spacing: 3px;
+        margin-bottom: 8px;
+    }
+    .feature-card p {
+        font-family: 'Noto Serif SC', serif;
+        font-size: 12px;
+        color: var(--ink-soft);
+        line-height: 1.55;
+        letter-spacing: 0.3px;
+    }
+
+    .supported-games { padding: 60px 0; }
+    .games-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+        gap: 1px;
+        max-width: 1020px;
+        margin: 0 auto;
+        background: rgba(194,94,120,0.15);
+        border: 1px solid rgba(194,94,120,0.15);
+    }
+    .game-card {
+        padding: 32px 22px;
+        text-align: center;
+        background: var(--paper-2);
+        transition: all .4s;
+        cursor: none;
+        position: relative;
+    }
+    .game-card:hover { background: var(--paper); }
+    .game-card::before {
+        content: '❀';
+        position: absolute;
+        top: 10px; left: 12px;
+        color: var(--sakura);
+        font-size: 14px;
+        opacity: 0.6;
+    }
+    .game-card::after {
+        content: '❀';
+        position: absolute;
+        bottom: 10px; right: 12px;
+        color: var(--sakura);
+        font-size: 14px;
+        opacity: 0.6;
+    }
+    .game-card h3 {
+        font-family: 'Noto Serif SC', serif;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 12px;
+        color: var(--ink);
+        letter-spacing: 2px;
+    }
+    .game-card .game-id {
+        font-family: 'Inter', monospace;
+        font-size: 11px;
+        color: rgba(90,58,63,0.4);
+        margin-top: 8px;
+        letter-spacing: 1px;
+    }
+    .game-card .play-btn {
+        display: inline-block;
+        margin-top: 14px;
+        padding: 9px 28px;
+        background: transparent;
+        border: 1px solid var(--ink);
+        border-radius: 2px;
+        color: var(--ink);
+        font-family: 'Noto Serif SC', serif;
+        font-weight: 700;
+        font-size: 12px;
+        letter-spacing: 4px;
+        transition: .3s;
+        cursor: none;
+    }
+    .game-card .play-btn:hover {
+        background: var(--sakura-deep);
+        border-color: var(--sakura-deep);
+        color: var(--paper);
+    }
+    .support-status {
+        font-family: 'Noto Serif SC', serif;
+        color: var(--sakura-deep);
+        font-weight: 700;
+        font-size: 12px;
+        letter-spacing: 3px;
+    }
+
+    .get-script { padding: 50px 0 70px; text-align: center; }
+    .get-script h2 {
+        font-family: 'Ma Shan Zheng', serif;
+        font-size: 40px;
+        font-weight: 400;
+        margin-bottom: 24px;
+        color: var(--ink);
+        letter-spacing: 8px;
+    }
+    .get-script > p {
+        font-family: 'Noto Serif SC', serif;
+        color: var(--ink-soft);
+        font-size: 16px;
+        max-width: 680px;
+        margin: 0 auto 34px;
+        line-height: 1.85;
+        letter-spacing: 0.6px;
+    }
+
+    .steps {
+        display: flex;
+        justify-content: center;
+        gap: 1px;
+        flex-wrap: wrap;
+        margin: 0 auto 40px;
+        max-width: 720px;
+        background: rgba(194,94,120,0.15);
+        border: 1px solid rgba(194,94,120,0.15);
+    }
+    .step {
+        flex: 1 1 200px;
+        padding: 26px 22px;
+        background: var(--paper-2);
+        transition: .3s;
+        position: relative;
+    }
+    .step:hover { background: var(--paper); }
+    .step .num {
+        font-family: 'Ma Shan Zheng', serif;
+        font-size: 40px;
+        font-weight: 400;
+        color: var(--sakura-deep);
+        margin-bottom: 10px;
+        line-height: 1;
+    }
+    .step p {
+        font-family: 'Noto Serif SC', serif;
+        font-size: 13px;
+        color: var(--ink-soft);
+        margin: 0;
+        letter-spacing: 0.4px;
+        line-height: 1.6;
+    }
+
+    .code-block {
+        padding: 26px 22px 22px;
+        margin: 34px auto;
+        max-width: 820px;
+        text-align: left;
+        position: relative;
+        background: #2b1f26;
+        border: 1px solid var(--sakura-deep);
+        box-shadow:
+            6px 6px 0 rgba(194,94,120,0.25),
+            inset 0 0 60px rgba(0,0,0,0.4);
+    }
+    .code-block::before {
+        content: '桜 · code';
+        position: absolute;
+        top: -12px; left: 24px;
+        background: var(--paper-2);
+        border: 1px solid var(--sakura-deep);
+        padding: 2px 12px;
+        font-family: 'Long Cang', serif;
+        font-size: 14px;
+        letter-spacing: 3px;
+        color: var(--sakura-deep);
+    }
+    .code-block pre {
+        font-family: 'Courier New', monospace;
+        font-size: 14px;
+        color: #f2d4d6;
+        white-space: pre-wrap;
+        word-break: break-word;
+        margin: 0;
+        max-height: 300px;
+        overflow-y: auto;
+    }
+    .copy-btn {
+        position: absolute;
+        top: 12px; right: 12px;
+        background: var(--sakura-deep);
+        border: none;
+        padding: 7px 18px;
+        color: var(--paper);
+        font-family: 'Noto Serif SC', serif;
+        font-weight: 700;
+        font-size: 12px;
+        letter-spacing: 3px;
+        transition: .3s;
+        cursor: none;
+        box-shadow: 3px 3px 0 #8f3f56;
+    }
+    .copy-btn:hover {
+        transform: translate(-1px, -1px);
+        box-shadow: 4px 4px 0 #8f3f56;
+    }
+
+    .social-links {
+        display: flex;
+        justify-content: center;
+        gap: 0;
+        margin: 40px 0;
+        flex-wrap: wrap;
+        border: 1px solid rgba(194,94,120,0.3);
+        max-width: 480px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .social-btn {
+        flex: 1 1 180px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 16px 24px;
+        background: transparent;
+        color: var(--ink);
+        text-decoration: none;
+        font-family: 'Noto Serif SC', serif;
+        font-weight: 700;
+        font-size: 13px;
+        letter-spacing: 4px;
+        transition: .3s;
+        cursor: none;
+        position: relative;
+    }
+    .social-btn:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        right: 0; top: 20%;
+        height: 60%;
+        width: 1px;
+        background: rgba(194,94,120,0.3);
+    }
+    .social-btn i { font-size: 17px; }
+    .social-btn.discord:hover { background: #5865F2; color: #fff; }
+    .social-btn.telegram:hover { background: #0088cc; color: #fff; }
+
+    footer {
+        padding: 34px 0 10px;
+        text-align: center;
+        color: rgba(90,58,63,0.55);
+        font-family: 'Noto Serif SC', serif;
+        font-size: 12px;
+        letter-spacing: 3px;
+        border-top: 1px solid rgba(194,94,120,0.2);
+        margin-top: 40px;
+        position: relative;
+    }
+    footer::before {
+        content: '桜';
+        position: absolute;
+        top: -14px;
+        left: 50%;
+        transform: translateX(-50%) rotate(-4deg);
+        width: 28px; height: 28px;
+        background: var(--sakura-deep);
+        color: var(--paper);
+        font-family: 'Ma Shan Zheng', serif;
+        font-size: 16px;
+        line-height: 28px;
+        border-radius: 50%;
+        box-shadow: 0 2px 6px rgba(194,94,120,0.4);
+    }
+    footer a { color: var(--sakura-deep); text-decoration: none; }
+
+    .fade-init {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity .9s ease, transform .9s ease;
+    }
+    .fade-init.visible { opacity: 1; transform: none; }
+
+    @media (max-width: 900px) {
+        .sakura-branch { width: 70px; opacity: 0.55; }
+        .vertical-seal { display: none; }
+        .container { padding: 40px 26px 30px; }
+        .section-title { font-size: 30px; letter-spacing: 5px; }
+    }
+    @media (max-width: 640px) {
+        .container { padding: 30px 18px 24px; }
+        .hero-text h1 { font-size: 34px; letter-spacing: 2px; gap: 14px; }
+        .hero-text h1 .avatar-wrapper { width: 60px; height: 60px; }
+        .hero-text h1 .avatar-wrapper::after { width: 22px; height: 22px; font-size: 14px; line-height: 22px; }
+        .hero-text p { font-size: 15px; }
+        .btn { padding: 12px 26px; font-size: 13px; letter-spacing: 3px; }
+        .lang-btn { font-size: 12px; padding: 4px 10px; letter-spacing: 1px; }
+        .logo { font-size: 24px; letter-spacing: 4px; }
+        .logo .chop { width: 34px; height: 34px; font-size: 18px; }
+        .logo span.sub { font-size: 15px; }
+        .code-block pre { font-size: 12px; }
+        .games-grid, .features-grid, .steps { display: block; }
+        .feature-card, .game-card, .step { border-bottom: 1px solid rgba(194,94,120,0.15); }
+        .section-title { font-size: 22px; letter-spacing: 3px; }
+        .section-title::before, .section-title::after { font-size: 14px; margin: 0 10px; }
+        .get-script h2 { font-size: 26px; letter-spacing: 4px; }
+        .cursor-petal { width: 24px; height: 24px; }
+        .update-notice h3 { font-size: 22px; letter-spacing: 4px; }
+        .update-notice { padding: 28px 20px 22px; }
+    }
+</style>
 </head>
 <body>
-<div class="cursor-dot" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
-<canvas id="particles-canvas"></canvas>
+
+<!-- КУРСОР — ЛЕПЕСТОК САКУРЫ -->
+<div class="cursor-petal" id="cursorPetal" aria-hidden="true">
+    <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+        <!-- лепесток: чаша с выемкой сверху -->
+        <path class="petal"
+              d="M 3 30
+                 Q 2 22, 8 14
+                 Q 14 6, 20 4
+                 Q 20 8, 18 12
+                 Q 22 10, 24 8
+                 Q 22 14, 18 18
+                 Q 14 24, 8 28
+                 Q 5 30, 3 30 Z"
+              fill="var(--sakura)"
+              stroke="var(--sakura-deep)"
+              stroke-width="0.7"
+              stroke-linejoin="round"/>
+        <!-- прожилка по центру -->
+        <path class="vein"
+              d="M 4 29 Q 10 22, 20 8"
+              fill="none"
+              stroke="var(--sakura-deep)"
+              stroke-width="0.6"
+              opacity="0.55"/>
+        <!-- тычинка-точка -->
+        <circle class="pistil" cx="20" cy="7" r="1.2" fill="#fff2b0" stroke="var(--sakura-deep)" stroke-width="0.3"/>
+        <!-- короткий стебель -->
+        <path class="stem"
+              d="M 3 30 Q 1 31, 2 32"
+              fill="none"
+              stroke="var(--sakura-deep)"
+              stroke-width="0.8"
+              stroke-linecap="round"/>
+    </svg>
+</div>
+
+<!-- ВЕТКА САКУРЫ по левому краю -->
+<div class="sakura-branch" aria-hidden="true">
+    <svg viewBox="0 0 150 900" preserveAspectRatio="none">
+        <defs>
+            <linearGradient id="bark" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#5a3a3f" stop-opacity="0.85"/>
+                <stop offset="100%" stop-color="#3d2529" stop-opacity="0.3"/>
+            </linearGradient>
+        </defs>
+        <!-- основной ствол -->
+        <path d="M 30 0 Q 45 180, 30 380 Q 15 620, 35 900"
+              stroke="url(#bark)" stroke-width="10" fill="none" stroke-linecap="round"/>
+        <!-- отводки -->
+        <path d="M 30 120 Q 60 140, 90 130" stroke="url(#bark)" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M 28 300 Q 65 300, 100 320" stroke="url(#bark)" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <path d="M 22 520 Q 55 540, 85 520" stroke="url(#bark)" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M 30 720 Q 70 700, 105 730" stroke="url(#bark)" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <!-- грозди лепестков -->
+        <g fill="var(--sakura)" opacity="0.85">
+            <circle cx="90" cy="130" r="8"/><circle cx="100" cy="122" r="6"/><circle cx="82" cy="122" r="7"/>
+            <circle cx="100" cy="320" r="7"/><circle cx="110" cy="312" r="6"/><circle cx="92" cy="312" r="7"/>
+            <circle cx="85" cy="520" r="8"/><circle cx="96" cy="512" r="6"/><circle cx="78" cy="512" r="6"/>
+            <circle cx="105" cy="730" r="7"/><circle cx="115" cy="722" r="6"/><circle cx="97" cy="722" r="7"/>
+        </g>
+        <g fill="var(--sakura-soft)" opacity="0.7">
+            <circle cx="95" cy="118" r="4"/><circle cx="105" cy="310" r="4"/><circle cx="90" cy="510" r="4"/><circle cx="110" cy="720" r="4"/>
+        </g>
+        <!-- тычинки-точки -->
+        <g fill="#fff2b0">
+            <circle cx="90" cy="128" r="1.5"/><circle cx="100" cy="318" r="1.5"/><circle cx="85" cy="518" r="1.5"/><circle cx="105" cy="728" r="1.5"/>
+        </g>
+    </svg>
+</div>
+
+<!-- падающие лепестки -->
+<div class="petal-fall" style="left: 8%;  animation-duration: 11s; animation-delay: 0s;">
+    <svg viewBox="0 0 14 14"><path d="M 2 13 Q 1 8, 5 4 Q 8 1, 12 2 Q 11 6, 8 9 Q 5 12, 2 13 Z" fill="#e88aa0" opacity="0.9"/></svg>
+</div>
+<div class="petal-fall" style="left: 26%; animation-duration: 14s; animation-delay: 2s;">
+    <svg viewBox="0 0 14 14"><path d="M 2 13 Q 1 8, 5 4 Q 8 1, 12 2 Q 11 6, 8 9 Q 5 12, 2 13 Z" fill="#f7b8c5" opacity="0.9"/></svg>
+</div>
+<div class="petal-fall" style="left: 52%; animation-duration: 12s; animation-delay: 5s;">
+    <svg viewBox="0 0 14 14"><path d="M 2 13 Q 1 8, 5 4 Q 8 1, 12 2 Q 11 6, 8 9 Q 5 12, 2 13 Z" fill="#c25e78" opacity="0.85"/></svg>
+</div>
+<div class="petal-fall" style="left: 74%; animation-duration: 15s; animation-delay: 1s;">
+    <svg viewBox="0 0 14 14"><path d="M 2 13 Q 1 8, 5 4 Q 8 1, 12 2 Q 11 6, 8 9 Q 5 12, 2 13 Z" fill="#e88aa0" opacity="0.9"/></svg>
+</div>
+<div class="petal-fall" style="left: 90%; animation-duration: 13s; animation-delay: 4s;">
+    <svg viewBox="0 0 14 14"><path d="M 2 13 Q 1 8, 5 4 Q 8 1, 12 2 Q 11 6, 8 9 Q 5 12, 2 13 Z" fill="#f7b8c5" opacity="0.9"/></svg>
+</div>
+
+<div class="vertical-seal">桜 · 客 · 户 · 端</div>
+
 <div class="container">
     <header>
-        <div class="logo">PIXELS <span>Client</span></div>
+        <div class="logo">
+            <span class="chop">桜</span>
+            PIXELS
+            <span class="sub">客户端</span>
+        </div>
         <div class="lang-switch">
             <button class="lang-btn active" data-lang="en">EN</button>
             <button class="lang-btn" data-lang="uk">UA</button>
@@ -141,9 +886,9 @@
         </div>
     </header>
 
-    <!-- ===== БЛОК БОЛЬШОГО ОБНОВЛЕНИЯ (ВОЗВРАЩЁН) ===== -->
     <div class="update-notice fade-init visible">
-        <h3 data-i18n="update_title">⚠️ БОЛЬШОЕ ОБНОВЛЕНИЕ</h3>
+        <span class="stamp">告示</span>
+        <h3 data-i18n="update_title">重大更新 · BIG UPDATE</h3>
         <p>
             <span class="highlight-text" data-i18n="update_text1">Все скрипты полностью работают</span>
             <span data-i18n="update_text2">и будут функционировать в текущей версии.</span><br>
@@ -160,85 +905,24 @@
             </h1>
             <p data-i18n="hero_desc">Pixels Client — powerful script for Roblox with Auto Aim, Speed Fly, Soft Detector and Anti-Fling.</p>
             <div class="dev-links">
-                <a href="https://www.roblox.com/users/5145874925/profile" target="_blank" class="dev-link" title="Main account"><i class="fas fa-user-circle"></i> Barbarasocks0</a>
-                <a href="https://www.roblox.com/users/7250264573/profile" target="_blank" class="dev-link" title="Alt account"><i class="fas fa-user-circle"></i> Hack666777gor</a>
+                <a href="https://www.roblox.com/users/5145874925/profile" target="_blank" class="dev-link"><i class="fas fa-user-circle"></i> Barbarasocks0</a>
+                <a href="https://www.roblox.com/users/7250264573/profile" target="_blank" class="dev-link"><i class="fas fa-user-circle"></i> Hack666777gor</a>
             </div>
             <div class="btn-group">
                 <a href="#get-script" class="btn btn-primary" data-i18n="hero_btn_get">𝐆𝐞𝐭 𝐬𝐜𝐫𝐢𝐩𝐭</a>
-                <a href="#gui-demo" class="btn btn-secondary" data-i18n="hero_btn_learn">𝐓𝐫𝐲 𝐆𝐔𝐈</a>
             </div>
         </div>
     </section>
 
-    <!-- ===== KEY FEATURES ===== -->
     <section class="features-section fade-init">
         <h2 class="section-title" data-i18n="features_title">⚡ 𝐊𝐞𝐲 𝐅𝐞𝐚𝐭𝐮𝐫𝐞𝐬</h2>
         <div class="features-grid">
-            <div class="feature-card"><div class="icon">🎯</div><h3 data-i18n="feat_aim">𝐀𝐮𝐭𝐨 𝐀𝐢𝐦</h3><p data-i18n="feat_aim_desc">Instant lock-on target</p></div>
-            <div class="feature-card"><div class="icon">🧱</div><h3 data-i18n="feat_wall">𝐖𝐚𝐥𝐥 𝐁𝐚𝐧𝐠</h3><p data-i18n="feat_wall_desc">Shoot through walls</p></div>
-            <div class="feature-card"><div class="icon">💨</div><h3 data-i18n="feat_speed">𝐒𝐩𝐞𝐞𝐝 𝐅𝐥𝐲</h3><p data-i18n="feat_speed_desc">Super fast movement</p></div>
-            <div class="feature-card"><div class="icon">🕵️</div><h3 data-i18n="feat_detect">𝐒𝐨𝐟𝐭 𝐃𝐞𝐭𝐞𝐜𝐭𝐨𝐫</h3><p data-i18n="feat_detect_desc">Find other cheaters</p></div>
-            <div class="feature-card"><div class="icon">🚫</div><h3 data-i18n="feat_antifling">𝐀𝐧𝐭𝐢-𝐅𝐥𝐢𝐧𝐠</h3><p data-i18n="feat_antifling_desc">Protection from fling</p></div>
-            <div class="feature-card"><div class="icon">👁️</div><h3 data-i18n="feat_esp">𝐄𝐒𝐏</h3><p data-i18n="feat_esp_desc">Visual player tags</p></div>
-        </div>
-    </section>
-
-    <!-- GUI DEMO -->
-    <section class="gui-demo fade-init" id="gui-demo">
-        <h2 class="section-title" data-i18n="gui_title">🎮 𝐓𝐫𝐲 𝐭𝐡𝐞 𝐆𝐔𝐈</h2>
-        <p style="text-align:center; color:rgba(255,255,255,0.5); max-width:600px; margin:0 auto 40px; font-family:'Inter', sans-serif; font-size:16px;" data-i18n="gui_desc">Click around the settings — this is a demo of the Pixel Client interface.</p>
-        <div class="gui-container glass" style="padding:20px;">
-            <div class="gui-dashboard">
-                <div class="gui-sidebar">
-                    <div class="menu-item active" data-tab="combat">𝐂𝐎𝐌𝐁𝐀𝐓</div>
-                    <div class="menu-item" data-tab="movement">𝐌𝐎𝐕𝐄𝐌𝐄𝐍𝐓</div>
-                    <div class="menu-item" data-tab="visuals">𝐕𝐈𝐒𝐔𝐀𝐋𝐒</div>
-                    <div class="menu-item" data-tab="extra">𝐄𝐗𝐓𝐑𝐀</div>
-                    <div class="menu-item" data-tab="music">𝐌𝐔𝐒𝐈𝐂</div>
-                    <div class="menu-item" data-tab="killsound">𝐊𝐈𝐋𝐋𝐒𝐎𝐔𝐍𝐃</div>
-                </div>
-                <div class="gui-content" id="guiContent">
-                    <div class="gui-panel active" id="panel-combat">
-                        <h2>𝐂𝐎𝐌𝐁𝐀𝐓</h2>
-                        <div class="gui-setting"><span class="label">𝐀𝐮𝐭𝐨 𝐀𝐢𝐦</span><div class="gui-toggle" onclick="toggleSwitch(this)"><div class="switch active"></div><span class="label">ON</span></div></div>
-                        <div class="gui-setting"><span class="label">𝐖𝐚𝐥𝐥 𝐁𝐚𝐧𝐠</span><div class="gui-toggle" onclick="toggleSwitch(this)"><div class="switch active"></div><span class="label">ON</span></div></div>
-                        <div class="gui-setting"><span class="label">𝐀𝐢𝐦 𝐑𝐚𝐧𝐠𝐞</span><div class="controls"><span class="btn-small" onclick="changeValue(this, -5, 'rangeVal')">−</span><span class="value" id="rangeVal">50</span><span class="btn-small" onclick="changeValue(this, 5, 'rangeVal')">+</span></div></div>
-                        <div class="gui-setting"><span class="label">𝐑𝐞𝐚𝐜𝐭𝐢𝐨𝐧 𝐃𝐞𝐥𝐚𝐲</span><div class="controls"><span class="btn-small" onclick="changeValue(this, -0.05, 'delayVal')">−</span><span class="value" id="delayVal">0.00</span><span class="btn-small" onclick="changeValue(this, 0.05, 'delayVal')">+</span></div></div>
-                    </div>
-                    <div class="gui-panel" id="panel-movement">
-                        <h2>𝐌𝐎𝐕𝐄𝐌𝐄𝐍𝐓</h2>
-                        <div class="gui-setting"><span class="label">𝐒𝐩𝐞𝐞𝐝 𝐅𝐥𝐲</span><div class="gui-toggle" onclick="toggleSwitch(this)"><div class="switch active"></div><span class="label">ON</span></div></div>
-                        <div class="gui-setting"><span class="label">𝐅𝐥𝐲 𝐒𝐩𝐞𝐞𝐝</span><div class="controls"><span class="btn-small" onclick="changeValue(this, -10, 'flySpeed')">−</span><span class="value" id="flySpeed">80</span><span class="btn-small" onclick="changeValue(this, 10, 'flySpeed')">+</span></div></div>
-                        <div class="gui-setting"><span class="label">𝐖𝐚𝐥𝐤 𝐒𝐩𝐞𝐞𝐝</span><div class="controls"><span class="btn-small" onclick="changeValue(this, -1, 'walkSpeed')">−</span><span class="value" id="walkSpeed">24</span><span class="btn-small" onclick="changeValue(this, 1, 'walkSpeed')">+</span></div></div>
-                        <div class="gui-setting"><span class="label">𝐗𝟏</span><div class="gui-x-toggle" id="xToggle"><span class="x-btn active" onclick="selectX(this)">OFF</span><span class="x-btn" onclick="selectX(this)">X1</span><span class="x-btn" onclick="selectX(this)">X2</span><span class="x-btn" onclick="selectX(this)">X3</span></div></div>
-                    </div>
-                    <div class="gui-panel" id="panel-visuals">
-                        <h2>𝐕𝐈𝐒𝐔𝐀𝐋𝐒</h2>
-                        <div class="gui-setting"><span class="label">𝐄𝐒𝐏</span><div class="gui-toggle" onclick="toggleSwitch(this)"><div class="switch active"></div><span class="label">ON</span></div></div>
-                        <div class="gui-setting"><span class="label">𝐄𝐒𝐏 𝐒𝐭𝐲𝐥𝐞</span><div class="gui-style-selector" id="espStyle"><span class="style-btn active" onclick="selectStyle(this)">ORBS</span><span class="style-btn" onclick="selectStyle(this)">RING</span><span class="style-btn" onclick="selectStyle(this)">BOX</span></div></div>
-                        <div class="gui-setting"><span class="label">𝐖𝐢𝐧𝐠𝐬</span><div class="gui-toggle" onclick="toggleSwitch(this)"><div class="switch"></div><span class="label">OFF</span></div></div>
-                        <div class="gui-setting"><span class="label">𝐇𝐚𝐥𝐨</span><div class="gui-toggle" onclick="toggleSwitch(this)"><div class="switch"></div><span class="label">OFF</span></div></div>
-                    </div>
-                    <div class="gui-panel" id="panel-extra">
-                        <h2>𝐄𝐗𝐓𝐑𝐀</h2>
-                        <div class="gui-setting"><span class="label">𝐅𝐮𝐥𝐥𝐛𝐫𝐢𝐠𝐡𝐭</span><div class="gui-toggle" onclick="toggleSwitch(this)"><div class="switch"></div><span class="label">OFF</span></div></div>
-                        <div class="gui-setting"><span class="label">𝐖𝐚𝐭𝐞𝐫𝐦𝐚𝐫𝐤</span><div class="gui-toggle" onclick="toggleSwitch(this)"><div class="switch active"></div><span class="label">ON</span></div></div>
-                        <div class="gui-setting"><span class="label">𝐒𝐨𝐟𝐭 𝐃𝐞𝐭𝐞𝐜𝐭𝐨𝐫</span><div class="gui-toggle" onclick="toggleSwitch(this)"><div class="switch active"></div><span class="label">ON</span></div></div>
-                    </div>
-                    <div class="gui-panel" id="panel-music">
-                        <h2>𝐌𝐔𝐒𝐈𝐂</h2>
-                        <div class="gui-setting"><span class="label">𝐌𝐮𝐬𝐢𝐜 𝐏𝐥𝐚𝐲𝐞𝐫</span><div class="gui-toggle" onclick="toggleSwitch(this)"><div class="switch active"></div><span class="label">ON</span></div></div>
-                        <div class="gui-setting"><span class="label">𝐕𝐨𝐥𝐮𝐦𝐞</span><div class="controls"><span class="btn-small" onclick="changeValue(this, -10, 'musicVol')">−</span><span class="value" id="musicVol">50</span><span class="btn-small" onclick="changeValue(this, 10, 'musicVol')">+</span></div></div>
-                        <div class="gui-setting"><span class="label">𝐋𝐨𝐨𝐩</span><div class="gui-toggle" onclick="toggleSwitch(this)"><div class="switch active"></div><span class="label">ON</span></div></div>
-                    </div>
-                    <div class="gui-panel" id="panel-killsound">
-                        <h2>𝐊𝐈𝐋𝐋𝐒𝐎𝐔𝐍𝐃</h2>
-                        <div class="gui-setting"><span class="label">𝐊𝐢𝐥𝐥 𝐒𝐨𝐮𝐧𝐝</span><div class="gui-toggle" onclick="toggleSwitch(this)"><div class="switch active"></div><span class="label">ON</span></div></div>
-                        <div class="gui-setting"><span class="label">𝐒𝐨𝐮𝐧𝐝</span><div class="gui-style-selector" id="ksSound"><span class="style-btn active" onclick="selectStyle(this)">NEVERLOSE</span><span class="style-btn" onclick="selectStyle(this)">RUST</span><span class="style-btn" onclick="selectStyle(this)">TF2</span></div></div>
-                        <div class="gui-setting"><span class="label">𝐕𝐨𝐥𝐮𝐦𝐞</span><div class="controls"><span class="btn-small" onclick="changeValue(this, -10, 'ksVol')">−</span><span class="value" id="ksVol">80</span><span class="btn-small" onclick="changeValue(this, 10, 'ksVol')">+</span></div></div>
-                    </div>
-                </div>
-            </div>
+            <div class="feature-card"><span class="icon">🎯</span><h3 data-i18n="feat_aim">𝐀𝐮𝐭𝐨 𝐀𝐢𝐦</h3><p data-i18n="feat_aim_desc">Instant lock-on target</p></div>
+            <div class="feature-card"><span class="icon">🧱</span><h3 data-i18n="feat_wall">𝐖𝐚𝐥𝐥 𝐁𝐚𝐧𝐠</h3><p data-i18n="feat_wall_desc">Shoot through walls</p></div>
+            <div class="feature-card"><span class="icon">💨</span><h3 data-i18n="feat_speed">𝐒𝐩𝐞𝐞𝐝 𝐅𝐥𝐲</h3><p data-i18n="feat_speed_desc">Super fast movement</p></div>
+            <div class="feature-card"><span class="icon">🕵️</span><h3 data-i18n="feat_detect">𝐒𝐨𝐟𝐭 𝐃𝐞𝐭𝐞𝐜𝐭𝐨𝐫</h3><p data-i18n="feat_detect_desc">Find other cheaters</p></div>
+            <div class="feature-card"><span class="icon">🚫</span><h3 data-i18n="feat_antifling">𝐀𝐧𝐭𝐢-𝐅𝐥𝐢𝐧𝐠</h3><p data-i18n="feat_antifling_desc">Protection from fling</p></div>
+            <div class="feature-card"><span class="icon">👁️</span><h3 data-i18n="feat_esp">𝐄𝐒𝐏</h3><p data-i18n="feat_esp_desc">Visual player tags</p></div>
         </div>
     </section>
 
@@ -247,40 +931,39 @@
         <div class="games-grid">
             <div class="game-card" onclick="window.open('https://www.roblox.com/games/31490825/Warfare-Tycoon', '_blank')">
                 <h3>⚔️ 𝐖𝐚𝐫𝐟𝐚𝐫𝐞 𝐓𝐲𝐜𝐨𝐨𝐧</h3>
-                <p><span class="support-status">✅ SUPPORTED</span></p>
+                <p><span class="support-status">✓ SUPPORTED</span></p>
                 <p class="game-id">ID: 31490825</p>
                 <button class="play-btn" onclick="event.stopPropagation(); window.open('https://www.roblox.com/games/31490825/Warfare-Tycoon', '_blank')"><i class="fas fa-play"></i> PLAY</button>
             </div>
             <div class="game-card" onclick="window.open('https://www.roblox.com/games/10449761463/The-Strongest-Battlegrounds', '_blank')">
                 <h3>💪 𝐓𝐡𝐞 𝐒𝐭𝐫𝐨𝐧𝐠𝐞𝐬𝐭 𝐁𝐚𝐭𝐭𝐥𝐞𝐠𝐫𝐨𝐮𝐧𝐝𝐬</h3>
-                <p><span class="support-status">✅ SUPPORTED</span></p>
+                <p><span class="support-status">✓ SUPPORTED</span></p>
                 <p class="game-id">ID: 10449761463</p>
                 <button class="play-btn" onclick="event.stopPropagation(); window.open('https://www.roblox.com/games/10449761463/The-Strongest-Battlegrounds', '_blank')"><i class="fas fa-play"></i> PLAY</button>
             </div>
             <div class="game-card">
                 <h3>🔫 𝐕𝐢𝐨𝐥𝐞𝐧𝐜𝐞 𝐃𝐢𝐬𝐭𝐫𝐢𝐜𝐭</h3>
-                <p><span style="color: #fbbf24; font-weight: 600;">🔬 BETA TEST</span></p>
-                <p style="font-size:12px; color:rgba(255,255,255,0.6); margin-top:4px;">Playable now – in active testing</p>
-                <p class="game-id" style="color: rgba(255,255,255,0.2);">ID: 93978595733734</p>
+                <p><span style="color: var(--gold-mute); font-weight: 700; letter-spacing:3px;">◐ BETA TEST</span></p>
+                <p style="font-size:12px; color:rgba(90,58,63,0.6); margin-top:4px;">Playable now – in active testing</p>
+                <p class="game-id" style="color: rgba(90,58,63,0.3);">ID: 93978595733734</p>
             </div>
-            <!-- КАРТОЧКА GAKURAN -->
             <div class="game-card" onclick="window.open('https://www.roblox.com/games/128736949265057/Gakuran', '_blank')">
                 <h3>🎮 𝐆𝐚𝐤𝐮𝐫𝐚𝐧</h3>
-                <p><span class="support-status">✅ SUPPORTED</span></p>
+                <p><span class="support-status">✓ SUPPORTED</span></p>
                 <p class="game-id">ID: 128736949265057</p>
                 <button class="play-btn" onclick="event.stopPropagation(); window.open('https://www.roblox.com/games/128736949265057/Gakuran', '_blank')"><i class="fas fa-play"></i> PLAY</button>
             </div>
         </div>
-        <p style="text-align:center; color:rgba(255,255,255,0.4); margin-top:20px; font-family:'Inter', sans-serif; font-size:14px;" data-i18n="more_games">𝐌𝐨𝐫𝐞 𝐠𝐚𝐦𝐞𝐬 𝐜𝐨𝐦𝐢𝐧𝐠 𝐬𝐨𝐨𝐧...</p>
+        <p style="text-align:center; color:rgba(90,58,63,0.6); margin-top:24px; font-family:'Noto Serif SC', serif; font-size:14px; letter-spacing:3px;" data-i18n="more_games">𝐌𝐨𝐫𝐞 𝐠𝐚𝐦𝐞𝐬 𝐜𝐨𝐦𝐢𝐧𝐠 𝐬𝐨𝐨𝐧...</p>
     </section>
 
     <section class="get-script fade-init" id="get-script">
         <h2 data-i18n="get_title">📥 𝐆𝐞𝐭 𝐭𝐡𝐞 𝐒𝐜𝐫𝐢𝐩𝐭</h2>
         <p data-i18n="get_sub">Copy the script below or contact us via social media.</p>
         <div class="steps">
-            <div class="step"><div class="num">1</div><p data-i18n="step1">Copy the script from the box below.</p></div>
-            <div class="step"><div class="num">2</div><p data-i18n="step2">Open your Roblox executor and paste it.</p></div>
-            <div class="step"><div class="num">3</div><p data-i18n="step3">Execute and enjoy the game!</p></div>
+            <div class="step"><div class="num">一</div><p data-i18n="step1">Copy the script from the box below.</p></div>
+            <div class="step"><div class="num">二</div><p data-i18n="step2">Open your Roblox executor and paste it.</p></div>
+            <div class="step"><div class="num">三</div><p data-i18n="step3">Execute and enjoy the game!</p></div>
         </div>
         <div class="code-block">
             <button class="copy-btn" id="copyBtn" data-i18n="copy_btn">📋 COPY</button>
@@ -291,27 +974,40 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
             <a href="#" class="social-btn discord" id="discordLink"><i class="fab fa-discord"></i> DISCORD</a>
             <a href="#" class="social-btn telegram" id="telegramLink"><i class="fab fa-telegram-plane"></i> TELEGRAM</a>
         </div>
-        <p style="font-size:14px; color:rgba(255,255,255,0.4); margin-top:10px; font-family:'Inter', sans-serif;" data-i18n="get_note">We respond within 5 minutes.</p>
+        <p style="font-size:14px; color:rgba(90,58,63,0.55); margin-top:16px; font-family:'Noto Serif SC', serif; letter-spacing:2px;" data-i18n="get_note">We respond within 5 minutes.</p>
     </section>
 
-    <footer><p>© 2026 PIXELS CLIENT. NOT AFFILIATED WITH ROBLOX. <br> MADE WITH ❤️</p></footer>
+    <footer><p>© 2026 PIXELS CLIENT · 桜 · NOT AFFILIATED WITH ROBLOX · MADE WITH ❤️</p></footer>
 </div>
 
 <script>
-    // ---------- CUSTOM CURSOR ----------
-    const cursor = document.getElementById('cursor');
-    const cursorRing = document.getElementById('cursorRing');
-    let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0;
-    document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
-    function animateCursor() { cursorX += (mouseX - cursorX) * 0.15; cursorY += (mouseY - cursorY) * 0.15; cursor.style.left = cursorX + 'px'; cursor.style.top = cursorY + 'px'; cursorRing.style.left = cursorX + 'px'; cursorRing.style.top = cursorY + 'px'; requestAnimationFrame(animateCursor); }
-    animateCursor();
-    document.querySelectorAll('a, button, .btn, .feature-card, .game-card, .step, .menu-item, .gui-toggle, .x-btn, .style-btn, .btn-small, .dev-link, .copy-btn, .social-btn, .lang-btn').forEach(el => { el.addEventListener('mouseenter', () => { cursor.classList.add('hover'); cursorRing.classList.add('hover'); }); el.addEventListener('mouseleave', () => { cursor.classList.remove('hover'); cursorRing.classList.remove('hover'); }); });
+    // ---------- CURSOR (лепесток) ----------
+    const petal = document.getElementById('cursorPetal');
+    let mx = -100, my = -100, px = -100, py = -100;
+    document.addEventListener('mousemove', (e) => { mx = e.clientX; my = e.clientY; });
+
+    function animatePetal() {
+        px += (mx - px) * 0.35;
+        py += (my - py) * 0.35;
+        // кончик лепестка смотрит в точку курсора — origin (2, 30)
+        petal.style.transform = `translate(${px - 2}px, ${py - 30}px)`;
+        requestAnimationFrame(animatePetal);
+    }
+    animatePetal();
+
+    document.querySelectorAll('a, button, .btn, .feature-card, .game-card, .step, .dev-link, .copy-btn, .social-btn, .lang-btn').forEach(el => {
+        el.addEventListener('mouseenter', () => petal.classList.add('hover'));
+        el.addEventListener('mouseleave', () => petal.classList.remove('hover'));
+    });
+
+    document.addEventListener('mouseleave', () => { petal.style.opacity = '0'; });
+    document.addEventListener('mouseenter', () => { petal.style.opacity = '0.95'; });
 
     // ---------- LANGUAGES ----------
     const i18n = {
         en: {
             hero_desc: 'Pixels Client — powerful script for Roblox with Auto Aim, Speed Fly, Soft Detector and Anti-Fling.',
-            hero_btn_get: '𝐆𝐞𝐭 𝐬𝐜𝐫𝐢𝐩𝐭', hero_btn_learn: '𝐓𝐫𝐲 𝐆𝐔𝐈',
+            hero_btn_get: '𝐆𝐞𝐭 𝐬𝐜𝐫𝐢𝐩𝐭',
             features_title: '⚡ 𝐊𝐞𝐲 𝐅𝐞𝐚𝐭𝐮𝐫𝐞𝐬',
             feat_aim: '𝐀𝐮𝐭𝐨 𝐀𝐢𝐦', feat_aim_desc: 'Instant lock-on target',
             feat_wall: '𝐖𝐚𝐥𝐥 𝐁𝐚𝐧𝐠', feat_wall_desc: 'Shoot through walls',
@@ -319,46 +1015,43 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
             feat_detect: '𝐒𝐨𝐟𝐭 𝐃𝐞𝐭𝐞𝐜𝐭𝐨𝐫', feat_detect_desc: 'Find other cheaters',
             feat_antifling: '𝐀𝐧𝐭𝐢-𝐅𝐥𝐢𝐧𝐠', feat_antifling_desc: 'Protection from fling',
             feat_esp: '𝐄𝐒𝐏', feat_esp_desc: 'Visual player tags',
-            gui_title: '🎮 𝐓𝐫𝐲 𝐭𝐡𝐞 𝐆𝐔𝐈', gui_desc: 'Click around the settings — this is a demo of the Pixel Client interface.',
             supported_title: '🎮 𝐒𝐮𝐩𝐩𝐨𝐫𝐭𝐞𝐝 𝐆𝐚𝐦𝐞𝐬', more_games: '𝐌𝐨𝐫𝐞 𝐠𝐚𝐦𝐞𝐬 𝐜𝐨𝐦𝐢𝐧𝐠 𝐬𝐨𝐨𝐧...',
             get_title: '📥 𝐆𝐞𝐭 𝐭𝐡𝐞 𝐒𝐜𝐫𝐢𝐩𝐭', get_sub: 'Copy the script below or contact us via social media.',
             step1: 'Copy the script from the box below.', step2: 'Open your Roblox executor and paste it.', step3: 'Execute and enjoy the game!',
             copy_btn: '📋 COPY', get_note: 'We respond within 5 minutes.',
-            update_title: '⚠️ BIG UPDATE', update_text1: 'All scripts are fully functional', update_text2: 'and will work in the current version.', update_text3: 'However, updates are no longer released — the client remains stable.', update_text4: 'We recommend using it as is.'
+            update_title: 'BIG UPDATE', update_text1: 'All scripts are fully functional', update_text2: 'and will work in the current version.', update_text3: 'However, updates are no longer released — the client remains stable.', update_text4: 'We recommend using it as is.'
         },
         uk: {
             hero_desc: 'Pixels Client — потужний скрипт для Roblox з авто-аймом, швидкісним польотом, детектом софтів та анти-флінгом.',
-            hero_btn_get: '𝐎𝐭𝐫𝐲𝐦𝐚𝐭𝐲 𝐬𝐜𝐫𝐲𝐩𝐭', hero_btn_learn: '𝐒𝐩𝐫𝐨𝐛𝐮𝐲 𝐆𝐔𝐈',
+            hero_btn_get: '𝐎𝐭𝐫𝐲𝐦𝐚𝐭𝐲 𝐬𝐜𝐫𝐲𝐩𝐭',
             features_title: '⚡ 𝐊𝐥𝐲𝐜𝐡𝐨𝐯𝐢 𝐦𝐨𝐳𝐡𝐥𝐢𝐯𝐨𝐬𝐭𝐢',
-            feat_aim: '𝐀𝐯𝐭𝐨-𝐀𝐲𝐦', feat_aim_desc: 'Myttyeve navedennya',
-            feat_wall: '𝐏𝐫𝐨𝐬𝐭𝐫𝐢𝐥 𝐤𝐫𝐢𝐳𝐬 𝐬𝐭𝐢𝐧𝐲', feat_wall_desc: 'Strilyay kriz stiny',
-            feat_speed: '𝐒𝐡𝐯𝐢𝐝𝐤𝐢𝐬𝐧𝐢𝐲 𝐩𝐨𝐥𝐢𝐭', feat_speed_desc: 'Duzhe shvydkyy rukh',
-            feat_detect: '𝐃𝐞𝐭𝐞𝐤𝐭 𝐬𝐨𝐟𝐭𝐢𝐯', feat_detect_desc: 'Znaydy inshykh chiteriv',
-            feat_antifling: '𝐀𝐧𝐭𝐲-𝐅𝐥𝐢𝐧𝐠', feat_antifling_desc: 'Zakhyst vid flinha',
-            feat_esp: '𝐄𝐒𝐏', feat_esp_desc: 'Vizualni mitky',
-            gui_title: '🎮 𝐒𝐩𝐫𝐨𝐛𝐮𝐲 𝐆𝐔𝐈', gui_desc: 'Poklatsay po nalashtuvannyakh — tse demonstratsiya interfeysu Pixel Client',
+            feat_aim: '𝐀𝐯𝐭𝐨-𝐀𝐲𝐦', feat_aim_desc: 'Миттєве наведення',
+            feat_wall: '𝐏𝐫𝐨𝐬𝐭𝐫𝐢𝐥', feat_wall_desc: 'Стріляй крізь стіни',
+            feat_speed: '𝐒𝐡𝐯𝐢𝐝𝐤𝐢𝐬𝐧𝐢𝐲 𝐩𝐨𝐥𝐢𝐭', feat_speed_desc: 'Дуже швидкий рух',
+            feat_detect: '𝐃𝐞𝐭𝐞𝐤𝐭 𝐬𝐨𝐟𝐭𝐢𝐯', feat_detect_desc: 'Знайди інших чітерів',
+            feat_antifling: '𝐀𝐧𝐭𝐲-𝐅𝐥𝐢𝐧𝐠', feat_antifling_desc: 'Захист від флінга',
+            feat_esp: '𝐄𝐒𝐏', feat_esp_desc: 'Візуальні мітки',
             supported_title: '🎮 𝐏𝐢𝐝𝐭𝐫𝐲𝐦𝐮𝐯𝐚𝐧𝐢 𝐢𝐠𝐫𝐲', more_games: '𝐁𝐢𝐥𝐬𝐡𝐞 𝐢𝐠𝐨𝐫 𝐧𝐞𝐳𝐚𝐛𝐚𝐫𝐨𝐦...',
-            get_title: '📥 𝐎𝐭𝐫𝐲𝐦𝐚𝐭𝐲 𝐬𝐜𝐫𝐲𝐩𝐭', get_sub: 'Skopiyuyte skrypt nyzhche abo zvyazhitsya z namy cherez sotsmerezhi.',
-            step1: 'Skopiyuyte skrypt z polya nyzhche.', step2: 'Vidkryyte sviy ekzekutor Roblox i vstavte yoho.', step3: 'Zapustit i nasolodzhuytes hroyu!',
-            copy_btn: '📋 𝐊𝐨𝐩𝐢𝐲𝐮𝐯𝐚𝐭𝐲', get_note: 'Vidpovidayemo protyahom 5 khvylyn.',
-            update_title: '⚠️ ВЕЛИКЕ ОНОВЛЕННЯ', update_text1: 'Всі скрипти повністю працюють', update_text2: 'і будуть функціонувати в поточній версії.', update_text3: 'Однак оновлення більше не виходять — клієнт залишається стабільним.', update_text4: 'Ми рекомендуємо використовувати його як є.'
+            get_title: '📥 𝐎𝐭𝐫𝐲𝐦𝐚𝐭𝐲 𝐬𝐜𝐫𝐲𝐩𝐭', get_sub: 'Скопіюйте скрипт нижче або зв\'яжіться з нами через соцмережі.',
+            step1: 'Скопіюйте скрипт з поля нижче.', step2: 'Відкрийте свій екзек\'ютор Roblox і вставте його.', step3: 'Запустіть і насолоджуйтесь грою!',
+            copy_btn: '📋 𝐊𝐨𝐩𝐢𝐲𝐮𝐯𝐚𝐭𝐲', get_note: 'Відповідаємо протягом 5 хвилин.',
+            update_title: 'ВЕЛИКЕ ОНОВЛЕННЯ', update_text1: 'Всі скрипти повністю працюють', update_text2: 'і будуть функціонувати в поточній версії.', update_text3: 'Однак оновлення більше не виходять — клієнт залишається стабільним.', update_text4: 'Ми рекомендуємо використовувати його як є.'
         },
         ru: {
             hero_desc: 'Pixels Client — мощный скрипт для Roblox с авто-аймом, скоростным полётом, детектом софтов и анти-флингом.',
-            hero_btn_get: '𝐏𝐨𝐥𝐮𝐜𝐡𝐢𝐭𝐲 𝐬𝐜𝐫𝐢𝐩𝐭', hero_btn_learn: '𝐏𝐨𝐩𝐫𝐨𝐛𝐮𝐲 𝐆𝐔𝐈',
+            hero_btn_get: '𝐏𝐨𝐥𝐮𝐜𝐡𝐢𝐭𝐲 𝐬𝐜𝐫𝐢𝐩𝐭',
             features_title: '⚡ 𝐊𝐥𝐲𝐜𝐡𝐞𝐯𝐲𝐞 𝐯𝐨𝐳𝐦𝐨𝐳𝐡𝐧𝐨𝐬𝐭𝐢',
-            feat_aim: '𝐀𝐯𝐭𝐨-𝐀𝐲𝐦', feat_aim_desc: 'Mgnovennoye navedeniye',
-            feat_wall: '𝐏𝐫𝐨𝐬𝐭𝐫𝐞𝐥 𝐬𝐤𝐯𝐨𝐳𝐬 𝐬𝐭𝐞𝐧𝐲', feat_wall_desc: 'Strelyay skvoz steny',
-            feat_speed: '𝐒𝐤𝐨𝐫𝐨𝐬𝐭𝐧𝐨𝐲 𝐩𝐨𝐥𝐲𝐨𝐭', feat_speed_desc: 'Ochen bystroye dvizheniye',
-            feat_detect: '𝐃𝐞𝐭𝐞𝐤𝐭 𝐬𝐨𝐟𝐭𝐨𝐯', feat_detect_desc: 'Naydi drugikh chiterov',
-            feat_antifling: '𝐀𝐧𝐭𝐢-𝐅𝐥𝐢𝐧𝐠', feat_antifling_desc: 'Zashchita ot flinga',
-            feat_esp: '𝐄𝐒𝐏', feat_esp_desc: 'Vizualnyye metki',
-            gui_title: '🎮 𝐏𝐨𝐩𝐫𝐨𝐛𝐮𝐲 𝐆𝐔𝐈', gui_desc: 'Poklikay po nastroykam — eto demonstratsiya interfeysa Pixel Client',
+            feat_aim: '𝐀𝐯𝐭𝐨-𝐀𝐲𝐦', feat_aim_desc: 'Мгновенное наведение',
+            feat_wall: '𝐏𝐫𝐨𝐬𝐭𝐫𝐞𝐥', feat_wall_desc: 'Стреляй сквозь стены',
+            feat_speed: '𝐒𝐤𝐨𝐫𝐨𝐬𝐭𝐧𝐨𝐲 𝐩𝐨𝐥𝐲𝐨𝐭', feat_speed_desc: 'Очень быстрое движение',
+            feat_detect: '𝐃𝐞𝐭𝐞𝐤𝐭 𝐬𝐨𝐟𝐭𝐨𝐯', feat_detect_desc: 'Найди других читеров',
+            feat_antifling: '𝐀𝐧𝐭𝐢-𝐅𝐥𝐢𝐧𝐠', feat_antifling_desc: 'Защита от флинга',
+            feat_esp: '𝐄𝐒𝐏', feat_esp_desc: 'Визуальные метки',
             supported_title: '🎮 𝐏𝐨𝐝𝐝𝐞𝐫𝐳𝐡𝐢𝐯𝐚𝐞𝐦𝐲𝐞 𝐢𝐠𝐫𝐲', more_games: '𝐁𝐨𝐥𝐬𝐡𝐞 𝐢𝐠𝐫 𝐬𝐤𝐨𝐫𝐨...',
-            get_title: '📥 𝐏𝐨𝐥𝐮𝐜𝐡𝐢𝐭𝐲 𝐬𝐜𝐫𝐢𝐩𝐭', get_sub: 'Skopiruyte skript nizhe ili svyazhites s nami cherez sotseti.',
-            step1: 'Skopiruyte skript iz polya nizhe.', step2: 'Otkroyte svoy ekzekutor Roblox i vstavte yego.', step3: 'Zapustite i naslazhdaytes igroy!',
-            copy_btn: '📋 𝐊𝐨𝐩𝐢𝐫𝐨𝐯𝐚𝐭𝐲', get_note: 'Otvechayem v techeniye 5 minut.',
-            update_title: '⚠️ БОЛЬШОЕ ОБНОВЛЕНИЕ', update_text1: 'Все скрипты полностью работают', update_text2: 'и будут функционировать в текущей версии.', update_text3: 'Однако обновления больше не выходят — клиент остаётся в стабильном состоянии.', update_text4: 'Мы рекомендуем использовать его как есть.'
+            get_title: '📥 𝐏𝐨𝐥𝐮𝐜𝐡𝐢𝐭𝐲 𝐬𝐜𝐫𝐢𝐩𝐭', get_sub: 'Скопируйте скрипт ниже или свяжитесь с нами через соцсети.',
+            step1: 'Скопируйте скрипт из поля ниже.', step2: 'Откройте свой экзекьютор Roblox и вставьте его.', step3: 'Запустите и наслаждайтесь игрой!',
+            copy_btn: '📋 𝐊𝐨𝐩𝐢𝐫𝐨𝐯𝐚𝐭𝐲', get_note: 'Отвечаем в течение 5 минут.',
+            update_title: 'БОЛЬШОЕ ОБНОВЛЕНИЕ', update_text1: 'Все скрипты полностью работают', update_text2: 'и будут функционировать в текущей версии.', update_text3: 'Однако обновления больше не выходят — клиент остаётся в стабильном состоянии.', update_text4: 'Мы рекомендуем использовать его как есть.'
         }
     };
 
@@ -370,15 +1063,15 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
         });
         document.querySelectorAll('.lang-btn').forEach(btn => { btn.classList.toggle('active', btn.dataset.lang === lang); });
     }
-
     document.querySelectorAll('.lang-btn').forEach(btn => { btn.addEventListener('click', () => setLanguage(btn.dataset.lang)); });
 
+    // ---------- COPY ----------
     document.getElementById('copyBtn').addEventListener('click', () => {
         const code = document.getElementById('scriptCode').textContent;
         navigator.clipboard.writeText(code).then(() => {
             const btn = document.getElementById('copyBtn');
             const orig = btn.innerHTML;
-            btn.innerHTML = '✅ COPIED!';
+            btn.innerHTML = '已复制';
             setTimeout(() => btn.innerHTML = orig, 2000);
         }).catch(() => alert('Failed to copy. Select the text manually.'));
     });
@@ -387,58 +1080,15 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
     document.getElementById('telegramLink').addEventListener('click', (e) => { e.preventDefault(); window.open('https://t.me/your_username', '_blank'); });
 
     document.querySelector('a[href="#get-script"]')?.addEventListener('click', (e) => { e.preventDefault(); document.getElementById('get-script').scrollIntoView({ behavior: 'smooth' }); });
-    document.querySelectorAll('a[href="#gui-demo"]').forEach(link => { link.addEventListener('click', (e) => { e.preventDefault(); document.getElementById('gui-demo').scrollIntoView({ behavior: 'smooth' }); }); });
 
-    // ---------- PARTICLES WITH LINES TO CURSOR ----------
-    const canvas = document.getElementById('particles-canvas');
-    const ctx = canvas.getContext('2d');
-    let w, h;
-    function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
-    resize();
-    window.addEventListener('resize', resize);
-
-    const particles = [];
-    const NUM_PARTICLES = 80;
-    for (let i = 0; i < NUM_PARTICLES; i++) {
-        particles.push({ x: Math.random() * w, y: Math.random() * h, r: Math.random() * 4 + 2, dx: (Math.random() - 0.5) * 0.3, dy: (Math.random() - 0.5) * 0.3, hue: 240 + Math.random() * 60, speed: 0.2 + Math.random() * 0.3 });
-    }
-
-    function drawParticles() {
-        ctx.clearRect(0, 0, w, h);
-        for (let p of particles) {
-            const dx = mouseX - p.x, dy = mouseY - p.y;
-            const dist = Math.sqrt(dx*dx + dy*dy);
-            if (dist < 300) {
-                const alpha = 1 - (dist / 300);
-                ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(mouseX, mouseY);
-                ctx.strokeStyle = `hsla(${p.hue}, 80%, 70%, ${alpha * 0.25})`; ctx.lineWidth = 1.5; ctx.stroke();
-            }
-        }
-        for (let p of particles) {
-            p.x += p.dx * p.speed; p.y += p.dy * p.speed;
-            if (p.x < 0 || p.x > w) p.dx *= -1; if (p.y < 0 || p.y > h) p.dy *= -1;
-            const dx = mouseX - p.x, dy = mouseY - p.y;
-            const dist = Math.sqrt(dx*dx + dy*dy);
-            if (dist < 200) { p.x += dx * 0.008; p.y += dy * 0.008; }
-            ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-            ctx.fillStyle = `hsla(${p.hue}, 80%, 65%, 0.7)`; ctx.shadowColor = `hsla(${p.hue}, 80%, 65%, 0.3)`; ctx.shadowBlur = 20; ctx.fill(); ctx.shadowBlur = 0;
-        }
-        requestAnimationFrame(drawParticles);
-    }
-    drawParticles();
-
-    // ---------- FADE IN ANIMATION ----------
-    const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); else entry.target.classList.remove('visible'); }); }, { threshold: 0.15 });
+    // ---------- FADE IN ----------
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) entry.target.classList.add('visible');
+            else entry.target.classList.remove('visible');
+        });
+    }, { threshold: 0.15 });
     document.querySelectorAll('.fade-init').forEach(el => observer.observe(el));
-
-    // ---------- GUI LOGIC ----------
-    const menuItems = document.querySelectorAll('.menu-item');
-    const panels = { combat: document.getElementById('panel-combat'), movement: document.getElementById('panel-movement'), visuals: document.getElementById('panel-visuals'), extra: document.getElementById('panel-extra'), music: document.getElementById('panel-music'), killsound: document.getElementById('panel-killsound') };
-    menuItems.forEach(item => { item.addEventListener('click', function() { menuItems.forEach(i => i.classList.remove('active')); this.classList.add('active'); const tab = this.dataset.tab; Object.keys(panels).forEach(key => { panels[key].classList.toggle('active', key === tab); }); }); });
-    function toggleSwitch(el) { const sw = el.querySelector('.switch'); const label = el.querySelector('.label'); sw.classList.toggle('active'); label.textContent = sw.classList.contains('active') ? 'ON' : 'OFF'; }
-    function changeValue(btn, delta, id) { const span = document.getElementById(id); let val = parseFloat(span.textContent) || 0; val = Math.round((val + delta) * 100) / 100; if (id === 'rangeVal') val = Math.max(0, Math.min(200, val)); else if (id === 'delayVal') val = Math.max(0, Math.min(5, val)); else if (id === 'walkSpeed') val = Math.max(1, Math.min(100, val)); else if (id === 'flySpeed') val = Math.max(0, Math.min(500, val)); else if (id === 'musicVol') val = Math.max(0, Math.min(100, Math.round(val))); else if (id === 'ksVol') val = Math.max(0, Math.min(100, Math.round(val))); span.textContent = val; }
-    function selectX(el) { const parent = el.parentElement; parent.querySelectorAll('.x-btn').forEach(b => b.classList.remove('active')); el.classList.add('active'); }
-    function selectStyle(el) { const parent = el.parentElement; parent.querySelectorAll('.style-btn').forEach(b => b.classList.remove('active')); el.classList.add('active'); }
 
     setLanguage('en');
 </script>
