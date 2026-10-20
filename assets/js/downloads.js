@@ -355,7 +355,7 @@
                 path: 'https://github.com/ggn93360-creator/pixel_client_server/releases/download/v1.0.0/loader.zip',
                 type: 'zip',
                 size: 50594,
-                sha256: 'B58FD74E79B4EC369171F0F20BBA38E5117B8D311F8ED4BD79B877DB86F8B926',
+                sha256: '591D54178CEAA80F09605043BEC8FBA48A2C4F6DAC142CEB22DBFB1260F831E1',
                 platform: 'Universal loader · unpack and paste loader.lua'
             }]
         }]
