@@ -6,7 +6,7 @@
 <title>桜 · PIXELS CLIENT</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;900&family=Ma+Shan+Zheng&family=Long+Cang&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<link rel="stylesheet" href="css/downloads.css?v=2">
+<link rel="stylesheet" href="css/downloads.css?v=3">
 <style>
     * { margin:0; padding:0; box-sizing:border-box; cursor:none; }
 
@@ -960,6 +960,19 @@
     </section>
 
 
+    <section class="on-section fade-init" id="online">
+        <h2 class="section-title" data-i18n="on_title">🎮 𝐒𝐞𝐲𝐜𝐚𝐬 𝐈𝐆𝐑𝐀𝐄𝐓</h2>
+        <div class="on-head">
+            <span class="on-status" id="onStatus"><span class="dot"></span><span class="txt">подключение…</span></span>
+            <div class="on-stats" id="onStats"></div>
+        </div>
+        <ul class="on-list" id="onList"></ul>
+        <div class="on-loader-wrap">
+            <pre class="on-loader" id="onLoader">-- загрузчик скрипта</pre>
+            <button class="on-copy" id="onCopy">📋 COPY</button>
+        </div>
+    </section>
+
     <section class="dl-section fade-init" id="downloads">
         <h2 class="section-title" data-i18n="dl_title">⬇ 𝐃𝐨𝐰𝐧𝐥𝐨𝐚𝐝 𝐂𝐥𝐢𝐞𝐧𝐭</h2>
         <p class="dl-sub" data-i18n="dl_sub">Windows-клиент и лоадер. Скачай файл — установка не требуется, просто запусти и готово.</p>
@@ -1051,7 +1064,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
             step1: 'Copy the script from the box below.', step2: 'Open your Roblox executor and paste it.', step3: 'Execute and enjoy the game!',
             copy_btn: '📋 COPY', get_note: 'We respond within 5 minutes.',
             update_title: 'BIG UPDATE', update_text1: 'All scripts are fully functional', update_text2: 'and will work in the current version.', update_text3: 'However, updates are no longer released — the client remains stable.', update_text4: 'We recommend using it as is.',
-            dl_title: '⬇ 𝐃𝐨𝐰𝐧𝐥𝐨𝐚𝐝 𝐂𝐥𝐢𝐞𝐧𝐭',
+            dl_title: '⬇ 𝐃𝐨𝐰𝐧𝐥𝐨𝐚𝐝 𝐂𝐥𝐢𝐞𝐧𝐭', on_title: '🎮 𝐒𝐄𝐘𝐂𝐇𝐀𝐒 𝐈𝐆𝐑А𝐄𝐓',
             dl_sub: 'Windows client and loader. Download the file — no installation required, just run it and you are done.',
             dl_req_title: '📋 𝐑𝐞𝐪𝐮𝐢𝐫𝐞𝐦𝐞𝐧𝐭𝐬',
             dl_req1: 'Windows 10 / 11 (x64)', dl_req2: 'Roblox executor: Synapse X, Fluxus, Solara', dl_req3: 'Internet connection for the loader', dl_req4: 'No installation needed — portable build',
@@ -1073,7 +1086,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
             step1: 'Скопіюйте скрипт з поля нижче.', step2: 'Відкрийте свій екзек\'ютор Roblox і вставте його.', step3: 'Запустіть і насолоджуйтесь грою!',
             copy_btn: '📋 𝐊𝐨𝐩𝐢𝐲𝐮𝐯𝐚𝐭𝐲', get_note: 'Відповідаємо протягом 5 хвилин.',
             update_title: 'ВЕЛИКЕ ОНОВЛЕННЯ', update_text1: 'Всі скрипти повністю працюють', update_text2: 'і будуть функціонувати в поточній версії.', update_text3: 'Однак оновлення більше не виходять — клієнт залишається стабільним.', update_text4: 'Ми рекомендуємо використовувати його як є.',
-            dl_title: '⬇ 𝐙𝐚𝐕𝐚𝐧𝐭𝐚𝐣𝐢𝐭𝐢 𝐂𝐥𝐢𝐞𝐧𝐭',
+            dl_title: '⬇ 𝐙𝐚𝐕𝐚𝐧𝐭𝐚𝐣𝐢𝐭𝐢 𝐂𝐥𝐢𝐞𝐧𝐭', on_title: '🎮 𝐒𝐄𝐘𝐂𝐇𝐀𝐒 𝐆𝐑𝐀𝐄',
             dl_sub: 'Клієнт для Windows та лоадер. Завантажте файл — встановлення не потрібне, просто запустіть і готово.',
             dl_req_title: '📋 𝐕𝐢𝐌𝐎𝐆𝐈',
             dl_req1: 'Windows 10 / 11 (x64)', dl_req2: 'Екзекьютор Roblox: Synapse X, Fluxus, Solara', dl_req3: 'Інтернет для завантаження лоадера', dl_req4: 'Встановлення не потрібне — portable-збірка',
@@ -1095,7 +1108,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
             step1: 'Скопируйте скрипт из поля ниже.', step2: 'Откройте свой экзекьютор Roblox и вставьте его.', step3: 'Запустите и наслаждайтесь игрой!',
             copy_btn: '📋 𝐊𝐨𝐩𝐢𝐫𝐨𝐯𝐚𝐭𝐲', get_note: 'Отвечаем в течение 5 минут.',
             update_title: 'БОЛЬШОЕ ОБНОВЛЕНИЕ', update_text1: 'Все скрипты полностью работают', update_text2: 'и будут функционировать в текущей версии.', update_text3: 'Однако обновления больше не выходят — клиент остаётся в стабильном состоянии.', update_text4: 'Мы рекомендуем использовать его как есть.',
-            dl_title: '⬇ 𝐒𝐒𝐀𝐊𝐀𝐂𝐀𝐓𝐘 𝐂𝐋𝐈𝐄𝐍𝐓',
+            dl_title: '⬇ 𝐒𝐒𝐀𝐊𝐀𝐂𝐀𝐓𝐘 𝐂𝐋𝐈𝐄𝐍𝐓', on_title: '🎮 𝐒𝐄𝐘𝐂𝐇𝐀𝐒 𝐈𝐆𝐑А𝐄𝐓',
             dl_sub: 'Клиент для Windows и лоадер. Скачайте файл — установка не требуется, просто запустите и готово.',
             dl_req_title: '📋 𝐓𝐑𝐄𝐁𝐎𝐁𝐎𝐕𝐀𝐍𝐈𝐘',
             dl_req1: 'Windows 10 / 11 (x64)', dl_req2: 'Экзекьютор Roblox: Synapse X, Fluxus, Solara', dl_req3: 'Интернет для загрузки лоадера', dl_req4: 'Установка не требуется — portable-сборка',
@@ -1143,6 +1156,8 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ggn93360-creator/pixe
 
     setLanguage('en');
 </script>
+<script src="assets/js/config.js?v=1"></script>
 <script src="assets/js/downloads.js?v=2"></script>
+<script src="assets/js/online.js?v=1"></script>
 </body>
 </html>

@@ -128,7 +128,73 @@ Pages кэширует статику на 10 минут, поэтому пос�
 
 ---
 
-## Локаальный запуск
+---
+
+## 🎮 Бэкенд: кто играет и раздача скрипта
+
+Папка [`server/`](server/) — бэкенд, который **сам запоминает игроков**,
+**их userid/ники** и **какие модули (визуалы) у них включены**, а также
+**отдаёт Luau-скрипт** по адресу `/api/script`.
+
+Node.js 18+, **без внешних зависимостей**:
+
+```bash
+cd server
+PUBLIC_URL=https://pixels.example.com ADMIN_TOKEN=свой-токен node server.js
+```
+
+| Что | Где |
+|---|---|
+| Регистрация игроков + модули | `POST /api/heartbeat` |
+| Список онлайн | `GET /api/list` |
+| Отдача скрипта | `GET /api/script` |
+| Статистика | `GET /api/stats` |
+| Whitelist | `GET`/`POST` `/api/whitelist` (нужен `X-Admin-Token`) |
+| **Админ-панель** | `http://host:8787/admin?token=...` |
+
+Подробности, деплой и systemd-юнит — в [`server/README.md`](server/README.md).
+
+### Как подключить к сайту
+
+В `assets/js/config.js` укажи адрес сервера:
+
+```js
+API_BASE: "https://pixels.example.com",
+```
+
+Виджет «🎮 Сейчас играют» на главной сразу начнёт показывать игроков и их
+модули. Ссылка в блоке загрузчика тоже обновится автоматически:
+
+```lua
+loadstring(game:HttpGet("https://pixels.example.com/api/script"))()
+```
+
+### Как скрипт сообщает о модулях
+
+Сервер отдаёт `server/payload/loader.luau`. В нём объект `Pixels` доступен
+модулям клиента через `getgenv().Pixels`:
+
+```lua
+local Pixels = getgenv().Pixels
+
+Pixels.SetFeatures({ ESP = true, AimAssist = false })  -- задать весь набор
+Pixels.Enable("SpeedFly")                            -- включить модуль
+Pixels.Disable("ESP")                                -- выключить
+Pixels.IsEnabled("ESP")                              -- проверить
+```
+
+Любое переключение сразу уходит на сервер — на сайте видно, кто и с какими
+визуалами сидит.
+
+### Если Node недоступен
+
+`api.php` в корне репозитория — тот же контракт для PHP-хостинга
+(`/api.php?action=heartbeat`, `?action=list`, `?action=script`...).
+Админ-панели там нет, но сайт работать будет.
+
+---
+
+## Локальный запуск
 
 ```bash
 python -m http.server 8080

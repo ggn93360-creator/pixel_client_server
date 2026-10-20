@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pixels Backend — админ</title>
+<style>
+  :root {
+    --bg: #0d1117; --panel: #161b22; --border: #30363d;
+    --fg: #e6edf3; --muted: #8b949e; --accent: #c25e78;
+    --green: #3fb950; --red: #f85149; --gold: #d29922;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: var(--bg); color: var(--fg); min-height: 100vh;
+    font: 14px/1.55 'Inter', -apple-system, 'Segoe UI', Roboto, sans-serif;
+    padding: 28px 20px 60px;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; }
+  header { display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-bottom:24px; }
+  h1 { font-size:22px; font-weight:700; display:flex; align-items:center; gap:10px; }
+  h1 span { color: var(--accent); }
+  .pill {
+    display:inline-flex; align-items:center; gap:6px;
+    padding:4px 11px; border-radius:999px; border:1px solid var(--border);
+    background:#010409; font-size:12px; color:var(--muted);
+  }
+  .dot { width:7px; height:7px; border-radius:50%; background:var(--green); }
+  .dot.off { background: var(--red); }
+  .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; margin-bottom:22px; }
+  .card { padding:16px; border:1px solid var(--border); border-radius:10px; background:var(--panel); }
+  .card b { display:block; font-size:26px; font-weight:800; letter-spacing:-.02em; }
+  .card span { font-size:12px; color:var(--muted); }
+  .toolbar { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:14px; }
+  input, button {
+    height:34px; padding:0 12px; border:1px solid var(--border); border-radius:7px;
+    background:#010409; color:var(--fg); font:inherit;
+  }
+  input:focus, button:focus { outline:none; border-color:var(--accent); }
+  button { cursor:pointer; background:var(--panel); font-weight:600; }
+  button:hover { background:#21262d; }
+  button.primary { background:var(--green); border-color:transparent; color:#04220c; }
+  button.danger { background:transparent; color:var(--red); border-color:#412626; }
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  th, td { padding:9px 12px; text-align:left; border-bottom:1px solid var(--border); }
+  th { color:var(--muted); font-weight:600; font-size:11.5px; text-transform:uppercase; letter-spacing:.06em; }
+  tbody tr:hover { background:#161b22; }
+  .uid { font-family:'JetBrains Mono',monospace; color:var(--muted); }
+  .nm { font-weight:600; }
+  .sub { color:var(--muted); font-size:12px; }
+  .feat { display:inline-block; padding:2px 8px; margin:2px 3px 2px 0; border-radius:999px;
+          background:rgba(194,94,120,.16); border:1px solid rgba(194,94,120,.35); color:#f0a6b6; font-size:11px; }
+  .on { color:var(--green); font-weight:600; }
+  .off { color:var(--muted); }
+  .wl-btn { height:26px; padding:0 10px; font-size:12px; }
+  .topfeat { display:flex; flex-wrap:wrap; gap:7px; margin-top:10px; }
+  .bar { height:5px; border-radius:3px; background:var(--accent); opacity:.8; }
+  .bar-wrap { min-width:110px; }
+  .barrow { display:flex; align-items:center; gap:9px; margin-bottom:6px; font-size:12.5px; }
+  .barrow span:first-child { width:110px; color:var(--muted); }
+  .panel { border:1px solid var(--border); border-radius:10px; background:var(--panel); padding:16px; margin-bottom:20px; }
+  .panel h2 { font-size:13px; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); margin-bottom:12px; }
+  .empty { padding:34px; text-align:center; color:var(--muted); }
+  #toast { position:fixed; right:18px; bottom:18px; padding:11px 16px; border-radius:8px;
+           background:var(--green); color:#04220c; font-weight:600; opacity:0; transition:opacity .25s; pointer-events:none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1><span>◆</span> Pixels Backend</h1>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <span class="pill" id="status"><span class="dot"></span> <span id="statusText">подключение…</span></span>
+      <span class="pill" id="clock">—</span>
+    </div>
+  </header>
+
+  <div class="cards" id="cards"></div>
+
+  <div class="panel">
+    <h2>Топ модулей (всего регистраций)</h2>
+    <div class="topfeat" id="topfeat"></div>
+  </div>
+
+  <div class="toolbar">
+    <input id="filter" placeholder="Фильтр: ник или userid…" style="min-width:230px">
+    <button id="toggleMode">Показать всех</button>
+    <input id="wlInput" placeholder="userid для whitelist" style="width:170px">
+    <button id="wlAdd" class="primary">В whitelist</button>
+    <button id="wlDel" class="danger">Убрать</button>
+    <span class="pill" id="wlCount">whitelist: 0</span>
+  </div>
+
+  <div class="panel" style="padding:0;overflow:hidden">
+    <table>
+      <thead>
+        <tr>
+          <th>userid</th><th>Игрок</th><th>Модули</th><th>Заходов</th><th>Последняя активность</th><th>Whitelist</th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <div class="empty" id="empty">Игроков пока нет — они появятся, как только кто-то запустит скрипт.</div>
+  </div>
+</div>
+<div id="toast"></div>
+
+<script>
+const qs = new URLSearchParams(location.search);
+const TOKEN = qs.get('token') || localStorage.getItem('pixels_token') || '';
+if (TOKEN) localStorage.setItem('pixels_token', TOKEN);
+
+let mode = 'online';
+let timer = null;
+
+const $ = s => document.querySelector(s);
+
+function toast(msg) {
+  const t = $('#toast');
+  t.textContent = msg;
+  t.style.opacity = '1';
+  setTimeout(() => t.style.opacity = '0', 2200);
+}
+
+function ago(ts) {
+  const s = Math.max(0, Math.round((Date.now() - ts) / 1000));
+  if (s < 60) return s + ' с назад';
+  if (s < 3600) return Math.round(s / 60) + ' мин назад';
+  if (s < 86400) return Math.round(s / 3600) + ' ч назад';
+  return Math.round(s / 86400) + ' дн назад';
+}
+
+async function api(path, opts = {}) {
+  const res = await fetch(path, {
+    ...opts,
+    headers: { 'Content-Type': 'application/json', 'X-Admin-Token': TOKEN, ...(opts.headers || {}) },
+  });
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  return res.json();
+}
+
+function renderStats(s) {
+  $('#cards').innerHTML = [
+    ['онлайн', s.online],
+    ['всего игроков', s.total],
+    ['запусков скрипта', s.totalHits],
+    ['в whitelist', s.whitelist],
+  ].map(([l, v]) => `<div class="card"><b>${v}</b><span>${l}</span></div>`).join('');
+
+  const max = Math.max(1, ...s.topFeatures.map(f => f.count));
+  $('#topfeat').innerHTML = s.topFeatures.length
+    ? s.topFeatures.map(f => `<div class="barrow" style="flex:1 1 240px">
+        <span>${f.name}</span>
+        <div class="bar-wrap" style="flex:1"><div class="bar" style="width:${(f.count / max * 100).toFixed(1)}%"></div></div>
+        <b>${f.count}</b></div>`).join('')
+    : '<span class="sub">пока нет данных</span>';
+}
+
+function renderRows(users) {
+  const f = $('#filter').value.trim().toLowerCase();
+  const list = users.filter(u =>
+    !f || u.username.toLowerCase().includes(f) || u.displayname.toLowerCase().includes(f) || String(u.userid).includes(f));
+
+  $('#empty').style.display = list.length ? 'none' : 'block';
+  $('#rows').innerHTML = list.map(u => `
+    <tr>
+      <td class="uid">${u.userid}</td>
+      <td><div class="nm">${u.displayname || u.username}</div><div class="sub">@${u.username}</div></td>
+      <td>${(u.features || []).length
+        ? u.features.map(x => `<span class="feat">${x}</span>`).join('')
+        : '<span class="sub">—</span>'}</td>
+      <td class="uid">${u.hits || 0}</td>
+      <td class="sub">${ago(u.lastSeen)}</td>
+      <td><button class="wl-btn ${wl.has(String(u.userid)) ? 'danger' : 'primary'}"
+            data-id="${u.userid}">${wl.has(String(u.userid)) ? 'убрать' : 'добавить'}</button></td>
+    </tr>`).join('');
+
+  document.querySelectorAll('.wl-btn').forEach(b => b.addEventListener('click', () => toggleWl(b.dataset.id)));
+}
+
+let wl = new Set();
+
+async function toggleWl(id) {
+  const remove = wl.has(String(id));
+  try {
+    const r = await api('/api/whitelist', { method: 'POST', body: JSON.stringify({ userid: id, remove }) });
+    wl = new Set(r.ids.map(String));
+    toast(remove ? 'Убран из whitelist' : 'Добавлен в whitelist');
+    refresh();
+  } catch (e) { toast('Ошибка: ' + e.message); }
+}
+
+async function refresh() {
+  try {
+    const [st, list, wlist] = await Promise.all([
+      api('/api/stats'),
+      mode === 'online' ? api('/api/list') : api('/api/all'),
+      api('/api/whitelist'),
+    ]);
+    wl = new Set(wlist.ids.map(String));
+    renderStats(st.stats);
+    renderRows(list.users || []);
+    $('#wlCount').textContent = 'whitelist: ' + wl.size;
+    $('#status').querySelector('.dot').classList.remove('off');
+    $('#statusText').textContent = 'на связи';
+    $('#clock').textContent = new Date().toLocaleTimeString('ru-RU');
+  } catch (e) {
+    $('#status').querySelector('.dot').classList.add('off');
+    $('#statusText').textContent = 'нет связи (' + e.message + ')';
+  }
+}
+
+$('#toggleMode').addEventListener('click', () => {
+  mode = mode === 'online' ? 'all' : 'online';
+  $('#toggleMode').textContent = mode === 'online' ? 'Показать всех' : 'Показать онлайн';
+  refresh();
+});
+$('#filter').addEventListener('input', refresh);
+
+$('#wlAdd').addEventListener('click', async () => {
+  const id = $('#wlInput').value.trim();
+  if (!id) return;
+  await toggleWl(id);
+  $('#wlInput').value = '';
+});
+$('#wlDel').addEventListener('click', async () => {
+  const id = $('#wlInput').value.trim();
+  if (!id) return;
+  if (!wl.has(id)) { toast('Его нет в whitelist'); return; }
+  await toggleWl(id);
+  $('#wlInput').value = '';
+});
+
+if (!TOKEN) {
+  $('#statusText').textContent = 'нет токена — открой /admin?token=...';
+}
+
+refresh();
+timer = setInterval(refresh, 5000);
+</script>
+</body>
+</html>
