@@ -1,0 +1,583 @@
+/* ============================================
+   downloads.css — секция загрузки релизов
+   Тема: 桜 / сакура (совпадает с index.html)
+   ============================================ */
+
+.dl-section {
+    padding: 30px 0 10px;
+}
+
+.dl-section .section-title {
+    margin-bottom: 12px;
+}
+
+.dl-sub {
+    text-align: center;
+    color: rgba(90, 58, 63, 0.72);
+    font-size: 16px;
+    max-width: 640px;
+    margin: 0 auto 34px;
+    line-height: 1.6;
+    letter-spacing: 1px;
+}
+
+/* ---------- сетка карточек ---------- */
+.dl-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+    gap: 22px;
+    align-items: start;
+}
+
+.dl-card {
+    position: relative;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(253, 243, 241, 0.5));
+    border: 1px solid rgba(194, 94, 120, 0.22);
+    border-radius: 14px;
+    padding: 22px 22px 20px;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 10px 34px rgba(194, 94, 120, 0.1);
+    transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+    overflow: hidden;
+}
+
+.dl-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--sakura-deep), var(--sakura-soft), var(--sakura-deep));
+    opacity: 0.75;
+}
+
+.dl-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(194, 94, 120, 0.45);
+    box-shadow: 0 18px 46px rgba(194, 94, 120, 0.18);
+}
+
+/* ---------- шапка карточки ---------- */
+.dl-card-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 14px;
+    padding-bottom: 14px;
+    margin-bottom: 16px;
+    border-bottom: 1px dashed rgba(90, 58, 63, 0.18);
+}
+
+.dl-ver-block {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.dl-ver {
+    font-family: 'Ma Shan Zheng', 'Noto Serif SC', serif;
+    font-size: 30px;
+    line-height: 1;
+    color: var(--sakura-deep);
+    letter-spacing: 2px;
+}
+
+.dl-channel {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    align-self: flex-start;
+    padding: 3px 11px;
+    border: 1px solid rgba(90, 58, 63, 0.2);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.55);
+    color: var(--bark);
+    font-family: 'Inter', sans-serif;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+}
+
+.dl-channel.stable {
+    border-color: rgba(63, 132, 92, 0.35);
+    color: #2f6b4f;
+    background: rgba(63, 132, 92, 0.09);
+}
+
+.dl-channel.beta {
+    border-color: rgba(184, 149, 106, 0.45);
+    color: var(--gold-mute);
+    background: rgba(184, 149, 106, 0.12);
+}
+
+.dl-date {
+    font-family: 'Inter', sans-serif;
+    font-size: 12.5px;
+    color: rgba(90, 58, 63, 0.55);
+    letter-spacing: 1px;
+    white-space: nowrap;
+    padding-top: 4px;
+}
+
+/* ---------- файлы ---------- */
+.dl-files {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.dl-file {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 12px 13px;
+    border: 1px solid rgba(90, 58, 63, 0.13);
+    border-radius: 11px;
+    background: rgba(255, 255, 255, 0.5);
+    transition: border-color 0.25s ease, background 0.25s ease, transform 0.2s ease;
+}
+
+.dl-file:hover {
+    border-color: rgba(194, 94, 120, 0.4);
+    background: rgba(255, 255, 255, 0.82);
+    transform: translateX(3px);
+}
+
+.dl-file-ic {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: linear-gradient(145deg, var(--sakura-deep), var(--sakura));
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    box-shadow: 0 3px 10px rgba(194, 94, 120, 0.3);
+}
+
+.dl-file-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.dl-file-info b {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 13.5px;
+    color: var(--ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dl-file-info span {
+    font-family: 'Inter', sans-serif;
+    font-size: 11.5px;
+    color: rgba(90, 58, 63, 0.6);
+    letter-spacing: 0.4px;
+}
+
+.dl-actions {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    flex-shrink: 0;
+}
+
+/* ---------- кнопки ---------- */
+.btn-outline {
+    display: inline-block;
+    border: 2px solid var(--sakura-deep);
+    color: var(--sakura-deep);
+    background: transparent;
+    box-shadow: 4px 4px 0 rgba(194, 94, 120, 0.25);
+}
+
+.btn-outline:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 rgba(194, 94, 120, 0.32);
+    color: var(--sakura-deep);
+}
+
+.dl-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 17px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--sakura-deep), var(--sakura));
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-decoration: none;
+    white-space: nowrap;
+    box-shadow: 0 4px 14px rgba(194, 94, 120, 0.3);
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.dl-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 7px 22px rgba(194, 94, 120, 0.45);
+    text-decoration: none;
+}
+
+.dl-btn:active {
+    transform: scale(0.98);
+}
+
+.dl-btn.ghost {
+    background: transparent;
+    border: 1px solid rgba(90, 58, 63, 0.25);
+    color: var(--bark);
+    box-shadow: none;
+}
+
+.dl-btn.ghost:hover {
+    background: rgba(255, 255, 255, 0.7);
+    border-color: var(--sakura-deep);
+    color: var(--sakura-deep);
+    box-shadow: none;
+}
+
+.dl-info-btn {
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(90, 58, 63, 0.2);
+    border-radius: 50%;
+    background: transparent;
+    color: rgba(90, 58, 63, 0.65);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    cursor: none;
+    transition: all 0.22s ease;
+}
+
+.dl-info-btn:hover {
+    background: var(--sakura-deep);
+    border-color: var(--sakura-deep);
+    color: #fff;
+}
+
+/* ---------- заметки релиза ---------- */
+.dl-notes {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px dashed rgba(90, 58, 63, 0.18);
+}
+
+.dl-notes h4 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--bark);
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.dl-notes ul {
+    margin: 0;
+    padding-left: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.dl-notes li {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: rgba(90, 58, 63, 0.75);
+    line-height: 1.55;
+}
+
+/* ---------- требования / предупреждение ---------- */
+.dl-panel {
+    margin-top: 26px;
+    padding: 20px 24px;
+    border: 1px solid rgba(90, 58, 63, 0.16);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.45);
+}
+
+.dl-panel h3 {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-family: 'Noto Serif SC', serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+}
+
+.dl-panel ul {
+    margin: 0;
+    padding-left: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 7px 26px;
+}
+
+.dl-panel li {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: rgba(90, 58, 63, 0.78);
+    line-height: 1.5;
+}
+
+.dl-warn {
+    display: flex;
+    gap: 13px;
+    margin-top: 16px;
+    padding: 16px 20px;
+    border: 1px solid rgba(184, 149, 106, 0.42);
+    border-left: 3px solid var(--gold-mute);
+    border-radius: 12px;
+    background: rgba(184, 149, 106, 0.08);
+}
+
+.dl-warn i {
+    color: var(--gold-mute);
+    font-size: 17px;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.dl-warn p {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--bark);
+}
+
+.dl-warn p b {
+    color: var(--sakura-deep);
+}
+
+/* ---------- загрузка / пусто ---------- */
+.dl-loading,
+.dl-empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: rgba(90, 58, 63, 0.6);
+    font-family: 'Noto Serif SC', serif;
+    letter-spacing: 2px;
+}
+
+.dl-spinner {
+    width: 30px;
+    height: 30px;
+    margin: 0 auto 14px;
+    border: 2px solid rgba(194, 94, 120, 0.2);
+    border-top-color: var(--sakura-deep);
+    border-radius: 50%;
+    animation: dlSpin 0.8s linear infinite;
+}
+
+@keyframes dlSpin {
+    to { transform: rotate(360deg); }
+}
+
+/* ---------- модалка ---------- */
+.dl-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 400;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    background: rgba(43, 31, 38, 0.55);
+    backdrop-filter: blur(5px);
+    animation: dlFade 0.2s ease;
+}
+
+.dl-modal-backdrop[hidden] {
+    display: none;
+}
+
+@keyframes dlFade {
+    from { opacity: 0; }
+}
+
+.dl-modal {
+    width: 100%;
+    max-width: 560px;
+    max-height: 88vh;
+    overflow-y: auto;
+    background: var(--paper);
+    border: 1px solid rgba(194, 94, 120, 0.3);
+    border-radius: 16px;
+    box-shadow: 0 26px 70px rgba(43, 31, 38, 0.35);
+    animation: dlPop 0.26s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+@keyframes dlPop {
+    from { opacity: 0; transform: translateY(18px) scale(0.97); }
+}
+
+.dl-modal-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 18px 22px;
+    border-bottom: 1px solid rgba(90, 58, 63, 0.15);
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 16px 16px 0 0;
+}
+
+.dl-modal-head h3 {
+    margin: 0;
+    font-family: 'Ma Shan Zheng', 'Noto Serif SC', serif;
+    font-size: 24px;
+    color: var(--sakura-deep);
+    letter-spacing: 2px;
+}
+
+.dl-close {
+    width: 32px;
+    height: 32px;
+    border: 1px solid rgba(90, 58, 63, 0.2);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--bark);
+    font-size: 17px;
+    line-height: 1;
+    cursor: none;
+    transition: all 0.2s ease;
+}
+
+.dl-close:hover {
+    background: var(--sakura-deep);
+    border-color: var(--sakura-deep);
+    color: #fff;
+}
+
+.dl-modal-body {
+    padding: 20px 22px 24px;
+}
+
+.dl-modal-body .dl-file {
+    margin-bottom: 16px;
+    background: rgba(255, 255, 255, 0.62);
+}
+
+.dl-kv {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.dl-kv-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 9px 0;
+    border-bottom: 1px dashed rgba(90, 58, 63, 0.16);
+}
+
+.dl-kv-row:last-child {
+    border-bottom: 0;
+}
+
+.dl-kv-row dt {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: rgba(90, 58, 63, 0.65);
+    flex-shrink: 0;
+}
+
+.dl-kv-row dd {
+    margin: 0;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 12px;
+    color: var(--ink);
+    text-align: right;
+    word-break: break-all;
+}
+
+.dl-hash {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.dl-copy {
+    flex-shrink: 0;
+    padding: 3px 10px;
+    border: 1px solid rgba(90, 58, 63, 0.22);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--bark);
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: none;
+    transition: all 0.2s ease;
+}
+
+.dl-copy:hover {
+    background: var(--sakura-deep);
+    border-color: var(--sakura-deep);
+    color: #fff;
+}
+
+.dl-modal-foot {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 16px 22px;
+    border-top: 1px solid rgba(90, 58, 63, 0.15);
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 0 0 16px 16px;
+}
+
+.dl-modal-foot .dl-btn {
+    flex: 1 1 auto;
+    justify-content: center;
+}
+
+/* ---------- адаптив ---------- */
+@media (max-width: 700px) {
+    .dl-card {
+        padding: 18px 16px 16px;
+    }
+    .dl-ver {
+        font-size: 25px;
+    }
+    .dl-file {
+        flex-wrap: wrap;
+    }
+    .dl-file-info {
+        flex: 1 1 calc(100% - 60px);
+    }
+    .dl-actions {
+        flex: 1 1 100%;
+        justify-content: flex-end;
+    }
+    .dl-panel ul {
+        grid-template-columns: 1fr;
+    }
+    .dl-modal-foot .dl-btn {
+        flex: 1 1 100%;
+    }
+}

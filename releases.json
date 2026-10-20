@@ -1,0 +1,36 @@
+{
+  "project": "Pixels Client",
+  "repo": "ggn93360-creator/pixel_client_server",
+  "updated": "2026-10-20",
+  "releases": [
+    {
+      "version": "v1.0.0",
+      "title": "Final Build · Sakura",
+      "date": "2026-10-14",
+      "channel": "stable",
+      "notes": [
+        "All scripts are fully functional and work on the current game version",
+        "Updates are discontinued — the client remains in a stable state",
+        "Recommended to use as is, without modifications"
+      ],
+      "files": [
+        {
+          "name": "Pixels.exe",
+          "path": "client/Pixels.exe",
+          "type": "exe",
+          "size": 13955707,
+          "sha256": "63E179D97729ACA39C3AACAD87C5C3305BA06A7615181254FC50DEF6C81C49C9",
+          "platform": "Windows 10/11 · x64"
+        },
+        {
+          "name": "loader.lua",
+          "path": "https://raw.githubusercontent.com/ggn93360-creator/pixel_client/main/v1",
+          "type": "lua",
+          "size": 0,
+          "sha256": "",
+          "platform": "Universal loader · paste into executor"
+        }
+      ]
+    }
+  ]
+}

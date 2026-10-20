@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Downloads · PIXELS CLIENT</title>
+<meta name="description" content="All releases of Pixels Client — download the Windows client and loader."/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;900&family=Ma+Shan+Zheng&family=Long+Cang&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="css/downloads.css">
+<style>
+    * { margin:0; padding:0; box-sizing:border-box; cursor:none; }
+    :root {
+        --ink: #2b1f26;
+        --ink-soft: #4a3540;
+        --paper: #fdf3f1;
+        --paper-2: #f8e5e5;
+        --paper-3: #f2d4d6;
+        --sakura: #e88aa0;
+        --sakura-deep: #c25e78;
+        --sakura-soft: #f7b8c5;
+        --bark: #5a3a3f;
+        --gold-mute: #b8956a;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+        background-color: var(--paper);
+        background-image:
+            radial-gradient(circle at 12% 20%, rgba(232,138,160,0.10) 0 1px, transparent 2px),
+            radial-gradient(circle at 78% 63%, rgba(232,138,160,0.08) 0 1px, transparent 2px),
+            radial-gradient(circle at 44% 88%, rgba(90,58,63,0.05) 0 1px, transparent 2px),
+            linear-gradient(180deg, #fef6f4 0%, #f8e5e5 45%, #f0d2d6 100%);
+        background-size: 180px 180px, 240px 240px, 300px 300px, 100% 100%;
+        color: var(--ink);
+        font-family: 'Noto Serif SC', 'Inter', serif;
+        min-height: 100vh;
+        overflow-x: hidden;
+        line-height: 1.65;
+    }
+    .bg-overlay {
+        position: fixed; inset: 0; z-index: 1; pointer-events: none;
+        background:
+            radial-gradient(ellipse at 0% 0%, rgba(232,138,160,0.10), transparent 32%),
+            radial-gradient(ellipse at 100% 100%, rgba(194,94,120,0.08), transparent 34%);
+    }
+    .container { max-width: 1080px; margin: 0 auto; padding: 60px 50px 40px; position: relative; z-index: 2; }
+    header {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 20px 4px 22px; flex-wrap: wrap; gap: 15px;
+        border-bottom: 1px solid rgba(90,58,63,0.15); margin-bottom: 34px; position: relative;
+    }
+    header::after {
+        content: ''; position: absolute; bottom: -5px; left: 0; width: 100%; height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(194,94,120,0.35) 20%, rgba(194,94,120,0.35) 80%, transparent);
+    }
+    .logo {
+        font-family: 'Ma Shan Zheng', serif; font-size: 34px; color: var(--ink);
+        letter-spacing: 6px; display: flex; align-items: center; gap: 14px; text-decoration: none;
+    }
+    .logo:hover { text-decoration: none; }
+    .logo .chop {
+        display: inline-flex; align-items: center; justify-content: center;
+        width: 46px; height: 46px; background: var(--sakura-deep); color: var(--paper);
+        font-family: 'Ma Shan Zheng', serif; font-size: 24px; border-radius: 3px;
+        transform: rotate(-4deg); box-shadow: 0 2px 8px rgba(194,94,120,0.4); line-height: 1;
+    }
+    .logo span.sub {
+        font-family: 'Long Cang', 'Noto Serif SC', serif; font-size: 20px;
+        color: var(--ink-soft); letter-spacing: 4px; margin-left: -4px;
+    }
+    .lang-switch { display: flex; gap: 0; }
+    .lang-btn {
+        background: transparent; border: 1px solid rgba(90,58,63,0.25); color: var(--ink-soft);
+        padding: 7px 16px; border-radius: 30px; font-weight: 600; font-size: 13px;
+        cursor: none; transition: .3s; font-family: 'Inter', sans-serif;
+    }
+    .lang-btn.active { border-color: var(--sakura-deep); background: rgba(194,94,120,0.12); color: var(--sakura-deep); }
+    .lang-btn:hover { border-color: var(--sakura-deep); color: var(--sakura-deep); }
+    .back-link {
+        display: inline-flex; align-items: center; gap: 8px; margin-bottom: 26px;
+        font-family: 'Inter', sans-serif; font-size: 13.5px; color: var(--sakura-deep);
+        text-decoration: none; letter-spacing: 1px;
+    }
+    .back-link:hover { text-decoration: underline; }
+    .page-head { text-align: center; margin-bottom: 40px; }
+    .page-head h1 {
+        font-family: 'Ma Shan Zheng', serif; font-size: 46px; color: var(--ink);
+        letter-spacing: 5px; margin-bottom: 8px;
+    }
+    .page-head p { color: rgba(90,58,63,0.7); font-size: 16px; max-width: 620px; margin: 0 auto; }
+    .section-title {
+        font-family: 'Noto Serif SC', serif; font-size: 26px; text-align: center;
+        margin-bottom: 30px; color: var(--ink); letter-spacing: 3px;
+    }
+    .dl-section { padding: 0; }
+    .dl-section .dl-sub { margin-bottom: 26px; }
+    .dl-grid { grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); }
+    .fade-init { opacity: 0; transform: translateY(26px); transition: opacity .7s ease, transform .7s ease; }
+    .fade-init.visible { opacity: 1; transform: translateY(0); }
+    footer {
+        margin-top: 56px; padding: 24px 0; text-align: center;
+        border-top: 1px solid rgba(90,58,63,0.15);
+        color: rgba(90,58,63,0.6); font-size: 14px;
+    }
+    /* ---- курсор-лепесток ---- */
+    .cursor-petal {
+        position: fixed; top: 0; left: 0; width: 32px; height: 32px;
+        pointer-events: none; z-index: 9999; transform-origin: 2px 30px;
+        will-change: transform; opacity: .95; transition: opacity .25s;
+    }
+    .cursor-petal svg { width: 100%; height: 100%; display: block; filter: drop-shadow(1px 2px 2px rgba(90,58,63,.28)); transform-origin: 2px 30px; }
+    .cursor-petal.hover svg { transform: scale(1.28) rotate(8deg); }
+    /* ---- падающие лепестки ---- */
+    .petal-fall {
+        position: fixed; top: -20px; width: 14px; height: 14px;
+        pointer-events: none; z-index: 1; opacity: .75; animation: petalFall linear infinite;
+    }
+    .petal-fall svg { width: 100%; height: 100%; }
+    @keyframes petalFall {
+        0%   { transform: translateY(-20px) rotate(0deg) translateX(0); opacity: 0; }
+        10%  { opacity: .75; }
+        90%  { opacity: .75; }
+        100% { transform: translateY(105vh) rotate(540deg) translateX(60px); opacity: 0; }
+    }
+    .vertical-seal {
+        position: fixed; right: 22px; top: 50%; transform: translateY(-50%);
+        writing-mode: vertical-rl; font-family: 'Ma Shan Zheng', serif; font-size: 22px;
+        letter-spacing: 12px; color: var(--sakura-deep); z-index: 2; padding: 14px 6px;
+        border-top: 2px solid var(--sakura-deep); border-bottom: 2px solid var(--sakura-deep);
+        background: rgba(253,243,241,0.6); backdrop-filter: blur(3px); user-select: none;
+    }
+    @media (max-width: 700px) {
+        .container { padding: 40px 18px 30px; }
+        .page-head h1 { font-size: 32px; }
+        .vertical-seal { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .fade-init { opacity: 1; transform: none; }
+        .petal-fall { display: none; }
+    }
+</style>
+</head>
+<body>
+
+<div class="bg-overlay"></div>
+
+<div class="petal-fall" style="left: 14%; animation-duration: 15s; animation-delay: 1s;">
+    <svg viewBox="0 0 14 14"><path d="M 2 13 Q 1 8, 5 4 Q 8 1, 12 2 Q 11 6, 8 9 Q 5 12, 2 13 Z" fill="#f7b8c5" opacity="0.9"/></svg>
+</div>
+<div class="petal-fall" style="left: 42%; animation-duration: 12s; animation-delay: 4s;">
+    <svg viewBox="0 0 14 14"><path d="M 2 13 Q 1 8, 5 4 Q 8 1, 12 2 Q 11 6, 8 9 Q 5 12, 2 13 Z" fill="#c25e78" opacity="0.85"/></svg>
+</div>
+<div class="petal-fall" style="left: 68%; animation-duration: 16s; animation-delay: 2s;">
+    <svg viewBox="0 0 14 14"><path d="M 2 13 Q 1 8, 5 4 Q 8 1, 12 2 Q 11 6, 8 9 Q 5 12, 2 13 Z" fill="#e88aa0" opacity="0.9"/></svg>
+</div>
+<div class="petal-fall" style="left: 88%; animation-duration: 13s; animation-delay: 6s;">
+    <svg viewBox="0 0 14 14"><path d="M 2 13 Q 1 8, 5 4 Q 8 1, 12 2 Q 11 6, 8 9 Q 5 12, 2 13 Z" fill="#f7b8c5" opacity="0.9"/></svg>
+</div>
+
+<div class="vertical-seal">桜 · 客 · 户 · 端</div>
+
+<div class="container">
+    <header>
+        <a class="logo" href="index.html">
+            <span class="chop">桜</span>
+            PIXELS
+            <span class="sub">客户端</span>
+        </a>
+        <div class="lang-switch">
+            <button class="lang-btn active" data-lang="en">EN</button>
+            <button class="lang-btn" data-lang="uk">UA</button>
+            <button class="lang-btn" data-lang="ru">RU</button>
+        </div>
+    </header>
+
+    <a class="back-link" href="index.html"><i class="fas fa-arrow-left"></i> <span data-i18n="nav_back">Back to home</span></a>
+
+    <div class="page-head">
+        <h1 data-i18n="page_title">⬇ 𝐃𝐨𝐰𝐧𝐥𝐨𝐚𝐝𝐬</h1>
+        <p data-i18n="page_sub">Все релизы Pixels Client в одном месте — выберите нужную версию и скачайте.</p>
+    </div>
+
+    <section class="dl-section">
+        <div class="dl-grid" data-releases="releases.json" data-releases-all="true"></div>
+
+        <div class="dl-panel">
+            <h3><i class="fas fa-list-check"></i> <span data-i18n="dl_req_title">📋 𝐑𝐞𝐪𝐮𝐢𝐫𝐞𝐦𝐞𝐧𝐭𝐬</span></h3>
+            <ul>
+                <li data-i18n="dl_req1">Windows 10 / 11 (x64)</li>
+                <li data-i18n="dl_req2">Roblox executor: Synapse X, Fluxus, Solara</li>
+                <li data-i18n="dl_req3">Интернет для загрузки лоадера</li>
+                <li data-i18n="dl_req4">Установка не требуется — portable-версия</li>
+            </ul>
+        </div>
+
+        <div class="dl-warn">
+            <i class="fas fa-shield-halved"></i>
+            <p data-i18n="dl_warn"><b>Windows SmartScreen может показать предупреждение.</b> Это обычная реакция на .exe без цифровой подписи — не вирус. Нажмите «Подробнее» → «Выполнить в любом случае».<br><span style="opacity:.7">SHA-256 хеш файла указан в карточке — сверьте его перед запуском.</span></p>
+        </div>
+    </section>
+
+    <footer><p>© 2026 PIXELS CLIENT · 桜 · NOT AFFILIATED WITH ROBLOX · MADE WITH ❤️</p></footer>
+</div>
+
+<div class="cursor-petal" id="cursorPetal">
+    <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+        <path class="petal" d="M16 30 C 6 26, 2 16, 6 9 C 10 2, 22 2, 27 9 C 30 14, 26 24, 16 30 Z" fill="#f7b8c5"/>
+        <path class="vein" d="M16 30 L 10 12 M16 30 L 16 8 M16 30 L 23 12" stroke="#c25e78" stroke-width="0.8" fill="none" opacity="0.5"/>
+        <path class="stem" d="M16 30 L 16 33" stroke="#5a3a3f" stroke-width="1.4"/>
+        <circle class="pistil" cx="16" cy="12" r="1.6" fill="#fff2b0"/>
+    </svg>
+</div>
+
+<script>
+    // ---------- переводы ----------
+    const i18n = {
+        en: {
+            page_title: '⬇ 𝐃𝐨𝐰𝐧𝐥𝐨𝐚𝐝𝐬', page_sub: 'All Pixels Client releases in one place — pick a version and download it.',
+            nav_back: 'Back to home',
+            dl_req_title: '📋 𝐑𝐞𝐪𝐮𝐢𝐫𝐞𝐦𝐞𝐧𝐭𝐬',
+            dl_req1: 'Windows 10 / 11 (x64)', dl_req2: 'Roblox executor: Synapse X, Fluxus, Solara', dl_req3: 'Internet connection for the loader', dl_req4: 'No installation needed — portable build',
+            dl_warn: '<b>Windows SmartScreen may show a warning.</b> This is normal for an unsigned .exe — it is not a virus. Click "More info" → "Run anyway".<br><span style="opacity:.7">The SHA-256 hash of the file is shown in the card — verify it before running.</span>'
+        },
+        uk: {
+            page_title: '⬇ 𝐙𝐀𝐕𝐀𝐍𝐓𝐀𝐊𝐈', page_sub: 'Усі релізи Pixels Client в одному місці — оберіть потрібну версію та завантажте.',
+            nav_back: 'На головну',
+            dl_req_title: '📋 𝐕𝐢𝐌𝐎𝐆𝐈',
+            dl_req1: 'Windows 10 / 11 (x64)', dl_req2: 'Екзекьютор Roblox: Synapse X, Fluxus, Solara', dl_req3: 'Інтернет для завантаження лоадера', dl_req4: 'Встановлення не потрібне — portable-збірка',
+            dl_warn: '<b>Windows SmartScreen може показати попередження.</b> Це звичайна реакція на .exe без цифрового підпису — не вірус. Натисніть «Докладніше» → «Виконати в будь-якому разі».<br><span style="opacity:.7">SHA-256 хеш файлу вказано в картці — звірте його перед запуском.</span>'
+        },
+        ru: {
+            page_title: '⬇ 𝐒𝐂𝐀𝐊𝐀𝐂𝐀𝐓𝐘', page_sub: 'Все релизы Pixels Client в одном месте — выберите нужную версию и скачайте.',
+            nav_back: 'На главную',
+            dl_req_title: '📋 𝐓𝐑𝐄𝐁𝐎𝐁𝐎𝐕𝐀𝐍𝐈𝐘',
+            dl_req1: 'Windows 10 / 11 (x64)', dl_req2: 'Экзекьютор Roblox: Synapse X, Fluxus, Solara', dl_req3: 'Интернет для загрузки лоадера', dl_req4: 'Установка не требуется — portable-сборка',
+            dl_warn: '<b>Windows SmartScreen может показать предупреждение.</b> Это обычная реакция на .exe без цифровой подписи — не вирус. Нажмите «Подробнее» → «Выполнить в любом случае».<br><span style="opacity:.7">SHA-256 хеш файла указан в карточке — сверьте его перед запуском.</span>'
+        }
+    };
+
+    function setLanguage(lang) {
+        const data = i18n[lang];
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (data[key] !== undefined) { el.innerHTML = data[key]; }
+        });
+        document.querySelectorAll('.lang-btn').forEach(btn => { btn.classList.toggle('active', btn.dataset.lang === lang); });
+        document.documentElement.setAttribute('data-lang', lang);
+        window.currentLang = lang;
+        document.dispatchEvent(new CustomEvent('langchange', { detail: lang }));
+    }
+    document.querySelectorAll('.lang-btn').forEach(btn => btn.addEventListener('click', () => setLanguage(btn.dataset.lang)));
+
+    // ---------- курсор-лепесток ----------
+    const petal = document.getElementById('cursorPetal');
+    let mx = -100, my = -100, px = -100, py = -100;
+    document.addEventListener('mousemove', (e) => { mx = e.clientX; my = e.clientY; });
+    function animatePetal() {
+        px += (mx - px) * 0.35;
+        py += (my - py) * 0.35;
+        petal.style.transform = `translate(${px - 2}px, ${py - 30}px)`;
+        requestAnimationFrame(animatePetal);
+    }
+    animatePetal();
+    document.querySelectorAll('a, button, .dl-card, .dl-file, .dl-info-btn, .dl-close, .dl-copy, .lang-btn').forEach(el => {
+        el.addEventListener('mouseenter', () => petal.classList.add('hover'));
+        el.addEventListener('mouseleave', () => petal.classList.remove('hover'));
+    });
+    document.addEventListener('mouseleave', () => { petal.style.opacity = '0'; });
+    document.addEventListener('mouseenter', () => { petal.style.opacity = '0.95'; });
+
+    // ---------- fade in ----------
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) entry.target.classList.add('visible');
+            else entry.target.classList.remove('visible');
+        });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.fade-init').forEach(el => observer.observe(el));
+
+    setLanguage('en');
+</script>
+<script src="assets/js/downloads.js"></script>
+</body>
+</html>
