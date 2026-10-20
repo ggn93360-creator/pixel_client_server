@@ -152,12 +152,45 @@
         });
     }
 
+    /* ---------- загрузчик оверлея (список игроков) ---------- */
+    function setupOverlay() {
+        var box = $('#onOverlay');
+        if (!box) return;
+        var base = apiBase();
+        if (!base) {
+            box.textContent = '-- укажи адрес сервера в assets/js/config.js';
+            return;
+        }
+        box.textContent = 'loadstring(game:HttpGet("' + base + '/api/overlay"))()';
+
+        var btn = $('#onOverlayCopy');
+        if (!btn) return;
+        btn.addEventListener('click', function () {
+            var text = box.textContent;
+            var done = function () {
+                var orig = btn.innerHTML;
+                btn.innerHTML = '✓ Скопировано';
+                setTimeout(function () { btn.innerHTML = orig; }, 1800);
+            };
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(done).catch(function () {});
+            } else {
+                var ta = document.createElement('textarea');
+                ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+                document.body.appendChild(ta); ta.select();
+                try { document.execCommand('copy'); done(); } catch (e) {}
+                ta.remove();
+            }
+        });
+    }
+
     /* ---------- init ---------- */
     function init() {
         if (!document.querySelector('#onList')) return;
         if (CFG.SHOW_ONLINE === false) return;
 
         setupLoader();
+        setupOverlay();
         refresh();
         state.timer = setInterval(refresh, CFG.REFRESH_MS || 15000);
         document.addEventListener('visibilitychange', function () {

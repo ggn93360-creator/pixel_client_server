@@ -41,6 +41,7 @@ const CFG = {
   publicUrl: (process.env.PUBLIC_URL || '').replace(/\/+$/, ''),
   dataDir: path.resolve(ROOT, process.env.DATA_DIR || 'data'),
   scriptFile: path.resolve(ROOT, process.env.SCRIPT_FILE || 'payload/loader.luau'),
+  overlayFile: path.resolve(ROOT, process.env.OVERLAY_FILE || 'payload/overlay.luau'),
   offlineTtl: Number(process.env.OFFLINE_TTL || 120),
   whitelistOnly: process.env.WHITELIST_ONLY === '1',
   sessionSecret: process.env.SESSION_SECRET || '',
@@ -196,25 +197,37 @@ function stats() {
 
 // ---------------------------------------------------------- скрипт
 let scriptCache = { text: '', mtime: 0 };
+let overlayCache = { text: '', mtime: 0 };
 
-async function loadScript() {
+async function readScriptFile(file, cache) {
   try {
-    const st = await fsp.stat(CFG.scriptFile);
-    if (st.mtimeMs === scriptCache.mtime && scriptCache.text) {
-      return scriptCache.text;
+    const st = await fsp.stat(file);
+    if (st.mtimeMs === cache.mtime && cache.text) {
+      return cache.text;
     }
-    let text = await fsp.readFile(CFG.scriptFile, 'utf8');
+    let text = await fsp.readFile(file, 'utf8');
     text = text.replace(/__API__/g, CFG.publicUrl || '');
     text = text.replace(/__TOKEN__/g, CFG.sessionSecret || '');
-    scriptCache = { text, mtime: st.mtimeMs };
+    cache.text = text;
+    cache.mtime = st.mtimeMs;
     return text;
   } catch (e) {
-    return `--[[ Pixels Client: не удалось прочитать ${CFG.scriptFile} ]]\n-- ${e.message}\n`;
+    return `--[[ Pixels Client: не удалось прочитать ${file} ]]\n-- ${e.message}\n`;
   }
+}
+
+async function loadScript() {
+  return readScriptFile(CFG.scriptFile, scriptCache);
+}
+
+async function loadOverlay() {
+  return readScriptFile(CFG.overlayFile, overlayCache);
 }
 
 // ---------------------------------------------------------- утилиты
 function send(res, status, body, headers = {}) {
+  // страховка: если ответ уже ушёл, второй раз headers не пишем
+  if (res.writableEnded) return;
   const payload = typeof body === 'string' ? Buffer.from(body, 'utf8') : body;
   res.writeHead(status, {
     'Content-Type': 'application/json; charset=utf-8',
@@ -479,6 +492,16 @@ const server = http.createServer(async (req, res) => {
     // --- скрипт ---
     if (p === '/api/script' || p === '/script') {
       return await handleScript(req, res, url);
+    }
+
+    // --- оверлей со списком игроков ---
+    if (p === '/api/overlay' || p === '/overlay') {
+      const text = await loadOverlay();
+      return send(res, 200, text, {
+        'Content-Type': 'text/plain; charset=utf-8',
+        'Access-Control-Allow-Origin': '*',
+        'Cache-Control': 'no-cache',
+      });
     }
 
     // --- whitelist ---

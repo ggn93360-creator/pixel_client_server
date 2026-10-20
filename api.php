@@ -250,6 +250,24 @@ if ($action === 'script') {
     exit;
 }
 
+// ---- overlay (список игроков в GUI) ----
+if ($action === 'overlay') {
+    $overlayFile = __DIR__ . '/server/payload/overlay.luau';
+    if (!is_file($overlayFile)) {
+        respond(404, ['status' => 'error', 'message' => 'overlay not found']);
+    }
+    $text = file_get_contents($overlayFile) ?: '';
+    $text = str_replace('__API__', $PUBLIC_URL, $text);
+    $text = str_replace('__TOKEN__', getenv('SESSION_SECRET') ?: '', $text);
+
+    header('Content-Type: text/plain; charset=utf-8');
+    header('Content-Disposition: inline; filename="overlay.luau"');
+    header('Access-Control-Allow-Origin: *');
+    header('Cache-Control: no-cache');
+    echo $text;
+    exit;
+}
+
 // ---- whitelist ----
 if ($action === 'whitelist') {
     if (!isAdmin()) {

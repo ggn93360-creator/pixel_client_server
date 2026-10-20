@@ -347,15 +347,15 @@
                 name: 'Pixels.exe',
                 path: 'https://github.com/ggn93360-creator/pixel_client_server/releases/download/v1.0.0/Pixels.exe',
                 type: 'exe',
-                size: 13955707,
-                sha256: '63E179D97729ACA39C3AACAD87C5C3305BA06A7615181254FC50DEF6C81C49C9',
+                size: 34636302,
+                sha256: '7A7B80BCBB2F669EEB0AC2A062681BE005DBC3BA33415D115AEC48BBC9EF75C0',
                 platform: 'Windows 10/11 · x64'
             }, {
                 name: 'loader.zip',
                 path: 'https://github.com/ggn93360-creator/pixel_client_server/releases/download/v1.0.0/loader.zip',
                 type: 'zip',
                 size: 50594,
-                sha256: '591D54178CEAA80F09605043BEC8FBA48A2C4F6DAC142CEB22DBFB1260F831E1',
+                sha256: '4FB94F991BC9BD9EE749C3FB0C8CA46C869A9C442E142C5398A1DFD6543AB6EE',
                 platform: 'Universal loader · unpack and paste loader.lua'
             }]
         }]
