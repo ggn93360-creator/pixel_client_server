@@ -43,6 +43,7 @@
             size: 'Size', sha256: 'SHA-256', platform: 'Platform', file: 'File',
             open: 'Open file', close: 'Close', notes: 'Changelog', stable: 'Stable', beta: 'Beta',
             noNotes: 'No changelog for this build.', empty: 'No releases published yet.',
+            onGithub: 'View release',
             exe: 'EXE', lua: 'LUA', zip: 'ZIP', raw: 'FILE'
         },
         uk: {
@@ -50,6 +51,7 @@
             size: 'Розмір', sha256: 'SHA-256', platform: 'Платформа', file: 'Файл',
             open: 'Відкрити файл', close: 'Закрити', notes: 'Зміни', stable: 'Стабільна', beta: 'Бета',
             noNotes: 'Немає списку змін для цієї збірки.', empty: 'Релізів поки немає.',
+            onGithub: 'Реліз на GitHub',
             exe: 'EXE', lua: 'LUA', zip: 'ZIP', raw: 'FILE'
         },
         ru: {
@@ -57,6 +59,7 @@
             size: 'Размер', sha256: 'SHA-256', platform: 'Платформа', file: 'Файл',
             open: 'Открыть файл', close: 'Закрыть', notes: 'Изменения', stable: 'Стабильная', beta: 'Бета',
             noNotes: 'Список изменений для этой сборки отсутствует.', empty: 'Релизов пока нет.',
+            onGithub: 'Релиз на GitHub',
             exe: 'EXE', lua: 'LUA', zip: 'ZIP', raw: 'FILE'
         }
     };
@@ -67,7 +70,7 @@
     }
 
     /* ---------- состояние ---------- */
-    var state = { releases: [], modal: null, lastFocus: null };
+    var state = { releases: [], manifest: {}, modal: null, lastFocus: null };
 
     /* ---------- рендер карточек ---------- */
     function releaseCard(rel, idx) {
@@ -105,6 +108,13 @@
                 '</ul></div>';
         }
 
+        // ссылка на страницу релиза на GitHub
+        var ghLink = '';
+        if (state.manifest.releasesPage) {
+            ghLink = '<a class="dl-gh-link" href="' + esc(state.manifest.releasesPage + '/tag/' + rel.version) +
+                '" target="_blank" rel="noopener"><i class="fab fa-github"></i> ' + esc(t('onGithub')) + '</a>';
+        }
+
         return '' +
         '<article class="dl-card">' +
             '<header class="dl-card-head">' +
@@ -113,6 +123,7 @@
                     '<span class="dl-channel ' + esc(rel.channel || 'stable') + '">' +
                         esc(rel.channel === 'beta' ? t('beta') : t('stable')) +
                     '</span>' +
+                    ghLink +
                 '</div>' +
                 '<time class="dl-date">' + esc(fmtDate(rel.date)) + '</time>' +
             '</header>' +
@@ -121,12 +132,38 @@
         '</article>';
     }
 
+    /* ---------- применение ссылок из манифеста ---------- */
+    function applyManifestLinks() {
+        var first = state.releases[0];
+        if (!first) return;
+
+        // кнопка в герое: первый файл последнего релиза
+        var heroName = $('[data-dl-hero]') ? $('[data-dl-hero]').getAttribute('data-dl-hero') : null;
+        if (heroName) {
+            var heroFile = (first.files || []).filter(function (f) { return f.name === heroName; })[0] || (first.files || [])[0];
+            if (heroFile) {
+                $$('[data-dl-hero]').forEach(function (el) {
+                    el.setAttribute('href', heroFile.path);
+                    el.removeAttribute('download');
+                });
+            }
+        }
+
+        // кнопка "Releases на GitHub"
+        if (state.manifest.releasesPage) {
+            $$('[data-dl-releases-link]').forEach(function (el) {
+                el.setAttribute('href', state.manifest.releasesPage);
+            });
+        }
+    }
+
     function render(grid, releases) {
         if (!releases || !releases.length) {
             grid.innerHTML = '<div class="dl-empty">' + esc(t('empty')) + '</div>';
             return;
         }
         grid.innerHTML = releases.map(releaseCard).join('');
+        applyManifestLinks();
     }
 
     /* ---------- модалка деталей ---------- */
@@ -259,12 +296,14 @@
             grid.innerHTML = '<div class="dl-loading"><div class="dl-spinner"></div>…</div>';
 
             loadManifest(url).then(function (data) {
+                state.manifest = data || {};
                 state.releases = (data && data.releases) || [];
                 var list = state.releases;
                 if (!showAll && limit > 0) list = list.slice(0, limit);
                 render(grid, list);
             }).catch(function () {
                 // фолбэк: манифест недоступен — показываем встроенный дефолт
+                state.manifest = FALLBACK.manifest || {};
                 state.releases = FALLBACK.releases;
                 render(grid, showAll ? FALLBACK.releases : FALLBACK.releases.slice(0, limit || 1));
             });
@@ -295,19 +334,29 @@
 
     /* ---------- встроенный фолбэк ---------- */
     var FALLBACK = {
+        manifest: {
+            releasesPage: 'https://github.com/ggn93360-creator/pixel_client_server/releases'
+        },
         releases: [{
             version: 'v1.0.0',
             title: 'Final Build',
-            date: '2026-10-14',
+            date: '2026-10-20',
             channel: 'stable',
             notes: [],
             files: [{
                 name: 'Pixels.exe',
-                path: 'client/Pixels.exe',
+                path: 'https://github.com/ggn93360-creator/pixel_client_server/releases/download/v1.0.0/Pixels.exe',
                 type: 'exe',
                 size: 13955707,
                 sha256: '63E179D97729ACA39C3AACAD87C5C3305BA06A7615181254FC50DEF6C81C49C9',
                 platform: 'Windows 10/11 · x64'
+            }, {
+                name: 'loader.zip',
+                path: 'https://github.com/ggn93360-creator/pixel_client_server/releases/download/v1.0.0/loader.zip',
+                type: 'zip',
+                size: 50594,
+                sha256: 'B58FD74E79B4EC369171F0F20BBA38E5117B8D311F8ED4BD79B877DB86F8B926',
+                platform: 'Universal loader · unpack and paste loader.lua'
             }]
         }]
     };

@@ -27,18 +27,24 @@
 
 ## Скачать клиент
 
-Главная кнопка ведёт на:
+Файлы раздаются с **GitHub Releases** — это каноническое место для бинарников:
+счётчики загрузок, история версий, правильное имя файла в `Content-Disposition`.
 
-```
-client/Pixels.exe
-```
+| Файл | Размер | Ссылка |
+|------|--------|--------|
+| `Pixels.exe` | 13.3 MB | [/releases/download/v1.0.0/Pixels.exe](https://github.com/ggn93360-creator/pixel_client_server/releases/download/v1.0.0/Pixels.exe) |
+| `loader.zip` | 50 KB | [/releases/download/v1.0.0/loader.zip](https://github.com/ggn93360-creator/pixel_client_server/releases/download/v1.0.0/loader.zip) |
 
-Это работает напрямую с GitHub Pages — файл отдаётся как `application/octet-stream` и скачивается без редиректов.
+Страница релизов: <https://github.com/ggn93360-creator/pixel_client_server/releases>
+
+> Почему `loader.zip`, а не `loader.lua`: GitHub удаляет `.lua`-ассеты из релизов
+> (срабатывает сканер на обфусцированном Lua). `.zip` проходит без проблем.
 
 ### Как обновить клиент
 
-1. Положить новый бинарник в `client/Pixels.exe`
-2. Обновить `releases.json`:
+1. Создать релиз на GitHub: **Releases → Draft a new release**
+2. Тег, например `v1.1.0`, приложить `Pixels.exe` (и `loader.zip`, если менялся лоадер)
+3. Обновить `releases.json`:
 
 ```json
 {
@@ -47,7 +53,7 @@ client/Pixels.exe
   "channel": "stable",
   "files": [{
     "name": "Pixels.exe",
-    "path": "client/Pixels.exe",
+    "path": "https://github.com/ggn93360-creator/pixel_client_server/releases/download/v1.1.0/Pixels.exe",
     "type": "exe",
     "size": 13955707,
     "sha256": "63E179D97729ACA39C3AACAD87C5C3305BA06A7615181254FC50DEF6C81C49C9",
@@ -56,20 +62,21 @@ client/Pixels.exe
 }
 ```
 
-3. Закоммитить и запушить — сайт обновится сам (Pages пересобирается автоматически).
+4. Закоммитить и запушить — сайт обновится сам (Pages пересобирается автоматически).
 
 > `releases.json` — единственный источник правды для секции загрузки.
-> Карточки, модалка, размеры, хеши и кнопки рисуются из него скриптом `assets/js/downloads.js`.
+> Карточки, модалка, размеры, хеши, кнопка в герое и ссылка на страницу релизов
+> рисуются из него скриптом `assets/js/downloads.js`.
 > Если файл недоступен — сработает встроенный фолбэк, сайт не сломается.
 
 ### Получить SHA-256 файла
 
 ```powershell
-(Get-FileHash client\Pixels.exe -Algorithm SHA256).Hash
+(Get-FileHash $env:USERPROFILE\Downloads\Pixels.exe -Algorithm SHA256).Hash
 ```
 
 ```bash
-sha256sum client/Pixels.exe
+sha256sum ~/Downloads/Pixels.exe
 ```
 
 ---
@@ -83,8 +90,6 @@ pixel_client_server/
 ├── releases.json           # манифест релизов (версии, файлы, размеры, хеши)
 ├── download.php            # отдача файла с правильными заголовками (для PHP-хостинга)
 ├── api.php                 # API онлайн-игроков
-├── client/
-│   └── Pixels.exe          # сам клиент
 ├── css/
 │   ├── downloads.css       # стили секции загрузок (тема 桜)
 │   └── style.css           # ⚠️ legacy: старая тёмно-неоновая тема, не подключена
@@ -94,6 +99,10 @@ pixel_client_server/
 └── pixels_users.json       # хранилище API (данные игроков)
 ```
 
+> Бинарников в репозитории нет — `Pixels.exe` и `loader.zip` лежат в
+> [GitHub Releases](https://github.com/ggn93360-creator/pixel_client_server/releases).
+> Так репозиторий остаётся лёгким, а у релизов есть счётчики загрузок.
+>
 > `css/style.css` — остаток от предыдущей версии сайта, на текущий `index.html` не
 > подключается. Можно удалить, если не нужен.
 
