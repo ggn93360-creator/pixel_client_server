@@ -106,6 +106,21 @@ pixel_client_server/
 > `css/style.css` — остаток от предыдущей версии сайта, на текущий `index.html` не
 > подключается. Можно удалить, если не нужен.
 
+### ⚠️ Кэш GitHub Pages
+
+Pages кэширует статику на 10 минут, поэтому после правки `downloads.css` или
+`downloads.js` браузер может какое-то время отдавать старую версию. Чтобы этого
+не было, у ссылок стоит версия:
+
+```html
+<link rel="stylesheet" href="css/downloads.css?v=2">
+<script src="assets/js/downloads.js?v=2"></script>
+```
+
+**После изменения CSS или JS — подними число `?v=`** в `index.html` и
+`downloads.html` (в обоих сразу). `releases.json` обновляется сам: скрипт
+запрашивает его с `cache: 'no-cache'`.
+
 ---
 
 ## Локаальный запуск
